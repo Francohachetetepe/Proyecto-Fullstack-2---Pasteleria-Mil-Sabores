@@ -1,0 +1,36 @@
+body{
+    background-color: #fff5e1;
+    color: #5d4037;
+    font-family: 'Lato', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6{
+    font-family: 'Paciente', cursive;
+    color: #5d4037;
+}
+
+p{
+    color: #5d4037;
+}
+
+.texto-secundario{
+    color: #b0bec5;
+}
+
+button, .boton{
+    background-color: #ffc0cb;
+    color: #fff5e1;
+    border: 2px solid #8b4513;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-family: 'Lato', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover, .boton:hover{
+    background-color: #8b4513;
+    color: #fff5e1;
+}
