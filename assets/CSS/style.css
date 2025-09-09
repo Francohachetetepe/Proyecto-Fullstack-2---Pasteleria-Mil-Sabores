@@ -416,3 +416,26 @@ button:hover, .boton:hover{
   margin-bottom: 25px; 
 
 }
+
+/* Contacto */
+.logo_contacto{
+    display: flex;
+    justify-content: center;
+}
+
+.n_contacto{
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/*no me convence como quedooo*/
+.formulario_contacto{ 
+    background-color: #fff; 
+    border: 2px solid #8b4513;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    max-width: 520px;
+    margin: 40px auto;
+    margin-top: 60px;;
+}
