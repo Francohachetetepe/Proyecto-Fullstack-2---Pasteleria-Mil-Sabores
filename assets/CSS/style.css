@@ -521,3 +521,12 @@ button:hover, .boton:hover{
   color: #ff69b4;  /* cambia de color al pasar el mouse */
 }
 
+/* Blog */
+.t_blog{
+    text-align: center;
+}
+
+.blog{
+    width: 100%;
+    
+}
