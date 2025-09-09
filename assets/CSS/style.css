@@ -439,3 +439,85 @@ button:hover, .boton:hover{
     margin: 40px auto;
     margin-top: 60px;;
 }
+
+
+/*home admin*/
+.sidebar {
+  position: fixed;  /*no se va a mover del lado, aunquee, no sé si dejarlo así o cambiarlo*/
+  left: 0;
+  top: 0px;
+  width: 220px;             
+  height: 100%;             
+  background-color: #ffc0cb; 
+  padding-top: 10px;
+}
+
+/*Esta realmente alineado?*/
+.sidebar .logo {
+    display: block;
+    margin: 15px auto;
+    margin-top: 1px;
+}
+
+
+.sidebar ul{
+    list-style: none;
+    padding: 0%;
+    margin: 0%;
+}
+.sidebar li{
+    margin: 20px;
+}
+
+/*Título*/
+.sidebar h5 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-family: 'Lato', sans-serif; 
+  margin-top: 1%; 
+}
+
+/* Estilo para los enlaces */
+.sidebar a {
+  display: block;            
+  text-decoration: none;     
+  color: #5d4037;
+  font-size: 16px;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+/* Hover */
+/*creo que no es el colooor*/
+.sidebar a:hover {
+  background-color: #a05a2b;
+  border-radius: 4px;
+}
+
+/* Íconos */
+.sidebar i {
+  margin-right: 10px;
+}
+
+/* ---- saludo admin ---- */
+.saludo_admin {
+  margin-left: 220px ;
+  padding: 20px;
+}
+
+.noti {
+    position: absolute; /* waaa, con esto se pone a la derechaa*/
+    font-size: 1.5rem;  /* más grande la campanita */
+    color: #8b4513;     /* café bonito, cámbialo si quieres */
+    cursor: pointer;
+    transition: color 0.3s;
+    top: 20px;
+    right: 20px;
+    
+    
+}
+
+.noti:hover {
+  color: #ff69b4;  /* cambia de color al pasar el mouse */
+}
+
