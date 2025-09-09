@@ -385,3 +385,34 @@ button:hover, .boton:hover{
   background-color: #8b4513; /* chocolate */
   color: #fff5e1;           /* crema */
 }
+
+/*Index*/
+.boton_productos {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.boton_productos .btn-products {
+    display: inline-block;
+    background-color: #ffc0cb;
+    color: #fff5e1;
+    border: 2px solid #8b4513;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-family: 'Lato', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.boton_productos .btn-products:hover {
+  background-color: #ff99aa;
+}
+
+.productos_index .card {
+  width: 100% !important; 
+  max-width: 18rem;       
+  margin: 0 auto;         
+  margin-bottom: 25px; 
+
+}

@@ -4,54 +4,141 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio</title>
+    <!--bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-    <link rel="icon" href="assets/img/logo-fndo-blanco.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="icon" href="assets/img/logo-fndo-blanco.png">
     <link rel="stylesheet" href="assets/CSS/style.css"> <!-- va de último si uso bootstrap, no sé porqué, pero no fuciona si lo pongo arriba :(-->
     
 </head>
 <body>
-    <nav class="menu">
-        <a href="index.html">Home </a>
-        <a href="productos.html">| Productos </a>
-        <a href="nosotros.html">| Nosotros </a>
-        <a href="blogs.html">| Blogs </a>
-        <a href="contactos.html">| Contactos </a>
-        <a href="assets/page/carrito.html"><i class="bi bi-cart3"></i> Carrito (0) </a>
-    </nav>
-    <!-- lo tengo que alinear en el style uwu-->
-    <nav class="registro">
-        <a href="inicio_sesion.html">Iniciar sesión |</a>
-        <a href="registro_usuario.html"> Registrar usuario </a>
-    </nav>
-
-    <!--esto es un carrusel, lloro-->
-    <!--imagen grande y un "sobre nosotros", se pone de otro color en el style-->
-    <div class="descripcion">
-        <h1>Pastelería 1000 sabores</h1>
-        <p>nos tenemos que inventar una descripción bonita uwu</p>
-
-        <!--poner la imagen al lado  uwu-->
-        <div class="presentacion">
-            <img src="assets/img/cuadro final.png" class="img-fluid" alt="Dibujo de nuestros trabajadores" width="300">
+    <!--comienzo menu -->
+    <header class="header">
+        <div class="logo">
+            <a href="index.html">
+                <img src="assets/img/logo-fndo-blanco.png" alt="Logo de la tienda">
+            </a>
         </div>
+        
+        <nav class="navbar">
+            <a href="index.html">Inicio</a>
+            <span>|</span>
+            <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="productos.html" id="productosDropdown" role="button">Productos</a>
+                <div class="dropdown-menu" aria-labelledby="productosDropdown">
+                    <a class="dropdown-item categoria-link" href="#" data-categoria="Tortas Cuadradas">Tortas Cuadradas</a>
+                    <a class="dropdown-item categoria-link" href="#" data-categoria="Tortas Circulares">Tortas Circulares</a>
+                    <a class="dropdown-item categoria-link" href="#" data-categoria="Postres Individuales">Postres Individuales</a>
+                    <a class="dropdown-item categoria-link" href="#" data-categoria="Productos Sin Azúcar">Productos Sin Azúcar</a>
+                    <a class="dropdown-item categoria-link" href="#" data-categoria="Pastelería Tradicional">Pastelería Tradicional</a>
+                    <a class="dropdown-item categoria-link" href="#" data-categoria="Productos Sin Gluten">Productos Sin Gluten</a>
+                    <a class="dropdown-item categoria-link" href="#" data-categoria="Productos Vegana">Productos Vegana</a>
+                    <a class="dropdown-item categoria-link" href="#" data-categoria="Tortas Especiales">Tortas Especiales</a>
+                </div>
+            </div>
+            <!-- ve porque no funciona la "conexión"-->
+            <span>|</span>
+            <a href="nosotros.html">Nosotros</a>
+            <span>|</span>
+            <a href="blogs.html">Blogs</a>
+            <span>|</span>
+            <a href="contactos.html">Contacto</a>
+        </nav>
+        
+        <div class="d-flex align-items-center ms-3">
+            <form id="formBusqueda" class="form-inline">
+            <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Buscar">
+            <button class="btn" type="submit">Buscar</button>
+        </form>
+        
+        <div class="acciones-usuario dropdown">
+            <button class="btn btn-usuario dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-person-circle"></i>
+                <span id="textoUsuario">Iniciar sesión</span>
+            </button>
+            
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                <li>
+                    <a href="inicio_sesion.html" class="dropdown-item btn-iniciar-sesion">Iniciar sesión</a>
+                </li>
+                <li>
+                    <a href="registro_usuario.html" class="dropdown-item btn-crear-cuenta">Crear cuenta</a>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="carrito">
+            <a href="assets/page/carrito.html">
+                <i class="bi bi-cart3"></i>
+                <span class="badge" id="contador">0</span>
+            </a>
+        </div>
+    </header>
+        <!--fin menú-->
 
-        <button type="submit" href = "assets/page/productos.html"><i class="bi bi-hypnotize"></i> Ver Productos </button>
 
+
+    <!-- carrusel con breve info uwu-->
+     <!--tengo que cambiar las imágeneees-->
+     <div id="carouselExampleDark" class="carousel carousel-dark slide">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true"></button>
+            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2"></button>
+        </div>
+        
+        <div class="carousel-inner text-center"> <!-- centramos el contenido -->
+            <div class="carousel-item active" data-bs-interval="4000">
+                <img src="assets/img/cuadro final.png" class="d-block mx-auto" style="max-height:500px;" alt="nosotros">
+            </div>
+            <div class="carousel-item" data-bs-interval="4000">
+                <img src="assets/img/unicornio-3.jpg" class="d-block mx-auto" style="max-height:500px;" alt="Descuentos">
+            </div>
+            <div class="carousel-item">
+                <img src="assets/img/logo-fndo-blanco.png" class="d-block mx-auto" style="max-height:500px;" alt="Blog">
+            </div>
+        </div>
+        
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
     </div>
 
-    <!-- algunos productos-->
-    <div class= "productos">
-        
-         <div class="row">
+    <!-- Descripción de la tienda -->
+     <div class="descripcion text-center mt-4 px-3">
+        <h2>Bienvenidos a Pastelería Mil Sabores</h2>
+        <p>
+            Nuestra pastelería es un lugar tradicional, donde cada postre refleja la dedicación y el amor por los sabores de antaño. 
+            Conservamos un aire nostálgico que transporta a nuestros clientes a recuerdos dulces de la infancia, 
+            pero con la frescura y calidad que esperan hoy en cada bocado. 
+            Nuestros postres no solo son deliciosos, sino que están hechos con ingredientes cuidadosamente seleccionados, 
+            buscando siempre ofrecer experiencias únicas y memorables.
+        </p>
+    </div>
+
+
+    <!-- boton ver productos, lo tienes que centrar uwu-->
+     <div class="boton_productos">
+        <a href="assets/page/productos.html" class="btn-products">
+            <i class="bi bi-hypnotize"></i> Ver Productos
+        </a>
+    </div>
+  
+
+    <!-- algunos productos, hay que separarlos en style, yyy, poner otras imágenes y  descripciones-->
+     <div class= "productos_index">
+        <div class="row">
             <!-- 1 -->
-            <div class="col-md-3">
+             <div class="col-md-3">
                 <div class="card" style="width: 18rem;">
                     <img src="assets/img/unicornio-3.jpg" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title">Torta unicornio</h5>
-                        <p class="card-text">Puro blabla, tipo, vizcocho a elección para 12 personas con crema y cositos pa decorar y blablabla uwu.</p>
+                        <p class="card-text">Puro blabla, tipo, vizcocho a elección para 12 personas con crema y cositos pa decorar uwu.</p>
                         <h6> $25.990 </h6>
                     </div>
                 </div>
@@ -149,6 +236,11 @@
          
     </div>
 
+    <!--footer-->
+    <footer class="bg-dark text-white text-center p-3 mt-4">
+        By CodeLegion FKR © 2025
+    </footer>
+    <!--creo que hay que agregarle más cosas, como la barra yy las redes sociales uwu-->
 
 </body>
 </html>
