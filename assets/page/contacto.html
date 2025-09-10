@@ -84,26 +84,30 @@
 
     <h1 class="n_contacto">Pastelería mil delicias</h1>
 
-    <div class= "formulario_contacto" >
+    <form class= "formulario_contacto" >
         <div class="subTitulo">
             <h5>Formulario de contacto</h5>
         </div>
         <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-label">Nombre Completo</label>
-            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Antonia Palma">
+            <input type="text" class="form-control" id="nombre" placeholder="Antonia Palma"
+            maxlength="100" required>
         </div>
         <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-label">Correo Electrónico</label>
-            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Antopalma@ejemplo.com">
+            <input type="email" class="form-control" id="correo" placeholder="Antopalma@duoc.cl"
+            maxlength="100" required>
         </div>
 
         <div class="mb-3">
             <label for="exampleFormControlTextarea1" class="form-label">Mensaje</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="6"></textarea>
+            <textarea class="form-control" id="mensaje" rows="6" maxlength="500" required></textarea>
         </div>
 
-        <button type="submit">Enviar</button>
-    </div>
+        <button id = "boton_contacto" type="submit">Enviar</button>
+
+        <p id="mensajeEnv" style="color: rgb(202, 137, 150);"></p>
+    </form>
 
     <!--footer-->
     <footer class="bg-dark text-white text-center p-3 mt-4">
