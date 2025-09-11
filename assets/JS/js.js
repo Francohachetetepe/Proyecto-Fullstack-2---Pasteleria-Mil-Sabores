@@ -1,9 +1,10 @@
 //Contacto
 //validar correo
- function validarCorreo(correo) {
+function validarCorreo(correo) {
     const regex = /^[\w.+-]+@(duoc\.cl|profesor\.duoc\.cl|gmail\.com)$/i;
     return regex.test(correo);
 }
+
 //boton
 document.addEventListener("DOMContentLoaded" , () => {
     const formulario = document.querySelector(".formulario_contacto"); //chatgpt me digo que le pusiera esto, pero la profe no lo hizo asiiii, será porque usé bootstrap?
@@ -18,7 +19,7 @@ document.addEventListener("DOMContentLoaded" , () => {
     [nombreInput, correoInput, mensajeInput].forEach(input => {
         input.addEventListener ("input", () => {
             input.setCustomValidity ("");
-            mensaje.innerText= "";
+            mensajeAlert.innerText= "";
         });
     });
 
@@ -28,7 +29,7 @@ document.addEventListener("DOMContentLoaded" , () => {
 
         //limpiar mensaje sprevios
 
-        mensajeInput.innerText = "";
+        mensajeAlert.innerText = "";
 
         //validar que no esten vacíos
         //nombre
@@ -39,30 +40,43 @@ document.addEventListener("DOMContentLoaded" , () => {
         }
 
         //validar correo
-        //también me dijo que cambiara esto (la validación no me está funcioando)
         if(!validarCorreo(correoInput.value.trim())){
             alert("El correo debe ser '@duoc.cl', '@profesor.duoc.cl', '@gmail.com'.");
             return;
         }
 
+        mostrarMensajePushup();
+
         // mensaje "todo bien"
         mensajeAlert.innerText = "Mensaje enviado correctamente. Lo contactaremos a la brevedad."; //no me convence el mensaje xd
+        formulario.reset();
         
-        //Todos los datos son correctos
+        /*Todos los datos son correctos
         const nombreUsuario = nombreInput.value.trim();
         const correoValue = correoInput.value.trim().toLowerCase();
 
-        //redireccionar
-        //no sé si deba hacer esto, lo dejo comentado, yyy, lo direcciono a index
-        //const destino = correoValue.toLowerCase() === "admin@duoc.cl" ?
-        //`assets/index.html?nombre=${encodeURIComponent(nombreUsuario)}` : 
-        //`assets/index.html?nombre=${encodeURIComponent(nombreUsuario)}`;
+        redireccionar
+        no sé si deba hacer esto, lo dejo comentado, yyy, lo direcciono a index
+        const destino = correoValue.toLowerCase() === "admin@duoc.cl" ?
+        `assets/index.html?nombre=${encodeURIComponent(nombreUsuario)}` : 
+        `assets/index.html?nombre=${encodeURIComponent(nombreUsuario)}`;
 
-        //setTimeout(() =>{
-        //    window.location.href = destino;
-        //}, 1000);
+        setTimeout(() =>{
+            window.location.href = destino;
+        }, 1000);*/
 
     
-    }); 
+    });
+    
+    //perplexity
+    function mostrarMensajePushup() {
+        const mensaje = document.getElementById("mensajePushup");
+        mensaje.style.display = "block";
+        setTimeout(() => {
+            mensaje.style.display = "none";
+        }, 3000); // desaparece después de 3 segundos
+}
+
 });
+
 
