@@ -18,6 +18,15 @@ p{
     color: #5d4037;
 }
 
+<<<<<<< HEAD
+=======
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+>>>>>>> main
 .texto-secundario{
     color: #b0bec5;
 }
@@ -386,6 +395,7 @@ button:hover, .boton:hover{
   color: #fff5e1;           /* crema */
 }
 
+<<<<<<< HEAD
 /*Index*/
 .boton_productos {
     text-align: center;
@@ -633,4 +643,10 @@ button:hover, .boton:hover{
 .accordion .accordion-button:not(.collapsed) {
   background-color: #800020; 
   color: #fff;
+=======
+.card-nosotros:hover {
+  background-color: #ffe4ec; /* rosa clarito */
+  transform: translateY(-5px);
+  transition: all 0.3s ease;
+>>>>>>> main
 }
