@@ -21,8 +21,13 @@ export function validarCorreo(correo) {
     const regex = /^[\w._%+-]+@(duoc\.cl|profesor\.duoc\.cl|gmail\.com)$/i;
     return regex.test(correo);
 }
+
 export function validarPassword(password) {
     return password.length >= 6;
+}
+
+export function validarPasswordsIguales(password, confirmPassword) {
+  return password === confirmPassword;
 }
 
 export function validarEdad(fechaNacimiento) {

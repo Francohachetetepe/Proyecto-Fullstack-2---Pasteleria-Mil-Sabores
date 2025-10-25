@@ -1,4 +1,4 @@
-// --- Validaciones básicas ---
+/*// --- Validaciones básicas ---
 function validarCorreo(correo) {
   const regex = /^[\w.+-]+@(duoc\.cl|profesor\.duoc\.cl|gmail\.com)$/i;
   return regex.test(correo);
@@ -170,4 +170,4 @@ document.addEventListener("DOMContentLoaded", () => {
     // Aquí podrías guardar en Firestore si corresponde
     // db.collection("usuario").add({...})
   });
-});
+});*/
