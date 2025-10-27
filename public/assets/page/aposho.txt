@@ -1,0 +1,29 @@
+<!-- Línea Superior -->
+            <div class="header-top">
+                <div class="search-container">
+                    <input type="text" id="buscador" placeholder="Buscar productos..." class="search-input">
+                    <button id="btnBuscar" class="btn-buscar">Buscar</button>
+                </div>
+                <div class="auth-buttons">
+                    <button class="btn-login">Iniciar Sesión</button>
+                    <button class="btn-signup">Crear Cuenta</button>
+                </div>
+            </div>
+
+
+
+            <!-- MAIN CONTENT -->
+        <main class="main">
+            <!-- CARDS DE CATEGORÍAS -->
+            <section class="categorias-section">
+                <h2 class="section-title">Categorías</h2>
+                <button id="btnVerTodos" class="btn-ver-todos">Todos los productos</button>
+                <div id="cardsCategorias" class="categorias-grid"></div>
+            </section>
+            
+            <!-- PRODUCTOS -->
+            <section class="productos-section">
+                <h2 id="tituloProductos" class="section-title">Todos los Productos</h2>
+                <div id="productosGrid" class="productos-grid"></div>
+            </section>
+        </main>

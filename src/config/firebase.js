@@ -2,6 +2,8 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
 
+import { getAuth } from "firebase/auth";
+
 const firebaseConfig = {
   apiKey: "AIzaSyAzRg6nsE4TZgdvMeeU7Nvjo64k7m8HrrE",
   authDomain: "tiendapasteleriamilsabor-de980.firebaseapp.com",
@@ -15,6 +17,12 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+<<<<<<< Updated upstream
 
 //Conectar Firestore
 export const db = getFirestore(app);
+=======
+export const db = getFirestore(app);
+
+export const auth = getAuth(app);
+>>>>>>> Stashed changes

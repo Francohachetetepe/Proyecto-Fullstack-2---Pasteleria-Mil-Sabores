@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+    <!--bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="icon" href="assets/img/logo-fndo-blanco.png">
+    <link rel="stylesheet" href="assets/CSS/style.css"> <!-- va de último si uso bootstrap, no sé porqué, pero no fuciona si lo pongo arriba :(-->
+    
+</head>
+<body>
+    <!--comienzo menu -->
+    <header class="header">
+        <div class="logo">
+            <a href="index.html">
+                <img src="assets/img/logo-fndo-blanco.png" alt="Logo de la tienda">
+            </a>
+        </div>
+        
+        <nav class="navbar">
+            <a href="index.html">Inicio</a>
+            <span>|</span>
+            <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="assets/page/productos.html" id="productosDropdown" role="button">Productos</a>
+                <div class="dropdown-menu" aria-labelledby="productosDropdown">
+                    <a class="dropdown-item" href="assets/page/productos.html?categoria=Tortas%20Cuadradas">Tortas Cuadradas</a>
+                    <a class="dropdown-item" href="assets/page/productos.html?categoria=Tortas%20Circulares">Tortas Circulares</a>
+                    <a class="dropdown-item" href="assets/page/productos.html?categoria=Postres%20Individuales">Postres Individuales</a>
+                    <a class="dropdown-item" href="assets/page/productos.html?categoria=Productos%20Sin%20Azúcar">Productos Sin Azúcar</a>
+                    <a class="dropdown-item" href="assets/page/productos.html?categoria=Pastelería%20Tradicional">Pastelería Tradicional</a>
+                    <a class="dropdown-item" href="assets/page/productos.html?categoria=Productos%20Sin%20Gluten">Productos Sin Gluten</a>
+                    <a class="dropdown-item" href="assets/page/productos.html?categoria=Productos%20Vegana">Productos Vegana</a>
+                    <a class="dropdown-item" href="assets/page/productos.html?categoria=Tortas%20Especiales">Tortas Especiales</a>
+                </div>
+            </div>
+
+            <span>|</span>
+            <a href="assets/page/nosotros.html">Nosotros</a>
+            <span>|</span>
+            <a href="assets/page/blogs.html">Blogs</a>
+            <span>|</span>
+            <a href="assets/page/contacto.html">Contacto</a>
+        </nav>
+        
+        <div class="d-flex align-items-center ms-3">
+            <form id="formBusqueda" class="form-inline">
+            <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Buscar">
+            <button class="btn" type="submit">Buscar</button>
+        </form>
+        
+        <div class="acciones-usuario dropdown">
+            <button class="btn btn-usuario dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-person-circle"></i>
+                <span id="textoUsuario">Iniciar sesión</span>
+            </button>
+            
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                <li>
+                    <a href="assets/page/inicio_sesion.html" class="dropdown-item btn-iniciar-sesion">Iniciar sesión</a>
+                </li>
+                <li>
+                    <a href="assets/page/registro_usuario.html" class="dropdown-item btn-crear-cuenta">Crear cuenta</a>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="carrito">
+            <a href="assets/page/carrito.html">
+                <i class="bi bi-cart3"></i>
+                <span class="badge" id="contador">0</span>
+            </a>
+        </div>
+    </header>
+        <!--fin menú-->
+
+
+
+    <!-- carrusel -->
+     <div class="carrusel">
+        <!-- Descripción de la tienda -->
+         <div class="descripcion_carrusel">
+            <h2>Bienvenidos a Pastelería Mil Sabores</h2>
+            <p>
+                Nuestra pastelería es un lugar tradicional, donde cada postre refleja la dedicación y el amor por los sabores de antaño. 
+                Conservamos un aire nostálgico que transporta a nuestros clientes a recuerdos dulces de la infancia, 
+                pero con la frescura y calidad que esperan hoy en cada bocado. 
+                Nuestros postres no solo son deliciosos, sino que están hechos con ingredientes cuidadosamente seleccionados, 
+                buscando siempre ofrecer experiencias únicas y memorables.
+            </p>
+            
+            <!-- boton ver productos -->
+             <div class="boton_productos">
+                <a href="assets/page/productos.html" class="btn-products">
+                    <i class="bi bi-hypnotize"></i> Ver Productos
+                </a>
+            </div>
+        </div>
+        
+        <div id="carouselExampleDark" class="carousel carousel-dark slide">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true"></button>
+                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2"></button>
+            </div>
+            
+            <div class="carousel-inner">
+                <div class="carousel-item active" data-bs-interval="400">
+                    <img src="assets/img/cuadro-final.png" class="d-block mx-auto" style="max-height:400px;" alt="nosotros">
+                </div>
+                <div class="carousel-item" data-bs-interval="4000">
+                    <img src="assets/img/Imagen promocional p.png" class="d-block mx-auto" style="max-height:400px;" alt="Descuentos">
+                </div>
+                <div class="carousel-item">
+                    <img src="assets/img/blog.png" class="d-block mx-auto" style="max-height:400px;" alt="Blog">
+                </div>
+            </div>
+            
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        
+        </div>
+    </div>    
+
+    <!-- algunos productos -->
+     <div class= "productos_index">
+        <div class="row">
+            <!-- 1 -->
+             <div class="col-md-3">
+                <div class="card" style="width: 18rem;">
+                    <img src="assets/img/TE001.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Torta Especial de Cumpleaños</h5>
+                        <p class="card-text">Bizcocho esponjoso de vainilla con relleno de frambuesa y crema chantilly. 
+                            Decorada con cobertura de fondant y detalles coloridos inspirados en Sailor Moon, 
+                            es perfecta para celebraciones infantiles llenas de magia y dulzura.
+                        </p>
+                        <h6> $55.000 </h6>
+                    </div>
+                </div>
+            </div>
+         
+            <!-- 2 -->
+            <div class="col-md-3">
+                <div class="card" style="width: 18rem;">
+                    <img src="assets/img/TT002.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Torta Circular de Manjar</h5>
+                        <p class="card-text">Bizcocho húmedo de vainilla o nuez, relleno generosamente con manjar casero. Cubierta con merengue suave o crema, esta torta clásica chilena es reconfortante y deliciosa, ideal para compartir en familia.</p>
+                        <h6> $42.000 </h6>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3 -->
+            <div class="col-md-3">
+                <div class="card" style="width: 18rem;">
+                    <img src="assets/img/TC001.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Torta Cuadrada de Chocolate</h5>
+                        <p class="card-text">Bizcocho intenso de cacao, con capas de ganache o mousse de chocolate. Su forma cuadrada le da un toque moderno, y su sabor profundo la convierte en un favorito para los amantes del chocolate.</p>
+                        <h6> $45.000 </h6>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4 -->
+            <div class="col-md-3">
+                <div class="card" style="width: 18rem;">
+                    <img src="assets/img/PSA001.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Torta Sin Azúcar de Naranja</h5>
+                        <p class="card-text">Bizcocho ligero y húmedo, endulzado naturalmente con stevia o dátiles. El sabor cítrico de la naranja aporta frescura, y su textura suave la hace ideal para quienes buscan opciones más saludables sin renunciar al placer.</p>
+                        <h6> $48.000 </h6>
+                    </div>
+                </div>
+            </div>
+         </div>
+
+
+         <div class="row">
+            <!-- 5 -->
+            <div class="col-md-3">
+                <div class="card" style="width: 18rem;">
+                    <img src="assets/img/TE002.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Torta Especial de Boda</h5>
+                        <p class="card-text">Bizcocho de vainilla almendrada o red velvet, relleno con crema de frutos rojos o buttercream suizo. Decorada con flores naturales, detalles elegantes y tonos suaves, esta torta celebra el amor con delicadeza y estilo.</p>
+                        <h6> $60.000 </h6>
+                    </div>
+                </div>
+            </div>
+         
+        
+
+            <!-- 6 -->
+            <div class="col-md-3">
+                <div class="card" style="width: 18rem;">
+                    <img src="assets/img/PV002.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Galletas Veganas de Avena</h5>
+                        <p class="card-text">Crujientes por fuera y suaves por dentro, estas galletas están hechas con avena, plátano o manzana, y endulzadas con azúcar rubia o sirope de agave. Sin lácteos ni huevos, son una opción deliciosa y consciente.</p>
+                        <h6> $4.500 </h6>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7 -->
+            <div class="col-md-3">
+                <div class="card" style="width: 18rem;">
+                    <img src="assets/img/PI002.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Tiramisú Clásico</h5>
+                        <p class="card-text">Capas de bizcocho tipo soletilla empapado en café espresso, intercaladas con crema de mascarpone y espolvoreadas con cacao amargo. Un postre italiano elegante, cremoso y con un toque de amargor que equilibra su dulzura.</p>
+                        <h6> $5.500 </h6>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8 -->
+            <div class="col-md-3">
+                <div class="card" style="width: 18rem;">
+                    <img src="assets/img/PT001.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Empanada de Manzana</h5>
+                        <p class="card-text">Masa dorada y crujiente rellena con manzanas caramelizadas, canela y un toque de limón. Perfecta para servir tibia con helado o sola, esta empanada combina tradición y sabor en cada bocado.</p>
+                        <h6> $3.000 </h6>
+                    </div>
+                </div>
+            </div>
+         </div>
+         
+    </div>
+
+    <footer class="footer-custom mt-4">
+        <div class="container py-4">
+            <div class="row align-items-start">
+                <div class="col-md-3 text-center text-md-start mb-3 mb-md-0">
+                    <img src="assets/img/logo-fndo-blanco.png" alt="Logo" class="footer-logo mb-2">
+                </div>
+                
+                <div class="col-md-5 text-center mb-3 mb-md-0">
+                    <div class="footer-categorias">
+                        <div class="footer-categorias-linea">
+                            <a href="assets/page/productos.html?categoria=Tortas%20Cuadradas">Tortas Cuadradas</a> |
+                            <a href="assets/page/productos.html?categoria=Tortas%20Circulares">Tortas Circulares</a> |
+                            <a href="assets/page/productos.html?categoria=Productos%20Sin%20Azúcar">Sin Azúcar</a> |
+                            <a href="assets/page/productos.html?categoria=Productos%20Sin%20Gluten">Sin Gluten</a> |
+                        </div>
+                        <div class="footer-categorias-linea">
+                            <a href="assets/page/productos.html?categoria=Postres%20Individuales">Postres Individuales</a> |
+                            <a href="assets/page/productos.html?categoria=Pastelería%20Tradicional">Pastelería Tradicional</a> |
+                            <a href="assets/page/productos.html?categoria=Productos%20Vegana">Veganos</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 text-center text-md-end pe-md-5">
+                    <p class="footer-texto-suscripcion mb-2">
+                        Únete a nuestro boletín y recibe nuestras dulces novedades 🍰
+                    </p>
+                    <form class="footer-suscripcion d-flex justify-content-center justify-content-md-end mb-2">
+                        <input type="email" class="form-control" placeholder="Tu correo" required>
+                        <button type="submit" class="btn btn-sub">Suscribirse</button>
+                    </form>
+                    <img src="assets/img/1.Webpay_FB_300px.png" alt="Webpay" class="webpay-img">
+                </div>
+            </div>
+            
+            <div class="footer-copy text-center mt-4">
+                <p class="mb-0 small">By <strong>CodeLegion FKR</strong> © 2025</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

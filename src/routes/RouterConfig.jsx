@@ -1,18 +1,27 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+<<<<<<< Updated upstream
 import Header  from "../components/organisms/Header";
 import Footer  from "../components/organisms/Footer";
+=======
+>>>>>>> Stashed changes
 import Home from "../components/pages/Home";
 import PerfilCliente from "../components/pages/PerfilCliente";
 import PerfilAdmin from "../components/pages/PerfilAdmin";
 import Blogs from "../components/pages/Blogs";
 import Contacto from "../components/pages/Contacto";
 import Nosotros from "../components/pages/Nosotros";
-import Carrito from "../components/pages/Carrito";
 import Detalle_product from "../components/pages/Detalle_product";
 import Inicio_sesion from "../components/pages/Inicio_sesion";
-import Registro_usuario from "../components/pages/Registro_usuario";  
-import Catalogo from "../components/pages/Productos";
+import Registro_usuario from "../components/pages/Registro_usuario";
+import Catalogo from "../components/pages/Catalogo";
+import Carrito from "../components/pages/Carrito";
+import Checkout from "../components/pages/Checkout";
+import CompraExitosa from "../components/pages/CompraExitosa";
+import ErrorPago from "../components/pages/ErrorPago";
+import Header from "../components/organisms/Header";   
+import Footer from "../components/organisms/Footer";
 
+<<<<<<< Updated upstream
 const RouterConfig = () => {
   return (
     <Router>
@@ -36,3 +45,29 @@ const RouterConfig = () => {
 };
 
 export default RouterConfig;
+=======
+const RouterConfig = () => (
+    <>  
+        <Header />
+        <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/perfil-cliente" component={PerfilCliente} />
+            <Route path="/perfil-admin" component={PerfilAdmin} />
+            <Route path="/registro-usuario" component={Registro_usuario} />
+            <Route path="/inicio-sesion" component={Inicio_sesion} />
+            <Route path="/catalogo" component={Catalogo} />
+            <Route path="/carrito" component={Carrito} />
+            <Route path="/checkout" component={Checkout} />
+            <Route path="/exito" component={CompraExitosa} />
+            <Route path="/error" component={ErrorPago} />
+            <Route path="/detalle-product" component={Detalle_product} />
+            <Route path="/blogs" component={Blogs} />
+            <Route path="/nosotros" component={Nosotros} />
+            <Route path="/contacto" component={Contacto} />
+        </Switch>
+        <Footer />
+    </>
+);
+
+export default RouterConfig;
+>>>>>>> Stashed changes
