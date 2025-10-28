@@ -31,6 +31,7 @@ export function validarPasswordsIguales(password, confirmPassword) {
 }
 
 export function validarEdad(fechaNacimiento) {
+    if (!fechaNacimiento) return 0; 
     const hoy = new Date();
     const fechaNac = new Date(fechaNacimiento);
     let edad = hoy.getFullYear() - fechaNac.getFullYear();
@@ -42,6 +43,7 @@ export function validarEdad(fechaNacimiento) {
 }
 
 export function validarCodigoPromo(codigo) {
+    if (!codigo) return true;
     return codigo.toUpperCase() === "FELICES50";
 }
 
