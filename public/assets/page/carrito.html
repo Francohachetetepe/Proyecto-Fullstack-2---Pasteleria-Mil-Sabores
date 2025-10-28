@@ -1,89 +1,97 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Carrito de Compras</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="../CSS/style.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    </head>
-    <body>
-        <header class="header">
-            <div class="logo">
-                <a href="../../index.html">
-                    <img src="../img/logo-fndo-blanco.png" alt="Logo de la tienda">
-                </a>
-            </div>
-            
-            <nav class="navbar">
-                <a href="../../index.html">Inicio</a>
-                <span>|</span>
-                <div class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="productos.html" id="productosDropdown" role="button">Productos</a>
-                    <div class="dropdown-menu" aria-labelledby="productosDropdown">
-                        <a class="dropdown-item" href="productos.html?categoria=Tortas%20Cuadradas">Tortas Cuadradas</a>
-                        <a class="dropdown-item" href="productos.html?categoria=Tortas%20Circulares">Tortas Circulares</a>
-                        <a class="dropdown-item" href="productos.html?categoria=Postres%20Individuales">Postres Individuales</a>
-                        <a class="dropdown-item" href="productos.html?categoria=Productos%20Sin%20Azúcar">Productos Sin Azúcar</a>
-                        <a class="dropdown-item" href="productos.html?categoria=Pastelería%20Tradicional">Pastelería Tradicional</a>
-                        <a class="dropdown-item" href="productos.html?categoria=Productos%20Sin%20Gluten">Productos Sin Gluten</a>
-                        <a class="dropdown-item" href="productos.html?categoria=Productos%20Vegana">Productos Vegana</a>
-                        <a class="dropdown-item" href="productos.html?categoria=Tortas%20Especiales">Tortas Especiales</a>
-                    </div>
-                </div>
-                <span>|</span>
-                <a href="../page/nosotros.html">Nosotros</a>
-                <span>|</span> <a href="../page/blogs.html">Blogs</a>
-                <span>|</span> <a href="../page/contacto.html">Contacto</a>
-            </nav>
-            <div class="d-flex align-items-center ms-3">
-                <form id="formBusqueda" class="form-inline">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Buscar">
-                    <button class="btn" type="submit">Buscar</button>
-                </form>
-                
-                <div class="acciones-usuario dropdown">
-                    <button class="btn btn-usuario dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-person-circle"></i> <span id="textoUsuario">Iniciar sesión</span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                        <li> <a href="inicio_sesion.html" class="dropdown-item btn-iniciar-sesion">Iniciar sesión</a> </li>
-                        <li> <a href="registro_usuario.html" class="dropdown-item btn-crear-cuenta">Crear cuenta</a> </li>
-                    </ul>
-                </div>
-                <div class="carrito">
-                    <a href="carrito.html">
-                        <i class="bi bi-cart3"></i>
-                        <span class="badge" id="contador">0</span>
-                    </a>
-                </div>
-            </div>
-        </header>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrito de Compras - Mi Tienda</title>
+  <link rel="stylesheet" href="../CSS/catalogo.css">
+  <link rel="stylesheet" href="../CSS/carrito.css">
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-top">
+      <div class="search-container">
+        <input type="text" id="buscador" placeholder="Buscar productos..." class="search-input">
+        <button id="btnBuscar" class="btn-buscar">Buscar</button>
+      </div>
+      <div class="auth-buttons">
+        <button class="btn-login">Iniciar Sesión</button>
+        <button class="btn-signup">Crear Cuenta</button>
+      </div>
+    </div>
+
+    <nav class="nav-main">
+      <div class="nav-center">
+        <a href="catalogo.html" class="nav-link">Home</a>
+        <div class="dropdown">
+          <a href="#" class="nav-link">Categoría ⌄</a>
+          <div class="dropdown-content" id="dropdownCategorias"></div>
+        </div>
+        <a href="#" class="nav-link">Ofertas</a>
+        <a href="#" class="nav-link">Nosotros</a>
+        <a href="#" class="nav-link">Blog</a>
+        <a href="#" class="nav-link">Contacto</a>
+      </div>
+      
+      <div class="nav-right">
+        <button class="btn-carrito" onclick="window.location.href='carrito.html'">
+          <span class="carrito-icon">🛒</span>
+          Total: $<span class="carrito-total">0</span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+    <div class="carrito-container">
+      <!-- Lista de Productos con Ofertas -->
+      <section class="ofertas-section">
+        <h2 class="section-title">Productos en Oferta</h2>
+        <div id="productosOferta" class="productos-grid"></div>
+      </section>
+
+      <!-- Resumen del Carrito -->
+      <section class="resumen-carrito">
+        <h2 class="section-title">Resumen del Carrito</h2>
         
-        <main class="container my-5">
-            <h2 class="mb-4">Mi carrito de compras</h2>
-            
-            <div class="row">
-                <div class="col-md-8" id="itemsCarrito"></div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5>Subtotal: <span id="subtotalCarrito">$0</span></h5>
-                            <h6 class="text-danger">Descuento: - <span id="descuentoCarrito">$0</span></h6>
-                            <h4 class="mt-3">Total: <span id="totalCarrito">$0</span></h4>
-                            <div class="input-group mt-3">
-                                <input type="text" id="codigoDescuento" class="form-control" placeholder="Código de descuento">
-                                <button class="btn btn-outline-secondary" type="button" onclick="aplicarDescuento()">Aplicar</button>
-                            </div>
-                            <button class="btn btn-success w-100 mt-3">Pagar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-        
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="../JS/script.js" defer></script>
-    </body>
+        <!-- Tabla de productos en carrito -->
+        <div class="tabla-carrito-container">
+          <table class="tabla-carrito">
+            <thead>
+              <tr>
+                <th>Imagen</th>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tablaCarritoBody">
+              <!-- Los productos del carrito se insertarán aquí -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Total y Botones -->
+        <div class="carrito-footer">
+          <div class="total-container">
+            <span class="total-text">Total: $</span>
+            <span id="totalCarrito" class="total-precio">0</span>
+          </div>
+          <div class="botones-carrito">
+            <button id="btnLimpiarCarrito" class="btn-limpiar">Limpiar Carrito</button>
+            <button id="btnComprarAhora" class="btn-comprar-ahora">Comprar Ahora</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="../JS/carrito.js"></script>
+</body>
 </html>
