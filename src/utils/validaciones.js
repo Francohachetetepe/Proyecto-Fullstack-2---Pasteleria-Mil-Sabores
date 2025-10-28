@@ -1,5 +1,5 @@
 export function validarRun(run) {
-    run = run.replace(/\s+/g, "").toUpperCase();
+    run = run.replace(/\s+/g, "").replace(/-/g, "").toUpperCase();
     if (!/^\d{7,8}[0-9K]$/.test(run)) return false;
 
     const cuerpo = run.slice(0, -1);

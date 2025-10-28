@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
       mensaje.innerText = "El formulario fue enviado correctamente :) ";
       
       setTimeout(() => { 
-        window.location.href = "../../index.html";
+        window.location.href = "/assets/page/inicio_sesion.html";
       }, 1000);
 
      } catch (error) {
