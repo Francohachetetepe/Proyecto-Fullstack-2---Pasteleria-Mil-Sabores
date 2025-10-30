@@ -1648,7 +1648,6 @@ button:hover, .boton:hover {
   font-weight: 400;
 }
 
-<<<<<<< HEAD
 /* ============================================================
    💳 CHECKOUT — EXTENSIÓN BASADA EN CATÁLOGO Y CARRITO
    ============================================================ */
@@ -2220,17 +2219,18 @@ button:hover, .boton:hover {
   .btn-enviar-email {
     width: 100%;
   }
-=======
+}
+
 /* Porcentaje de descuento (ligeramente destacado) */
 .porcentaje-descuento {
   font-size: 0.95rem;
   font-weight: 600;
   color: #d32f2f; /* puedes cambiar el color luego */
 }
+
 .precio-superior {
   display: flex;
   align-items: baseline;
   gap: 8px;
   justify-content: center;
->>>>>>> d59f40f57b8c19cf6b5f1beb12206f0c257225bd
 }
