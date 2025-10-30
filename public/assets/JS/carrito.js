@@ -34,22 +34,39 @@ async function aplicarDescuento(total) {
 
     if (!query.empty) {
       const data = query.docs[0].data();
-      const descuento = data.descuento || 0; // número (%)
+      let descuento = data.descuento || 0; // número (%)
       const codigoPromo = data.codigoPromo || null;
+      const fechaNacimiento = data.fechaNacimiento; // "yyyy-mm-dd"
+
+      // Verificar si hoy es su cumpleaños
+      let esCumpleHoy = false;
+      if (fechaNacimiento && usuario.rol === "cliente") {
+        const [anio, mes, dia] = fechaNacimiento.split("-").map(Number);
+        const hoy = new Date();
+        esCumpleHoy = dia === hoy.getDate() && (mes - 1) === hoy.getMonth();
+      }
+
+      // Aplicar descuento de cumpleaños SOLO si es hoy y es alumno Duoc
+      if (esCumpleHoy && usuario.correo.toLowerCase().endsWith("@duoc.cl")) {
+        descuento = 100;
+      }
 
       let totalConDescuento = total;
       if (descuento > 0) {
-        console.log(`Aplicando ${codigoPromo ? "código " + codigoPromo : "descuento automático"}: ${descuento}%`);
+        console.log(`${esCumpleHoy ? "Descuento de cumpleaños" : codigoPromo ? "Código " + codigoPromo : "Descuento automático"}: ${descuento}%`);
         totalConDescuento = total - (total * descuento / 100);
       }
+
       return { totalFinal: totalConDescuento, descuento };
     }
+
     return { totalFinal: total, descuento: 0 };
   } catch (error) {
     console.error("Error al obtener el descuento:", error);
     return { totalFinal: total, descuento: 0 };
   }
 }
+
 
 /**
  * Inicializa la interfaz del carrito
