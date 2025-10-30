@@ -158,7 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Limpiar grid antes de renderizar
       productosGrid.innerHTML = productos.map(producto => `
         <div class="producto-card">
-          <img src="${producto.imagen}" 
+          <img src="${producto.image}" 
                alt="${producto.nombre}" 
                class="producto-imagen"
                onerror="this.src='https://via.placeholder.com/400x300/cccccc/969696?text=Imagen+No+Disponible'">
