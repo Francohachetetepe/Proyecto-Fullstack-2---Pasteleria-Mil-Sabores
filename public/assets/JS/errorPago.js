@@ -102,3 +102,5 @@ function reintentarPago() {
 function configurarEventosError() {
     document.getElementById('btnReintentarPago').addEventListener('click', reintentarPago);
 }
+
+console.log("Usuario ingresado:", JSON.parse(localStorage.getItem("usuario")));

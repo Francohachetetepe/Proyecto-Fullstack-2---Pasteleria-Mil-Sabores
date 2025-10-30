@@ -629,7 +629,7 @@ button:hover, .boton:hover {
   display: block;
   width: 100%;
   box-sizing: border-box;
-  color: #fff5e1;
+  color: #8b4513;
   text-decoration: none;
   transition: background-color 0.3s;
 }
@@ -673,13 +673,14 @@ button:hover, .boton:hover {
     cursor: pointer;
     transition: background-color 0.3s;
 }
+
 /* Efecto hover */
 #btnTienda:hover,
 #btnCerrarSesion:hover {
   background-color: #800020;
   position: absolute; 
-  font-size: 1.5rem;  
-  color: #8b4513;     
+  position: static;
+  color: #ffffff;     
   cursor: pointer;
   transition: color 0.3s;
   top: 20px;

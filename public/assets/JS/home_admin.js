@@ -15,4 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
       window.location.href = "../page/inicio_sesion.html";
     });
   }
+
+  console.log("Usuario ingresado:", JSON.parse(localStorage.getItem("usuario")));
+
 });

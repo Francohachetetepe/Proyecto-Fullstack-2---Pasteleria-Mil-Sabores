@@ -477,4 +477,6 @@ document.addEventListener("DOMContentLoaded", () => {
   window.limpiarCarrito = limpiarCarritoYRestaurarStock;
 
   console.log("Catálogo inicializado correctamente");
+
+console.log("Usuario ingresado:", JSON.parse(localStorage.getItem("usuario")));
 });

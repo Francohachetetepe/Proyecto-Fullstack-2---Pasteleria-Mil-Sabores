@@ -446,3 +446,5 @@ function configurarEventos() {
 window.aumentarCantidad = aumentarCantidad;
 window.disminuirCantidad = disminuirCantidad;
 window.eliminarDelCarrito = eliminarDelCarrito;
+
+console.log("Usuario ingresado:", JSON.parse(localStorage.getItem("usuario")));

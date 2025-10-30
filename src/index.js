@@ -158,6 +158,7 @@ const esCorreoDuoc = correo.toLowerCase().endsWith("@duoc.cl");
 // esta variable solo indica si hoy tiene descuento, no lo aplica en BD
 const tieneCumpleHoy = esCumpleHoy && esCorreoDuoc;
 
+
      try{
       await addUser({run, nombre, apellidos, 
         correo, password, confirmPassword, 
@@ -175,4 +176,6 @@ const tieneCumpleHoy = esCumpleHoy && esCorreoDuoc;
 
      }
     });
+
+    console.log("Usuario ingresado:", JSON.parse(localStorage.getItem("usuario")));
 });
