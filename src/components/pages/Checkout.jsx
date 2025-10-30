@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { db } from '../../services/firebase';
+import { db } from "../../config/firebase";
 import { collection, addDoc, updateDoc, doc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
-import './Checkout.css';
+
 
 /**
  * Componente de Checkout - Procesamiento de compra

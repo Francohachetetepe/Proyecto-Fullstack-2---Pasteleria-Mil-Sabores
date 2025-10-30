@@ -1,5 +1,5 @@
 import React from "react";
-import FormUsuario from "../molecules/FormUsuario";
+import FormUsuario from "../molecules/UserForm";
 
 const Registro = () => (
     <main>
