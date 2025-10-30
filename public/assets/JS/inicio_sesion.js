@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const correoInput = document.getElementById("correo");
   const passwordInput = document.getElementById("password");
 
-  //validación de conexión, creo que no debería ir aquí, lo bueno es que se muestra
   if(!formLogin) return console.error("No se encontro #formUsuario")
 
     //iniciar bd
@@ -19,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
         measurementId: "G-1X6TSB46XN"
     };
 
-    if (!firebase.apps?.length) { //?
+    if (!firebase.apps?.length) {
         firebase.initializeApp(firebaseConfig);
     }
 
@@ -80,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
             mensaje.style.color = "green";
             mensaje.innerText = "Bienvenido Cliente, redirigiendo...";
             setTimeout(() => {
-                window.location.href = `../page/productos.html`;
+                window.location.href = `../page/saludo.html`;
             }, 1000);
         } else {
             mensaje.style.color = "red";

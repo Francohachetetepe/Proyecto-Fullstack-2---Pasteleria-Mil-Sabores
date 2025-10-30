@@ -274,14 +274,37 @@ function eliminarDelCarrito(index) {
     restaurarStockFirebase(producto.id, cantidadEliminada);
 }
 
+/* acceder al desc de la bd*/
+const usuarioStr = localStorage.getItem("usuario");
+const usuario = usuarioStr ? JSON.parse(usuarioStr) : null;
+
+
 /**
  * Calcula el total del carrito
  */
 function calcularTotal() {
-    const total = carrito.reduce((sum, producto) => {
+    const subtotal = carrito.reduce((sum, producto) => {
         return sum + ((producto.precio || 0) * (producto.cantidad || 1));
     }, 0);
-    
+
+    let total = subtotal;
+
+    const usuarioStr = localStorage.getItem("usuario");
+    if (usuarioStr) {
+        const usuario = JSON.parse(usuarioStr);
+        if (usuario.descuento) {
+            if (usuario.codigoPromo === "porcentaje") {
+                total = subtotal - (subtotal * usuario.descuento/100);
+
+            }else if (usuario.codigoPromo === "FELICES50") {
+                total = subtotal - usuario.descuento;
+            }
+        }
+    }
+
+    console.log(localStorage.getItem("usuario"));
+
+
     document.getElementById('totalCarrito').textContent = total.toLocaleString('es-CL');
     actualizarCarritoHeader();
 }

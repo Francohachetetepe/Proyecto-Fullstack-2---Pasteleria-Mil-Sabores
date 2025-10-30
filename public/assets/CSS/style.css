@@ -539,8 +539,8 @@ button:hover, .boton:hover{
 
 
 /*home admin*/
-.sidebar {
-  position: fixed;  /*no se va a mover del lado, aunquee, no sé si dejarlo así o cambiarlo*/
+.sidebar-admin {
+  position: fixed;
   left: 0;
   top: 0px;
   width: 220px;             
@@ -549,25 +549,24 @@ button:hover, .boton:hover{
   padding-top: 10px;
 }
 
-/*Esta realmente alineado?*/
-.sidebar .logo {
+.sidebar-admin .logo {
     display: block;
     margin: 15px auto;
     margin-top: 1px;
 }
 
 
-.sidebar ul{
+.sidebar-admin ul{
     list-style: none;
     padding: 0%;
     margin: 0%;
 }
-.sidebar li{
+.sidebar-admin li{
     margin: 20px;
 }
 
 /*Título*/
-.sidebar h5 {
+.sidebar-admin h5 {
   text-align: center;
   margin-bottom: 20px;
   font-family: 'Lato', sans-serif; 
@@ -575,7 +574,7 @@ button:hover, .boton:hover{
 }
 
 /* Estilo para los enlaces */
-.sidebar a {
+.sidebar-admin a {
   display: block;            
   text-decoration: none;     
   color: #5d4037;
@@ -584,11 +583,28 @@ button:hover, .boton:hover{
   transition: color 0.3s ease;
 }
 
-/* Hover */
-/*creo que no es el colooor*/
-.sidebar a:hover {
-  background-color: #a05a2b;
-  border-radius: 4px;
+/* sidebar */
+.sidebar-admin ul {
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-admin li {
+  width: 91%;
+}
+
+.sidebar-admin li a {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  color: #fff5e1;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.sidebar-admin li a:hover {
+  background-color: #8b4513;
+  border-radius: 0; 
 }
 
 /* Íconos */
@@ -610,9 +626,28 @@ button:hover, .boton:hover{
     transition: color 0.3s;
     top: 20px;
     right: 20px;
-    
-    
 }
+
+/*botones admin*/
+#btnTienda, #btnCerrarSesion {
+    display: inline-block;
+    width: 180px;
+    background-color: #ff69b4;
+    color: #fff5e1;
+    border: 2px solid #8b4513;
+    padding: 10px 20px;
+    margin-top: 4px;
+    border-radius: 8px;
+    font-family: 'Lato', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+/* Efecto hover */
+#btnTienda:hover,
+#btnCerrarSesion:hover {
+  background-color: #800020;
+}
+
 
 .noti:hover {
   color: #ff69b4;  /* cambia de color al pasar el mouse */
@@ -640,7 +675,7 @@ button:hover, .boton:hover{
     text-decoration: none;
     margin-bottom: 10px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* sombrita */
-    position: relative; /*esto es pal acordeon uwu*/
+    position: relative; /*esto es para acordeon */
 }
 
 .blog_desc {
@@ -775,16 +810,6 @@ button:hover, .boton:hover{
     font-size: 1rem;
     text-align: justify;
 }
-/*botones del carrusel (tengo que ajustar los colores o ver si los puedo eliminar
-
-.carousel-control-prev{
-    
-}
-
-.carousel-control-next{
-
-}
-*/
 
 .footer-custom {
   background-color: #fdf3e7; /* crema claro */
@@ -907,3 +932,146 @@ button:hover, .boton:hover{
     font-size: 0.8rem;
   }
 }
+
+/*side bar saludo usuario*/
+/* Layout general */
+.layout {
+  display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 70px; /* ancho “colapsado” */
+  transition: width 0.3s;
+  background-color: #6b4a3c;
+  color: #fff;
+  min-height: 100vh;
+  overflow: hidden; /* oculta texto cuando está colapsada */
+  position: relative;
+}
+
+/* Sidebar expandida */
+.sidebar.expanded {
+  width: 220px;
+}
+
+/* Botón toggle */
+.toggle-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+/* Lista de enlaces */
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar li a {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  color: #fff;
+  text-decoration: none;
+  white-space: nowrap; /* evita que el texto haga wrap */
+  transition: background 0.3s;
+}
+
+.sidebar li a:hover {
+  background-color: #8b4513;
+  border-radius: 8px;
+}
+
+.sidebar i {
+  margin-right: 10px;
+}
+
+/* Contenido principal */
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+  transition: margin-left 0.3s;
+}
+
+/* Texto de los enlaces */
+.sidebar li a span {
+  margin-left: 10px;
+  opacity: 0;             /* invisible cuando colapsada */
+  white-space: nowrap;
+  transition: opacity 0.3s;
+}
+
+/* Mostrar texto cuando sidebar está expandida */
+.sidebar.expanded li a span {
+  opacity: 1;
+}
+
+/* Estilos para botón dentro de sidebar */
+.sidebar-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  cursor: pointer;
+}
+
+/* Ocultar texto cuando sidebar está colapsada */
+.sidebar:not(.expanded) .btn-text {
+  display: none;
+}
+
+/* Mostrar texto cuando sidebar está expandida */
+.sidebar.expanded .btn-text {
+  display: inline;
+  margin-left: 10px;
+}
+
+/* Centrar ícono cuando sidebar colapsa */
+.sidebar-btn {
+  justify-content: center; /* centra el contenido horizontalmente */
+}
+
+.sidebar.expanded .sidebar-btn {
+  justify-content: flex-start; /* cuando se expande, ícono + texto alineados a la izquierda */
+}
+
+.sidebar-btn .btn-text, /* si usas clase btn-text en el span */
+.sidebar li a span {
+  opacity: 0;
+  white-space: nowrap;
+  transition: opacity 0.3s;
+  overflow: hidden;
+  width: 0;
+  display: inline-block;
+}
+
+.sidebar.expanded .sidebar-btn .btn-text,
+.sidebar.expanded li a span {
+  opacity: 1;
+  width: auto;
+}
+
+.sidebar:not(.expanded) li a {
+  justify-content: center; /* centra ícono en sidebar colapsada */
+}
+
+.sidebar:not(.expanded) li a i {
+  margin-right: 0; /* elimina espacio a la derecha del ícono */
+}
+
+.sidebar.expanded li a {
+  justify-content: flex-start; /* ícono + texto alineados a la izquierda en expandida */
+}
+
+.sidebar.expanded li a i {
+  margin-right: 10px; /* espacio entre ícono y texto */
+}
+
