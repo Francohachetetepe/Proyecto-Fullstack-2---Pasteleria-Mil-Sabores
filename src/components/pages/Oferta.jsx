@@ -94,7 +94,7 @@ const Ofertas = () => {
       {productos.map((p) => {
         const descuento =
           p.precio && p.precio_oferta
-            ? Math.round(((p.precio - p.precio_oferta) / p.precio) * 100)
+            ? Math.round(100 - ((p.precio_oferta * 100) / p.precio))
             : 0;
 
         return (
@@ -109,20 +109,22 @@ const Ofertas = () => {
               className="producto-imagen"
             />
             <div className="producto-info">
-              <h3 className="producto-nombre">{p.nombre}</h3>
-              <div className="precios-oferta">
-                <span className="precio-anterior">
-                  ${p.precio.toLocaleString("es-CL")}
-                </span>
-                <span className="precio-actual">
-                  ${p.precio_oferta.toLocaleString("es-CL")}
-                </span>
-              </div>
-              <p className="porcentaje-descuento">🔻 {descuento}% OFF</p>
-              <button
-                className="btn-agregar-oferta"
-                onClick={() => agregarAlCarrito(p)}
-              >
+              <h3 className="producto-nombre">{p.nombre|| 'Sin nombre'}</h3>
+                <div className="precio-superior">
+                  <p className="producto-anterior">
+                     ${p.precio.toLocaleString("es-CL")}
+                  </p>
+                  <p className="porcentaje-descuento">🔻 {descuento}% OFF</p>
+                </div>
+                
+                <div className="precios-oferta">
+                  <span className="producto-precio">
+                     ${p.precio_oferta.toLocaleString("es-CL")}
+                  </span>
+                </div>
+                <p className="producto-stock">Stock: ${p.stock}</p>
+                
+              <button className="btn-agregar" data-id="{p.id}">
                 🛒 Agregar al carrito
               </button>
             </div>

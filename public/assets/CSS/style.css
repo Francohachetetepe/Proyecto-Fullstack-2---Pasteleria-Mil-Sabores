@@ -1601,10 +1601,13 @@ button:hover, .boton:hover {
   color: #5d4037;
   border: 2px solid #8b4513;
   border-radius: 25px;
-  padding: 10px 20px;
+  padding: 12px 24px;
   text-decoration: none;
   font-weight: bold;
   transition: all 0.3s ease;
+  display: inline-block;
+  margin-top: 20px;       /* 🔹 separa del texto anterior */
+  margin-bottom: 40px;
 }
 
 .btn-ir-catalogo:hover {
@@ -1636,4 +1639,598 @@ button:hover, .boton:hover {
     min-width: 600px;
   }
 }
+/* css ofertas*/
+/* Precio anterior (tachado, más pequeño y tenue) */
+.producto-anterior {
+  font-size: 0.9rem;
+  color: #8b8b8b;
+  text-decoration: line-through;
+  font-weight: 400;
+}
 
+<<<<<<< HEAD
+/* ============================================================
+   💳 CHECKOUT — EXTENSIÓN BASADA EN CATÁLOGO Y CARRITO
+   ============================================================ */
+
+.checkout-container {
+  max-width: 1150px;
+  margin: 60px auto;
+  padding: 30px 25px;
+  background-color: #fff5e1;
+  border: 2px solid #8b4513;
+  border-radius: 16px;
+  box-shadow: 0 6px 15px rgba(139, 69, 19, 0.1);
+}
+
+/* === HEADER DEL CHECKOUT === */
+.checkout-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 35px;
+}
+
+.checkout-titulos h1 {
+  font-family: 'Pacifico', cursive;
+  color: #8b4513;
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+.checkout-subtitulo {
+  color: #5d4037;
+  font-size: 1rem;
+  margin-top: 5px;
+}
+
+.btn-total-pagar {
+  background: #8b4513;
+  color: #fff5e1;
+  border: none;
+  border-radius: 25px;
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  cursor: default;
+  box-shadow: 0 3px 8px rgba(139, 69, 19, 0.2);
+}
+
+/* === TABLA DE PRODUCTOS === */
+.tabla-checkout-container {
+  border: 2px solid #d67ca0;
+  border-radius: 12px;
+  overflow-x: auto;
+  background: #fff;
+  margin-bottom: 35px;
+}
+
+.tabla-checkout {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla-checkout th {
+  background: #ffc0cb;
+  color: #5d4037;
+  font-family: 'Lato', sans-serif;
+  font-weight: bold;
+  padding: 12px 10px;
+  border-bottom: 2px solid #8b4513;
+  text-align: left;
+}
+
+.tabla-checkout td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #e9c3a5;
+  color: #5d4037;
+  vertical-align: middle;
+}
+
+.tabla-checkout .imagen-tabla {
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 2px solid #8b4513;
+}
+
+/* === FORMULARIOS — reutiliza estilo de contacto === */
+.info-cliente,
+.direccion-entrega {
+  background: #fff;
+  border: 2px solid #d67ca0;
+  border-radius: 12px;
+  padding: 25px 30px;
+  margin-bottom: 35px;
+  box-shadow: 0 4px 10px rgba(139, 69, 19, 0.1);
+}
+
+.section-title {
+  font-family: 'Pacifico', cursive;
+  color: #8b4513;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.section-subtitle {
+  text-align: center;
+  color: #5d4037;
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+}
+
+.form-cliente, .form-direccion {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-group label {
+  font-weight: bold;
+  color: #5d4037;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid #e9c3a5;
+  border-radius: 8px;
+  font-family: 'Lato', sans-serif;
+  font-size: 14px;
+  color: #5d4037;
+  background-color: #fff5e1;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #8b4513;
+  box-shadow: 0 0 4px rgba(139, 69, 19, 0.2);
+  outline: none;
+}
+
+/* === BOTÓN FINAL === */
+.checkout-footer {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.btn-pagar-ahora {
+  background: #8b4513;
+  color: #fff5e1;
+  border: none;
+  border-radius: 25px;
+  padding: 14px 34px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.btn-pagar-ahora:hover {
+  background: #a05a2b;
+  transform: translateY(-2px);
+}
+
+/* === ESTADO VACÍO === */
+.tabla-checkout .carrito-vacio {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.tabla-checkout .carrito-vacio h3 {
+  font-family: 'Pacifico', cursive;
+  color: #8b4513;
+  margin-bottom: 15px;
+}
+
+.tabla-checkout .btn-ir-catalogo {
+  margin-top: 15px;
+  margin-bottom: 45px; /* 🔹 evita que quede pegado al borde */
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .checkout-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .btn-pagar-ahora {
+    width: 100%;
+  }
+
+  .checkout-container {
+    padding: 20px;
+  }
+}
+
+/* ============================================================
+   ❌ PAGO ERRÓNEO — ADAPTADO A LA PALETA PRINCIPAL
+   ============================================================ */
+
+.error-container {
+  max-width: 1150px;
+  margin: 60px auto;
+  padding: 30px 25px;
+  background-color: #fff5e1;
+  border: 2px solid #8b4513;
+  border-radius: 16px;
+  box-shadow: 0 6px 15px rgba(139, 69, 19, 0.1);
+}
+
+/* === ENCABEZADO === */
+.error-header {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.error-titulo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.icono-error {
+  font-size: 2.5rem;
+  color: #d52e4d; /* rojo rosado consistente con tu paleta */
+}
+
+.error-titulo h1 {
+  font-family: 'Pacifico', cursive;
+  color: #8b4513;
+  font-size: 1.9rem;
+  margin: 0;
+}
+
+.error-subtitulo {
+  color: #5d4037;
+  font-size: 1.1rem;
+  margin-top: 10px;
+  font-family: 'Lato', sans-serif;
+}
+
+/* === BOTÓN REINTENTAR === */
+.btn-reintentar-pago {
+  background-color: #d67ca0;
+  color: #fff5e1;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 26px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(214, 124, 160, 0.3);
+}
+
+.btn-reintentar-pago:hover {
+  background-color: #8b4513;
+  transform: translateY(-2px);
+}
+
+/* === FORMULARIOS (reutilizan el estilo de checkout) === */
+.info-cliente,
+.direccion-entrega {
+  background: #fff;
+  border: 2px solid #d67ca0;
+  border-radius: 12px;
+  padding: 25px 30px;
+  margin-bottom: 35px;
+  box-shadow: 0 4px 10px rgba(139, 69, 19, 0.1);
+}
+
+.readonly input[readonly],
+.readonly textarea[readonly] {
+  background-color: #fff5e1;
+  color: #5d4037;
+  border: 2px solid #e9c3a5;
+  cursor: not-allowed;
+}
+
+/* === TABLA DE PRODUCTOS === */
+.tabla-checkout-container {
+  border: 2px solid #d67ca0;
+  border-radius: 12px;
+  overflow-x: auto;
+  background: #fff;
+  margin-bottom: 35px;
+}
+
+.tabla-checkout th {
+  background: #ffc0cb;
+  color: #5d4037;
+  font-family: 'Lato', sans-serif;
+  font-weight: bold;
+  padding: 12px 10px;
+  border-bottom: 2px solid #8b4513;
+  text-align: left;
+}
+
+.tabla-checkout td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #e9c3a5;
+  color: #5d4037;
+  vertical-align: middle;
+}
+
+.tabla-checkout .imagen-tabla {
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 2px solid #8b4513;
+}
+
+/* === TOTAL === */
+.total-pagado-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.total-pagado {
+  background: #ffc0cb;
+  border: 2px solid #8b4513;
+  border-radius: 25px;
+  padding: 10px 20px;
+  font-weight: bold;
+  font-family: 'Lato', sans-serif;
+  box-shadow: 0 3px 6px rgba(139, 69, 19, 0.15);
+}
+
+.total-pagado .total-text {
+  color: #5d4037;
+  font-size: 1rem;
+}
+
+.total-pagado .total-precio {
+  color: #8b4513;
+  font-size: 1.2rem;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .error-titulo {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .btn-reintentar-pago {
+    width: 100%;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .total-pagado-container {
+    justify-content: center;
+  }
+}
+
+/* ============================================================
+   ✅ COMPRA EXITOSA — ESTILO UNIFICADO CON PALETA PRINCIPAL
+   ============================================================ */
+
+.exito-container {
+  max-width: 1150px;
+  margin: 60px auto;
+  padding: 35px 25px 45px;
+  background-color: #fff5e1;
+  border: 2px solid #8b4513;
+  border-radius: 16px;
+  box-shadow: 0 6px 15px rgba(139, 69, 19, 0.1);
+  text-align: center;
+}
+
+/* === ENCABEZADO === */
+.exito-header {
+  margin-bottom: 35px;
+  text-align: center;
+}
+
+.codigo-orden {
+  display: inline-block;
+  background: #ffc0cb;
+  color: #5d4037;
+  font-weight: bold;
+  padding: 6px 16px;
+  border-radius: 25px;
+  font-family: 'Lato', sans-serif;
+  border: 2px solid #8b4513;
+  margin-bottom: 15px;
+}
+
+.exito-titulo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.icono-exito {
+  font-size: 2.5rem;
+  color: #4caf50; /* tono verde de éxito */
+}
+
+.exito-titulo h1 {
+  font-family: 'Pacifico', cursive;
+  color: #8b4513;
+  font-size: 1.9rem;
+  margin: 0;
+}
+
+.exito-subtitulo {
+  color: #5d4037;
+  font-size: 1.1rem;
+  margin-top: 12px;
+  font-family: 'Lato', sans-serif;
+}
+
+/* === FORMULARIOS === */
+.info-cliente,
+.direccion-entrega {
+  background: #fff;
+  border: 2px solid #a67b5b;
+  border-radius: 12px;
+  padding: 25px 30px;
+  margin-bottom: 35px;
+  box-shadow: 0 4px 10px rgba(139, 69, 19, 0.1);
+}
+
+.readonly input[readonly],
+.readonly textarea[readonly] {
+  background-color: #fff5e1;
+  color: #5d4037;
+  border: 2px solid #e9c3a5;
+  cursor: not-allowed;
+}
+
+/* === TABLA DE PRODUCTOS === */
+.tabla-checkout-container {
+  border: 2px solid #a67b5b;
+  border-radius: 12px;
+  overflow-x: auto;
+  background: #fff;
+  margin-bottom: 35px;
+}
+
+.tabla-checkout th {
+  background: #ffc0cb;
+  color: #5d4037;
+  font-family: 'Lato', sans-serif;
+  font-weight: bold;
+  padding: 12px 10px;
+  border-bottom: 2px solid #8b4513;
+  text-align: left;
+}
+
+.tabla-checkout td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #e9c3a5;
+  color: #5d4037;
+  vertical-align: middle;
+}
+
+.tabla-checkout .imagen-tabla {
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 2px solid #8b4513;
+}
+
+/* === TOTAL PAGADO === */
+.total-pagado-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.total-pagado {
+  background: #ffc0cb;
+  border: 2px solid #8b4513;
+  border-radius: 25px;
+  padding: 10px 20px;
+  font-weight: bold;
+  font-family: 'Lato', sans-serif;
+  box-shadow: 0 3px 6px rgba(139, 69, 19, 0.15);
+}
+
+.total-pagado .total-text {
+  color: #5d4037;
+  font-size: 1rem;
+}
+
+.total-pagado .total-precio {
+  color: #8b4513;
+  font-size: 1.2rem;
+}
+
+/* === BOTONES FINALES === */
+.exito-footer {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.btn-imprimir-pdf,
+.btn-enviar-email {
+  background-color: #8b4513;
+  color: #fff5e1;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 28px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(139, 69, 19, 0.15);
+  font-family: 'Lato', sans-serif;
+}
+
+.btn-imprimir-pdf:hover,
+.btn-enviar-email:hover {
+  background-color: #a05a2b;
+  transform: translateY(-2px);
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .exito-titulo {
+    flex-direction: column;
+  }
+
+  .info-cliente,
+  .direccion-entrega {
+    padding: 20px;
+  }
+
+  .total-pagado-container {
+    justify-content: center;
+  }
+
+  .btn-imprimir-pdf,
+  .btn-enviar-email {
+    width: 100%;
+  }
+=======
+/* Porcentaje de descuento (ligeramente destacado) */
+.porcentaje-descuento {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #d32f2f; /* puedes cambiar el color luego */
+}
+.precio-superior {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  justify-content: center;
+>>>>>>> d59f40f57b8c19cf6b5f1beb12206f0c257225bd
+}

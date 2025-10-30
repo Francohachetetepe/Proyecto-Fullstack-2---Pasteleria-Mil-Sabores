@@ -109,7 +109,7 @@ function renderizarProductosCheckout() {
     tbody.innerHTML = carrito.map(producto => `
         <tr>
             <td>
-                <img src="${producto.imagen}" 
+                <img src="${producto.image}" 
                      alt="${producto.nombre}" 
                      class="imagen-tabla"
                      onerror="this.src='https://via.placeholder.com/100x100/cccccc/969696?text=Imagen'">
