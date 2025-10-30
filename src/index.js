@@ -2,7 +2,47 @@ import { addUser } from "./Services/firestoreService";
 import {validarRun, validarCorreo, validarPassword, validarPasswordsIguales, validarCodigoPromo, validarEdad} from "./utils/validaciones";
 import { collection, getDocs, doc, getDoc } from "firebase/firestore";
 import { db } from "./config/firebase";
+import React from "react";
+import { createRoot } from "react-dom/client";
+import Blogs from "./components/pages/Blogs";
+import Carrito from "./components/pages/Carrito";
+import Checkout from "./components/pages/Checkout";
+import Catalogo from "./components/pages/Catalogo";
+import CompraExitosa from "./components/pages/CompraExitosa";
+import Contacto from "./components/pages/Contacto";
+import Detalle_product from "./components/pages/Detalle_product";
+import ErrorPago from "./components/pages/ErrorPago";
+import Home_admin from "./components/pages/Home_admin";
+import Home from "./components/pages/Home";
+import Inicio_sesion from "./components/pages/Inicio_sesion";
+import Nosotros from "./components/pages/Nosotros";
+import PerfilCliente from "./components/pages/PerfilCliente";
+import Productos from "./components/pages/Productos";
+import Registro_usuario from "./components/pages/Registro_usuario";
+import Oferta from "./components/pages/Oferta";
+document.addEventListener("DOMContentLoaded", () => {
+  const rootDiv = document.getElementById("react-root");
+  if (!rootDiv) return; // No hay contenedor, salir
 
+  const path = window.location.pathname;
+  const root = createRoot(rootDiv);
+
+  if (path.includes("catalogo")) root.render(<Catalogo />);
+  else if (path.includes("carrito")) root.render(<Carrito />);
+  else if (path.includes("checkout")) root.render(<Checkout />);
+  else if (path.includes("blogs")) root.render(<Blogs />);
+  else if (path.includes("contacto")) root.render(<Contacto />);
+  else if (path.includes("home_admin")) root.render(<Home_admin />);
+  else if (path.includes("errorPago")) root.render(<ErrorPago />);
+  else if (path.includes("detalle_product")) root.render(<Detalle_product />);
+  else if (path.includes("inicio_sesion")) root.render(<Inicio_sesion />);
+  else if (path.includes("nosotros")) root.render(<Nosotros />);
+  else if (path.includes("perfilCliente")) root.render(<PerfilCliente />);
+  else if (path.includes("oferta")) root.render(<Oferta />);
+  else if (path.includes("registro_usuario")) root.render(<Registro_usuario />);
+  else if (path.includes("compraExitosa")) root.render(<CompraExitosa />);
+  else root.render(<Home />);
+});
 
 function esPaginaEstatica() {
   return window.location.pathname.includes('.html') || 
