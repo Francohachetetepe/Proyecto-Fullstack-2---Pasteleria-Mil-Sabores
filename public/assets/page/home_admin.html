@@ -12,23 +12,22 @@
 </head>
 <body>
 
-    <!--menú lateral-->
-    <div class="sidebar">
+    <!--sidebar-->
+    <div class="sidebar-admin">
       <img src="../img/logo-fndo-blanco.png" alt="icono" width="100" height="100" class="logo">
       <h5>Pasteleria Mil Sabores</h5>
       <ul>
-        <li><a href="#"><i class="bi bi-bar-chart-fill"></i> Dashboard</a></li>
-        <li><a href="#"><i class="bi bi-file-earmark-spreadsheet-fill"></i> Ordenes</a></li>
-        <li><a href="#"><i class="bi bi-wallet-fill"></i> Inventario</a></li>
-        <li><a href="#"><i class="bi bi-clipboard-data-fill"></i> Reportes</a></li>
-        <li><a href="#"><i class="bi bi-file-earmark-person"></i> Empleados</a></li>
-        <li><a href="#"><i class="bi bi-people-fill"></i> Clientes</a></li>
+        <li><a href="#"><i class="bi bi-house-door"></i></i>Dashboard</a></li>
+        <li><a href="#"><i class="bi bi-file-earmark"></i> Ordenes</a></li>
+        <li><a href="#"><i class="bi bi-cart2"></i></i> Productos</a></li>
+        <li><a href="#"><i class="bi bi-list-task"></i></i> Categorías</a></li>
+        <li><a href="#"><i class="bi bi-people"></i> Usuarios </a></li>
+        <li><a href="#"><i class="bi bi-graph-up"></i> Reportes </a></li>
         <br><br>
-        <li><a href="#"><i class="bi bi-gear-fill"></i> Configuracion</a></li>
-        <li><a href="#"><i class="bi bi-person-fill-gear"></i> Perfiles</a></li>
-        <li><a href="#"><i class="bi bi-search"></i> Buscar</a></li>
-        <li><a href="#"><i class="bi bi-question-circle-fill"></i> Ayuda</a></li>
+
         <li><a href="#"><i class="bi bi-person-circle"></i> Mi perfil</a></li>
+        <button type="button" class="btn btn-warning ms-2" id="btnTienda"><i class="bi bi-shop"></i>Tienda</button>
+        <button type="button" class="btn btn-warning ms-2" id="btnCerrarSesion"><i class="bi bi-door-closed"></i>Cerrar Sesión</button>
       </ul>
     </div>
     
@@ -38,7 +37,10 @@
         <!-- notificiones-->
          <a href="#" class="noti"><i class="bi bi-bell-fill"></i></a>
       </div>
+
+      
     <div id="react-root"></div>
     <script src="/static/js/bundle.js"></script>
+    <script src="../JS/home_admin.js"></script>
 </body>
 </html>

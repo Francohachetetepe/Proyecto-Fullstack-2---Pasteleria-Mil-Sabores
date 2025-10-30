@@ -1,84 +1,63 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio</title>
-    <!--bootstrap-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <link rel="icon" href="assets/img/logo-fndo-blanco.png">
-    <link rel="stylesheet" href="assets/CSS/style.css"> <!-- va de último si uso bootstrap, no sé porqué, pero no fuciona si lo pongo arriba :(-->
-    
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicio</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+  <!-- Favicon -->
+  <link rel="icon" href="assets/img/logo-fndo-blanco.png">
+
+  <!-- Tu CSS personalizado -->
+  <link rel="stylesheet" href="assets/CSS/style.css">
 </head>
 <body>
     <!--comienzo menu -->
     <div id="react-root"></div>
+    <!-- HEADER -->
     <header class="header">
+        <!-- 🔹 LOGO -->
         <div class="logo">
             <a href="index.html">
                 <img src="assets/img/logo-fndo-blanco.png" alt="Logo de la tienda">
             </a>
         </div>
-        
-        <nav class="navbar">
-            <a href="index.html">Inicio</a>
-            <span>|</span>
-            <div class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="assets/page/productos.html" id="productosDropdown" role="button">Productos</a>
-                <div class="dropdown-menu" aria-labelledby="productosDropdown">
-                    <a class="dropdown-item" href="assets/page/productos.html?categoria=Tortas%20Cuadradas">Tortas Cuadradas</a>
-                    <a class="dropdown-item" href="assets/page/productos.html?categoria=Tortas%20Circulares">Tortas Circulares</a>
-                    <a class="dropdown-item" href="assets/page/productos.html?categoria=Postres%20Individuales">Postres Individuales</a>
-                    <a class="dropdown-item" href="assets/page/productos.html?categoria=Productos%20Sin%20Azúcar">Productos Sin Azúcar</a>
-                    <a class="dropdown-item" href="assets/page/productos.html?categoria=Pastelería%20Tradicional">Pastelería Tradicional</a>
-                    <a class="dropdown-item" href="assets/page/productos.html?categoria=Productos%20Sin%20Gluten">Productos Sin Gluten</a>
-                    <a class="dropdown-item" href="assets/page/productos.html?categoria=Productos%20Vegana">Productos Vegana</a>
-                    <a class="dropdown-item" href="assets/page/productos.html?categoria=Tortas%20Especiales">Tortas Especiales</a>
-                </div>
+    
+        <div class="header-center">
+            <!-- 🔹 BLOQUE CENTRAL (buscador + navbar) -->
+            <div class="search-container">
+                <input type="text" id="buscador" placeholder="Buscar productos..." class="search-input">
+                <button id="btnBuscar" class="btn-buscar">Buscar</button>
             </div>
-
-            <span>|</span>
-            <a href="assets/page/nosotros.html">Nosotros</a>
-            <span>|</span>
-            <a href="assets/page/blogs.html">Blogs</a>
-            <span>|</span>
-            <a href="assets/page/contacto.html">Contacto</a>
-        </nav>
-        
-        <div class="d-flex align-items-center ms-3">
-            <form id="formBusqueda" class="form-inline">
-            <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Buscar">
-            <button class="btn" type="submit">Buscar</button>
-        </form>
-        
-        <div class="acciones-usuario dropdown">
-            <button class="btn btn-usuario dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-person-circle"></i>
-                <span id="textoUsuario">Iniciar sesión</span>
-            </button>
             
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                <li>
-                    <a href="assets/page/inicio_sesion.html" class="dropdown-item btn-iniciar-sesion">Iniciar sesión</a>
-                </li>
-                <li>
-                    <a href="assets/page/registro_usuario.html" class="dropdown-item btn-crear-cuenta">Crear cuenta</a>
-                </li>
-            </ul>
+            <nav class="navbar">
+                <a href="index.html" class="nav-link">Inicio</a>
+                <a href="assets/page/catalogo.html" class="nav-link">Categorías ⌄</a>
+                <a href="assets/page/oferta.html" class="nav-link">Oferta</a>
+                <a href="assets/page/nosotros.html" class="nav-link">Nosotros</a>
+                <a href="assets/page/blogs.html" class="nav-link">Blogs</a>
+                <a href="assets/page/contacto.html" class="nav-link">Contacto</a>
+            </nav>
         </div>
         
-        <div class="carrito">
-            <a href="assets/page/carrito.html">
-                <i class="bi bi-cart3"></i>
-                <span class="badge" id="contador">0</span>
-            </a>
+        <!-- 🔹 BLOQUE DERECHO (login + carrito) -->
+        <div class="header-right">
+            <div class="auth-buttons">
+                <button class="btn-login" onclick="window.location.href='assets/page/inicio_sesion.html'">Iniciar Sesión</button>
+                <button class="btn-signup" onclick="window.location.href='assets/page/registro_usuario.html'">Crear Cuenta</button>
+            </div>
+            
+            <button class="btn-carrito" onclick="window.location.href='assets/page/carrito.html'">
+                <span class="carrito-icon">🛒</span>
+                Total: $<span class="carrito-total">0</span>
+            </button>
         </div>
     </header>
-        <!--fin menú-->
-
-
 
     <!-- carrusel -->
      <div class="carrusel">

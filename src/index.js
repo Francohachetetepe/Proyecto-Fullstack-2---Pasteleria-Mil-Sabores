@@ -141,32 +141,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
      //descuentos
      let descuento = 0;
-     
-     const [anio, mes, dia] = fechaNacimiento.split("-").map(Number); 
-     const hoy = new Date();
-     const esCumpleHoy = dia === hoy.getDate() && (mes - 1) === hoy.getMonth();
-     const esCorreoDuoc = correo.toLowerCase().endsWith("@duoc.cl");
 
+// --- descuentos permanentes ---
+if (codigo === "FELICES50") {
+  descuento = 10; // código fijo
+} else if (edad >= 50) {
+  descuento = 50; // descuento por edad
+}
 
-     if (codigo === "FELICES50") {
-      descuento = 10; 
-     }
-     
-     if (edad >= 50){
-      descuento = 50;
-     }
+// --- descuentos temporales ---
+const [anio, mes, dia] = fechaNacimiento.split("-").map(Number);
+const hoy = new Date();
+const esCumpleHoy = dia === hoy.getDate() && (mes - 1) === hoy.getMonth();
+const esCorreoDuoc = correo.toLowerCase().endsWith("@duoc.cl");
 
-     if (esCumpleHoy && esCorreoDuoc) {
-      descuento = 100; //solo sirve en el cumpleaños
-     }
-  
-
+// esta variable solo indica si hoy tiene descuento, no lo aplica en BD
+const tieneCumpleHoy = esCumpleHoy && esCorreoDuoc;
 
      try{
       await addUser({run, nombre, apellidos, 
         correo, password, confirmPassword, 
         region, comuna, codigoPromo: codigo, 
-        descuento, direccion, fechaNacimiento}); 
+        descuento, direccion, fechaNacimiento, tieneCumpleHoy}); 
       mensaje.innerText = "El formulario fue enviado correctamente :) ";
       
       setTimeout(() => { 

@@ -59,7 +59,7 @@
   <main class="main">
     <div class="carrito-container">
       <!-- Lista de Productos con Ofertas -->
-      <section class="ofertas-section">
+     <section class="ofertas-section">
         <h2 class="section-title">Productos en Oferta</h2>
         <div id="productosOferta" class="productos-grid"></div>
       </section>
@@ -90,9 +90,17 @@
         <!-- Total y Botones -->
         <div class="carrito-footer">
           <div class="total-container">
-            <span class="total-text">Total: $</span>
-            <span id="totalCarrito" class="total-precio">0</span>
-          </div>
+  <div>
+    <p>Subtotal: $<span id="subtotalCarrito">0</span></p>
+    <p id="lineaDescuento" style="display:none; color:green;">
+      Descuento aplicado: <span id="porcentajeDescuento">0</span>%
+    </p>
+    <p class="total-text">
+      <strong>Total: $<span id="totalCarrito" class="total-precio">0</span></strong>
+    </p>
+  </div>
+</div>
+
           <div class="botones-carrito">
             <button id="btnLimpiarCarrito" class="btn-limpiar">Limpiar Carrito</button>
             <button id="btnComprarAhora" class="btn-comprar-ahora">Comprar Ahora</button>

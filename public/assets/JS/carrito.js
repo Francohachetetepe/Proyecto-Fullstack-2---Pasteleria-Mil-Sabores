@@ -20,6 +20,54 @@ document.addEventListener('DOMContentLoaded', function() {
     configurarEventos();
 });
 
+//aplicar descuento
+async function aplicarDescuento(total) {
+  const usuarioStr = localStorage.getItem("usuario");
+  if (!usuarioStr) return { totalFinal: total, descuento: 0 };
+
+  const usuario = JSON.parse(usuarioStr);
+
+  try {
+    const query = await db.collection("usuario")
+      .where("correo", "==", usuario.correo)
+      .get();
+
+    if (!query.empty) {
+      const data = query.docs[0].data();
+      let descuento = data.descuento || 0; // número (%)
+      const codigoPromo = data.codigoPromo || null;
+      const fechaNacimiento = data.fechaNacimiento; // "yyyy-mm-dd"
+
+      // Verificar si hoy es su cumpleaños
+      let esCumpleHoy = false;
+      if (fechaNacimiento && usuario.rol === "cliente") {
+        const [anio, mes, dia] = fechaNacimiento.split("-").map(Number);
+        const hoy = new Date();
+        esCumpleHoy = dia === hoy.getDate() && (mes - 1) === hoy.getMonth();
+      }
+
+      // Aplicar descuento de cumpleaños SOLO si es hoy y es alumno Duoc
+      if (esCumpleHoy && usuario.correo.toLowerCase().endsWith("@duoc.cl")) {
+        descuento = 100;
+      }
+
+      let totalConDescuento = total;
+      if (descuento > 0) {
+        console.log(`${esCumpleHoy ? "Descuento de cumpleaños" : codigoPromo ? "Código " + codigoPromo : "Descuento automático"}: ${descuento}%`);
+        totalConDescuento = total - (total * descuento / 100);
+      }
+
+      return { totalFinal: totalConDescuento, descuento };
+    }
+
+    return { totalFinal: total, descuento: 0 };
+  } catch (error) {
+    console.error("Error al obtener el descuento:", error);
+    return { totalFinal: total, descuento: 0 };
+  }
+}
+
+
 /**
  * Inicializa la interfaz del carrito
  */
@@ -274,17 +322,44 @@ function eliminarDelCarrito(index) {
     restaurarStockFirebase(producto.id, cantidadEliminada);
 }
 
+// Desc de cumpleaños
+function esCumpleDeHoy(usuario) {
+  if (!usuario || !usuario.fechaNacimiento) return false;
+  const [anio, mes, dia] = usuario.fechaNacimiento.split("-").map(Number);
+  const hoy = new Date();
+  return dia === hoy.getDate() && (mes - 1) === hoy.getMonth();
+}
+
+
 /**
  * Calcula el total del carrito
  */
-function calcularTotal() {
-    const total = carrito.reduce((sum, producto) => {
-        return sum + ((producto.precio || 0) * (producto.cantidad || 1));
-    }, 0);
-    
-    document.getElementById('totalCarrito').textContent = total.toLocaleString('es-CL');
-    actualizarCarritoHeader();
+async function calcularTotal() {
+  const subtotal = carrito.reduce((sum, producto) => {
+    return sum + ((producto.precio || 0) * (producto.cantidad || 1));
+  }, 0);
+
+  // Mostrar subtotal
+  document.getElementById('subtotalCarrito').textContent = subtotal.toLocaleString('es-CL');
+
+  // Aplicar descuento
+  const { totalFinal, descuento } = await aplicarDescuento(subtotal);
+
+  // Actualizar DOM
+  const totalEl = document.getElementById('totalCarrito');
+  const lineaDesc = document.getElementById('lineaDescuento');
+  const porcentajeEl = document.getElementById('porcentajeDescuento');
+
+  if (descuento > 0) {
+    lineaDesc.style.display = "block";
+    porcentajeEl.textContent = descuento;
+  } else {
+    lineaDesc.style.display = "none";
+  }
+
+  totalEl.textContent = totalFinal.toLocaleString('es-CL');
 }
+
 
 /**
  * Actualiza el header del carrito
