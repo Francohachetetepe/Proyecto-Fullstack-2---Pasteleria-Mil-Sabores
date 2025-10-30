@@ -4,65 +4,54 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Catálogo</title>
-
-  <!-- Estilos -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../CSS/style.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-
-  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
 
 <body>
-  <!-- =========================================
-       HEADER UNIFICADO
-  ========================================== -->
   <header class="header">
-  <!-- 🔹 LOGO -->
-  <div class="logo">
-    <a href="../../index.html">
-      <img src="../img/logo-fndo-blanco.png" alt="Logo de la tienda">
-    </a>
-  </div>
-
-  <!-- 🔹 BLOQUE CENTRAL (buscador + navbar) -->
-  <div class="header-center">
-    <div class="search-container">
-      <input type="text" id="buscador" placeholder="Buscar productos..." class="search-input">
-      <button id="btnBuscar" class="btn-buscar">Buscar</button>
+    <!-- 🔹 LOGO -->
+    <div class="logo">
+      <a href="../../index.html">
+        <img src="../img/logo-fndo-blanco.png" alt="Logo de la tienda">
+      </a>
     </div>
-
-    <nav class="navbar">
-      <a href="../../index.html">Inicio</a>
-      <a href="#" class="nav-link">Categorías ⌄</a>
-      <a href="oferta.html" class="nav-link">Oferta</a>
-      <a href="nosotros.html" class="nav-link">Nosotros</a>
-      <a href="blogs.html">Blogs</a>
-      <a href="contacto.html">Contacto</a>
-    </nav>
-  </div>
-
-  <!-- 🔹 BLOQUE DERECHO (login + carrito) -->
-  <div class="header-right">
-    <div class="auth-buttons">
-      <button class="btn-login" onclick="window.location.href='inicio_sesion.html'">Iniciar Sesión</button>
-      <button class="btn-signup" onclick="window.location.href='registro_usuario.html'">Crear Cuenta</button>
+    
+    <div class="header-center">
+      <!-- 🔹 BLOQUE CENTRAL (buscador + navbar) -->
+      <div class="search-container">
+        <input type="text" id="buscador" placeholder="Buscar productos..." class="search-input">
+        <button id="btnBuscar" class="btn-buscar">Buscar</button>
+      </div>
+      
+      <nav class="navbar">
+        <a href="../../index.html">Inicio</a>
+        <a href="#" class="nav-link">Categorías ⌄</a>
+        <a href="oferta.html" class="nav-link">Oferta</a>
+        <a href="nosotros.html" class="nav-link">Nosotros</a>
+        <a href="blogs.html">Blogs</a>
+        <a href="contacto.html">Contacto</a>
+      </nav>
     </div>
-    <div class="carrito-container">
-      <button class="btn-carrito" id="btnCarrito">
-        <span class="carrito-icon">🛒</span>
-        Total: $<span class="carrito-total">0</span>
-      </button>
+    
+    <!-- 🔹 BLOQUE DERECHO (login + carrito) -->
+    <div class="header-right">
+      <div class="auth-buttons">
+        <button class="btn-login" onclick="window.location.href='inicio_sesion.html'">Iniciar Sesión</button>
+        <button class="btn-signup" onclick="window.location.href='registro_usuario.html'">Crear Cuenta</button>
+      </div>
+      <div class="carrito-container">
+        <button class="btn-carrito" id="btnCarrito">
+          <span class="carrito-icon">🛒</span>
+          Total: $<span class="carrito-total">0</span>
+        </button>
+      </div>
     </div>
-  </div>
-</header>
+  </header>
 
-
-  <!-- =========================================
-       CONTENIDO PRINCIPAL DEL CATÁLOGO
-  ========================================== -->
   <main class="main catalogo">
     <!-- CATEGORÍAS -->
     <section class="categorias-section">
