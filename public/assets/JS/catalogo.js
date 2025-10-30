@@ -93,23 +93,25 @@ document.addEventListener("DOMContentLoaded", () => {
     return Array.from(categoriasSet);// Convertir Set a Array
   }
   // Mostrar categorías en el dropdown y en las cards
-  function mostrarDropdownCategorias(categorias) { // Incluye opción "Todos"
-    //dropdownCategorias para el dropdown de categorías en el HTML
+  function mostrarDropdownCategorias(categorias) {
+    // Si el contenedor no existe, salir sin hacer nada
+    if (!dropdownCategorias) return;
+    
     dropdownCategorias.innerHTML = categorias.map(categoria => `
       <a href="#" class="dropdown-item" data-categoria="${categoria}">
-        ${categoria}
+      ${categoria}
       </a>
-    `).join("");// Unir sin comas
-
-    // Evento para items del dropdown
-    dropdownCategorias.addEventListener('click', (e) => { // Delegación de eventos
-      e.preventDefault(); // Prevenir comportamiento por defecto
-      if (e.target.classList.contains('dropdown-item')) { // Verificar que el clic fue en un item
-        const categoria = e.target.dataset.categoria;// Obtener categoría del data-attribute
-        filtrarPorCategoria(categoria); // Filtrar productos por categoría
+    `).join("");
+    
+    dropdownCategorias.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (e.target.classList.contains('dropdown-item')) {
+        const categoria = e.target.dataset.categoria;
+        filtrarPorCategoria(categoria);
       }
     });
   }
+
   // Mostrar categorías como cards
   function mostrarCardsCategorias(categorias) {
     //cardsCategorias para el contenedor de las cards de categorías en el HTML
