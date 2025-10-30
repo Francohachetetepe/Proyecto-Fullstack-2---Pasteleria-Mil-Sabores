@@ -1635,4 +1635,24 @@ button:hover, .boton:hover {
     min-width: 600px;
   }
 }
+/* css ofertas*/
+/* Precio anterior (tachado, más pequeño y tenue) */
+.producto-anterior {
+  font-size: 0.9rem;
+  color: #8b8b8b;
+  text-decoration: line-through;
+  font-weight: 400;
+}
 
+/* Porcentaje de descuento (ligeramente destacado) */
+.porcentaje-descuento {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #d32f2f; /* puedes cambiar el color luego */
+}
+.precio-superior {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  justify-content: center;
+}
