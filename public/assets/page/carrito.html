@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Carrito de Compras - Mi Tienda</title>
-  <link rel="stylesheet" href="../CSS/catalogo.css">
-  <link rel="stylesheet" href="../CSS/carrito.css">
+  <title>Carrito de Compras</title>
+  <link rel="stylesheet" href="../CSS/style.css">
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
@@ -54,14 +53,6 @@
         <div id="productosOferta" class="productos-grid"></div>
       </section>
 
-      <!-- ojoo, esto no va akiiii, lo dejo solo para ver si funciona-->
-      <div id="resumenCarrito">
-        <p>Subtotal: <span id="subtotalCarrito"></span></p>
-        <p>Descuento: <span id="descuentoCarrito"></span></p>
-        <p>Total: <span id="totalCarrito"></span></p>
-      </div>
-
-
       <!-- Resumen del Carrito -->
       <section class="resumen-carrito">
         <h2 class="section-title">Resumen del Carrito</h2>
@@ -88,9 +79,17 @@
         <!-- Total y Botones -->
         <div class="carrito-footer">
           <div class="total-container">
-            <span class="total-text">Total: $</span>
-            <span id="totalCarrito" class="total-precio">0</span>
-          </div>
+  <div>
+    <p>Subtotal: $<span id="subtotalCarrito">0</span></p>
+    <p id="lineaDescuento" style="display:none; color:green;">
+      Descuento aplicado: <span id="porcentajeDescuento">0</span>%
+    </p>
+    <p class="total-text">
+      <strong>Total: $<span id="totalCarrito" class="total-precio">0</span></strong>
+    </p>
+  </div>
+</div>
+
           <div class="botones-carrito">
             <button id="btnLimpiarCarrito" class="btn-limpiar">Limpiar Carrito</button>
             <button id="btnComprarAhora" class="btn-comprar-ahora">Comprar Ahora</button>

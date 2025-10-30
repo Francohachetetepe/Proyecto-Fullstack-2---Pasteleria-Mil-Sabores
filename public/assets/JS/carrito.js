@@ -20,6 +20,37 @@ document.addEventListener('DOMContentLoaded', function() {
     configurarEventos();
 });
 
+//aplicar descuento
+async function aplicarDescuento(total) {
+  const usuarioStr = localStorage.getItem("usuario");
+  if (!usuarioStr) return { totalFinal: total, descuento: 0 };
+
+  const usuario = JSON.parse(usuarioStr);
+
+  try {
+    const query = await db.collection("usuario")
+      .where("correo", "==", usuario.correo)
+      .get();
+
+    if (!query.empty) {
+      const data = query.docs[0].data();
+      const descuento = data.descuento || 0; // número (%)
+      const codigoPromo = data.codigoPromo || null;
+
+      let totalConDescuento = total;
+      if (descuento > 0) {
+        console.log(`Aplicando ${codigoPromo ? "código " + codigoPromo : "descuento automático"}: ${descuento}%`);
+        totalConDescuento = total - (total * descuento / 100);
+      }
+      return { totalFinal: totalConDescuento, descuento };
+    }
+    return { totalFinal: total, descuento: 0 };
+  } catch (error) {
+    console.error("Error al obtener el descuento:", error);
+    return { totalFinal: total, descuento: 0 };
+  }
+}
+
 /**
  * Inicializa la interfaz del carrito
  */
@@ -274,40 +305,44 @@ function eliminarDelCarrito(index) {
     restaurarStockFirebase(producto.id, cantidadEliminada);
 }
 
-/* acceder al desc de la bd*/
-const usuarioStr = localStorage.getItem("usuario");
-const usuario = usuarioStr ? JSON.parse(usuarioStr) : null;
+// Desc de cumpleaños
+function esCumpleDeHoy(usuario) {
+  if (!usuario || !usuario.fechaNacimiento) return false;
+  const [anio, mes, dia] = usuario.fechaNacimiento.split("-").map(Number);
+  const hoy = new Date();
+  return dia === hoy.getDate() && (mes - 1) === hoy.getMonth();
+}
 
 
 /**
  * Calcula el total del carrito
  */
-function calcularTotal() {
-    const subtotal = carrito.reduce((sum, producto) => {
-        return sum + ((producto.precio || 0) * (producto.cantidad || 1));
-    }, 0);
+async function calcularTotal() {
+  const subtotal = carrito.reduce((sum, producto) => {
+    return sum + ((producto.precio || 0) * (producto.cantidad || 1));
+  }, 0);
 
-    let total = subtotal;
+  // Mostrar subtotal
+  document.getElementById('subtotalCarrito').textContent = subtotal.toLocaleString('es-CL');
 
-    const usuarioStr = localStorage.getItem("usuario");
-    if (usuarioStr) {
-        const usuario = JSON.parse(usuarioStr);
-        if (usuario.descuento) {
-            if (usuario.codigoPromo === "porcentaje") {
-                total = subtotal - (subtotal * usuario.descuento/100);
+  // Aplicar descuento
+  const { totalFinal, descuento } = await aplicarDescuento(subtotal);
 
-            }else if (usuario.codigoPromo === "FELICES50") {
-                total = subtotal - usuario.descuento;
-            }
-        }
-    }
+  // Actualizar DOM
+  const totalEl = document.getElementById('totalCarrito');
+  const lineaDesc = document.getElementById('lineaDescuento');
+  const porcentajeEl = document.getElementById('porcentajeDescuento');
 
-    console.log(localStorage.getItem("usuario"));
+  if (descuento > 0) {
+    lineaDesc.style.display = "block";
+    porcentajeEl.textContent = descuento;
+  } else {
+    lineaDesc.style.display = "none";
+  }
 
-
-    document.getElementById('totalCarrito').textContent = total.toLocaleString('es-CL');
-    actualizarCarritoHeader();
+  totalEl.textContent = totalFinal.toLocaleString('es-CL');
 }
+
 
 /**
  * Actualiza el header del carrito
