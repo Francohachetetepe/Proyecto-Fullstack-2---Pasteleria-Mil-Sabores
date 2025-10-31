@@ -11,27 +11,40 @@
 <body>
   <!-- HEADER -->
   <header class="header">
+    <!-- 🔹 LOGO -->
     <div class="logo">
       <a href="../../index.html">
-        <img src="../img/logo-fndo-blanco.png" alt="Logo" />
+        <img src="../img/logo-fndo-blanco.png" alt="Logo de la tienda">
       </a>
     </div>
-
-    <nav class="navbar">
-      <a href="../../index.html">Inicio</a>
-      <span>|</span>
-      <a href="../page/catalogo.html">Catálogo</a>
-      <span>|</span>
-      <a href="../page/ofertas.html">Ofertas</a>
-      <span>|</span>
-      <a href="../page/contacto.html">Contacto</a>
-    </nav>
-
-    <div class="carrito">
-      <a href="../page/carrito.html">
-        <i class="bi bi-cart3"></i>
-        <span class="badge" id="contador">0</span>
-      </a>
+    
+    <div class="header-center">
+      <!-- 🔹 BLOQUE CENTRAL (buscador + navbar) -->
+      <div class="search-container">
+        <input type="text" id="buscador" placeholder="Buscar productos..." class="search-input">
+        <button id="btnBuscar" class="btn-buscar">Buscar</button>
+      </div>
+      
+      <nav class="navbar">
+        <a href="../../index.html">Inicio</a>
+        <a href="catalogo.html" class="nav-link">Categorías ⌄</a>
+        <a href="oferta.html" class="nav-link">Oferta</a>
+        <a href="nosotros.html" class="nav-link">Nosotros</a>
+        <a href="blogs.html">Blogs</a>
+        <a href="contacto.html">Contacto</a>
+      </nav>
+    </div>
+    
+    <!-- 🔹 BLOQUE DERECHO (login + carrito) -->
+    <div class="header-right">
+      <div class="auth-buttons">
+        <button class="btn-login" onclick="window.location.href='inicio_sesion.html'">Iniciar Sesión</button>
+        <button class="btn-signup" onclick="window.location.href='registro_usuario.html'">Crear Cuenta</button>
+      </div>
+      <button class="btn-carrito" onclick="window.location.href='carrito.html'">
+          <span class="carrito-icon">🛒</span>
+          Total: $<span class="carrito-total">0</span>
+        </button>
     </div>
   </header>
 

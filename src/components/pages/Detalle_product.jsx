@@ -83,7 +83,7 @@ const Detalle_product = () => {
           <img src="${r.image}" class="card-img-top" style="height:180px; object-fit:cover;">
           <div class="card-body">
             <h6>${r.nombre}</h6>
-            <p class="fw-bold text-primary">$${(r.precio_oferta || r.precio).toLocaleString("es-CL")}</p>
+            <p class="producto-precio">$${(r.precio_oferta || r.precio).toLocaleString("es-CL")}</p>
           </div>
         </div>
       `;
