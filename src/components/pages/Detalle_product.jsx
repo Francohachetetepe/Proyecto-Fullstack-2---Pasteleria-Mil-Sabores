@@ -1,156 +1,98 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { db } from "../../config/firebase";
+import { doc, getDoc, collection, getDocs, query, where } from "firebase/firestore";
 
-const Detalle_producto = () => {
+const Detalle_product = () => {
   const [producto, setProducto] = useState(null);
   const [relacionados, setRelacionados] = useState([]);
 
   useEffect(() => {
-    // 1️⃣ Obtener ID del producto desde la URL (?id=xxx)
     const params = new URLSearchParams(window.location.search);
     const id = params.get("id");
-
     if (!id) return;
 
-    // 2️⃣ Cargar el producto desde Firestore
     const cargarProducto = async () => {
       try {
-        const doc = await db.collection("producto").doc(id).get();
-        if (doc.exists) {
-          setProducto({ id: doc.id, ...doc.data() });
-          cargarRelacionados(doc.data().categoria);
-        } else {
-          console.error("❌ Producto no encontrado");
+        const docRef = doc(db, "producto", id);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const data = { id: docSnap.id, ...docSnap.data() };
+          setProducto(data);
+          await cargarRelacionados(data.categoria, id);
         }
       } catch (error) {
-        console.error("⚠️ Error cargando producto:", error);
+        console.error("Error al cargar producto:", error);
       }
     };
 
-    // 3️⃣ Cargar productos relacionados (misma categoría)
-    const cargarRelacionados = async (categoria) => {
-      const snapshot = await db
-        .collection("producto")
-        .where("categoria", "==", categoria)
-        .limit(4)
-        .get();
-
-      const productos = snapshot.docs
-        .filter(doc => doc.id !== id)
-        .map(doc => ({ id: doc.id, ...doc.data() }));
-
-      setRelacionados(productos);
+    const cargarRelacionados = async (categoria, idActual) => {
+      try {
+        const q = query(collection(db, "producto"), where("categoria", "==", categoria));
+        const snapshot = await getDocs(q);
+        const lista = snapshot.docs
+          .map((d) => ({ id: d.id, ...d.data() }))
+          .filter((p) => p.id !== idActual)
+          .slice(0, 4);
+        setRelacionados(lista);
+      } catch (error) {
+        console.error("Error al cargar relacionados:", error);
+      }
     };
 
     cargarProducto();
   }, []);
 
-  // 4️⃣ Lógica del checkbox de personalización
   useEffect(() => {
-    const chk = document.getElementById("chkPersonalizacion");
-    const input = document.getElementById("mensajePersonalizado");
-    if (!chk || !input) return;
-    chk.addEventListener("change", () => {
-      input.style.display = chk.checked ? "block" : "none";
-    });
-  }, []);
+    if (!producto) return;
 
-  // 5️⃣ Render (deja el HTML igual, solo rellenamos datos dinámicos)
-  return (
-    <>
-      {producto && (
-        <div className="container my-5 p-4">
-          <div className="row justify-content-center align-items-center g-4">
-            <div className="col-12 col-md-5 text-center">
-              <img
-                className="img-producto-detalle"
-                src={producto.img || "../img/default.png"}
-                alt={producto.nombre}
-              />
-            </div>
+    // Cargar datos en el HTML
+    document.getElementById("imgProducto").src = producto.image;
+    document.getElementById("nombreProducto").textContent = producto.nombre;
+    document.getElementById("categoriaProducto").textContent = producto.categoria;
+    document.getElementById("precioProducto").textContent = `$${(
+      producto.precio_oferta || producto.precio
+    ).toLocaleString("es-CL")}`;
+    document.getElementById("descripcionProducto").textContent = producto.descripcion;
 
-            <div className="col-12 col-md-6">
-              <p className="text-muted mb-2">{producto.categoria}</p>
-              <div style={{ display: "flex", alignItems: "center", gap: "40px" }}>
-                <h2 className="mb-3">{producto.nombre}</h2>
-                <h2 className="mb-3">${producto.precio}</h2>
-              </div>
-              <p className="mb-4">{producto.descripcion}</p>
+    // Evento para agregar al carrito
+    const btnAgregar = document.getElementById("btnAgregarCarrito");
+    if (btnAgregar) {
+      btnAgregar.onclick = () => {
+        const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+        const existente = carrito.find((p) => p.id === producto.id);
+        if (existente) existente.cantidad += 1;
+        else carrito.push({ ...producto, cantidad: 1 });
+        localStorage.setItem("carrito", JSON.stringify(carrito));
+        alert(`"${producto.nombre}" agregado al carrito 🛒`);
+      };
+    }
+  }, [producto]);
 
-              <div className="personalizacion">
-                <label>
-                  <input type="checkbox" id="chkPersonalizacion" /> ¿Deseas añadir un
-                  mensaje especial?
-                </label>
-                <input
-                  type="text"
-                  id="mensajePersonalizado"
-                  className="form-control mt-2"
-                  placeholder="Escribe tu mensaje (máx. 30 caracteres)"
-                  maxLength="30"
-                  style={{ display: "none" }}
-                />
-              </div>
+  // Cargar relacionados
+  useEffect(() => {
+    const cont = document.getElementById("relacionados");
+    if (!cont) return;
+    cont.innerHTML = "";
 
-              <br />
-
-              <div className="cantidad-container-detalle">
-                <h3>Cantidad</h3>
-                <select id="cantidad" name="cantidad">
-                  {[1, 2, 3, 4, 5].map((n) => (
-                    <option key={n} value={n}>
-                      {n}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <br />
-
-              <div className="botones-container-detalle">
-                <button
-                  className="boton"
-                  style={{ padding: "10px 200px" }}
-                  onClick={() => alert("Agregaste al carrito")}
-                >
-                  Agregar al carrito
-                </button>
-              </div>
-
-              <br />
-              <div className="compartir">
-                <p>¡Comparte este producto!</p>
-                <button className="btn-facebook">Facebook</button>
-                <button className="btn-twitter">Twitter</button>
-                <button className="btn-whatsapp">WhatsApp</button>
-              </div>
-            </div>
+    relacionados.forEach((r) => {
+      const card = document.createElement("div");
+      card.className = "col-6 col-md-3 text-center";
+      card.innerHTML = `
+        <div class="card h-100 shadow-sm" style="cursor:pointer;">
+          <img src="${r.image}" class="card-img-top" style="height:180px; object-fit:cover;">
+          <div class="card-body">
+            <h6>${r.nombre}</h6>
+            <p class="fw-bold text-primary">$${(r.precio_oferta || r.precio).toLocaleString("es-CL")}</p>
           </div>
-
-          {/* Productos relacionados */}
-          <main className="container my-5">
-            <h2>Productos que te pueden interesar</h2>
-            <div className="row g-4 mt-3">
-              {relacionados.map((p) => (
-                <div key={p.id} className="col-md-3 text-center">
-                  <div className="card">
-                    <img src={p.img} className="card-img-top" alt={p.nombre} />
-                    <div className="card-body">
-                      <h5>{p.nombre}</h5>
-                      <p>${p.precio}</p>
-                      <a href={`detalle-producto.html?id=${p.id}`} className="btn btn-primary">
-                        Ver más
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </main>
         </div>
-      )}
-    </>
-  );
+      `;
+      card.onclick = () => (window.location.href = `detalle_product.html?id=${r.id}`);
+      cont.appendChild(card);
+    });
+  }, [relacionados]);
+
+  return null;
 };
 
-export default Detalle_producto;
+export default Detalle_product;

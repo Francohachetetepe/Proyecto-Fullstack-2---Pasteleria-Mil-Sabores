@@ -106,6 +106,7 @@ const Ofertas = () => {
                 "https://via.placeholder.com/200x150?text=Sin+imagen"
               }
               alt={p.nombre}
+              onClick={() => window.location.href = `../page/detalle_product.html?id=${p.id}`}
               className="producto-imagen"
             />
             <div className="producto-info">
