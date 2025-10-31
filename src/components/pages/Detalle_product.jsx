@@ -6,7 +6,7 @@ const Detalle_product = () => {
   const [producto, setProducto] = useState(null);
   const [cargando, setCargando] = useState(true);
 
-  // ✅ Obtener ID del producto desde la URL (sin useSearchParams)
+  // ✅ Obtener ID del producto desde la URL
   const queryParams = new URLSearchParams(window.location.search);
   const idProducto = queryParams.get("id");
 
@@ -60,7 +60,7 @@ const Detalle_product = () => {
   const agregarAlCarrito = (producto) => {
     if (!producto) return;
 
-    const stockActual = producto.stock !== undefined ? producto.stock : 100;
+    const stockActual = producto.stock ?? 100;
     if (stockActual <= 0) {
       mostrarNotificacion("Producto sin stock disponible", "error");
       return;
@@ -76,12 +76,19 @@ const Detalle_product = () => {
         return;
       }
       nuevoCarrito = carritoActual.map((p) =>
-        p.id === producto.id
-          ? { ...p, cantidad: (p.cantidad || 1) + 1 }
-          : p
+        p.id === producto.id ? { ...p, cantidad: (p.cantidad || 1) + 1 } : p
       );
     } else {
-      nuevoCarrito = [...carritoActual, { ...producto, cantidad: 1 }];
+      // 👇 Usa el precio de oferta si existe
+      const precioFinal =
+        producto.precio_oferta && producto.precio_oferta < producto.precio
+          ? producto.precio_oferta
+          : producto.precio;
+
+      nuevoCarrito = [
+        ...carritoActual,
+        { ...producto, cantidad: 1, precio: precioFinal },
+      ];
     }
 
     localStorage.setItem("carrito", JSON.stringify(nuevoCarrito));
@@ -107,7 +114,6 @@ const Detalle_product = () => {
     notif.style.fontWeight = "600";
     notif.style.transition = "opacity 0.4s ease";
     notif.style.opacity = "1";
-
     document.body.appendChild(notif);
     setTimeout(() => {
       notif.style.opacity = "0";
@@ -118,13 +124,12 @@ const Detalle_product = () => {
   // ==========================
   // ⏳ Vista de carga
   // ==========================
-  if (cargando) {
+  if (cargando)
     return <p className="text-center mt-5">Cargando detalles del producto...</p>;
-  }
-
-  if (!producto) {
-    return <p className="text-center mt-5 text-danger">Producto no encontrado.</p>;
-  }
+  if (!producto)
+    return (
+      <p className="text-center mt-5 text-danger">Producto no encontrado.</p>
+    );
 
   // ==========================
   // 🧁 Render principal
@@ -150,22 +155,52 @@ const Detalle_product = () => {
         <div className="col-12 col-md-6">
           <p className="text-muted mb-2">{producto.categoria}</p>
           <h2 className="mb-3">{producto.nombre}</h2>
-          <p className="precio fw-bold mb-3">
-            ${producto.precio?.toLocaleString("es-CL")}
-          </p>
+
+          {/* 💰 Mostrar precios según oferta (manteniendo estilo pastelero) */}
+          {producto.precio_oferta && producto.precio_oferta < producto.precio ? (
+            <div className="precios-oferta">
+              <p className="producto-anterior">
+                ${producto.precio.toLocaleString("es-CL")}
+              </p>
+              <p className="producto-precio">
+                ${producto.precio_oferta.toLocaleString("es-CL")}
+              </p>
+              <p className="porcentaje-descuento">
+                🔻{" "}
+                {Math.round(
+                  100 - (producto.precio_oferta * 100) / producto.precio
+                )}
+                % OFF
+              </p>
+            </div>
+          ) : (
+            <p className="producto-precio">
+              ${producto.precio?.toLocaleString("es-CL")}
+            </p>
+          )}
+
           <p className="mb-4">{producto.descripcion}</p>
-          <p><strong>Stock disponible:</strong> {producto.stock}</p>
+          <p>
+            <strong>Stock disponible:</strong> {producto.stock}
+          </p>
 
           {/* Botones */}
           <div className="d-flex gap-3 mt-4">
             <button
               className="boton btn-volver"
-              onClick={() => (window.location.href = "../page/catalogo.html")}
+              onClick={() =>
+                (window.location.href = "../page/catalogo.html")
+              }
             >
               ← Volver al catálogo
             </button>
             <button
               className="boton btn-agregar"
+              disabled={producto.stock <= 0}
+              style={{
+                opacity: producto.stock <= 0 ? 0.5 : 1,
+                cursor: producto.stock <= 0 ? "not-allowed" : "pointer",
+              }}
               onClick={() => agregarAlCarrito(producto)}
             >
               🛒 Agregar al carrito
