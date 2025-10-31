@@ -6,6 +6,7 @@
   <title>Detalle del Producto</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="../CSS/style.css" />
+  <link rel="icon" href="../img/logo-fndo-blanco.png">
 </head>
 
 <body>
@@ -26,12 +27,12 @@
       </div>
       
       <nav class="navbar">
-        <a href="../../index.html">Inicio</a>
+        <a href="../../index.html"class="nav-link">Inicio</a>
         <a href="catalogo.html" class="nav-link">Categorías ⌄</a>
         <a href="oferta.html" class="nav-link">Oferta</a>
         <a href="nosotros.html" class="nav-link">Nosotros</a>
-        <a href="blogs.html">Blogs</a>
-        <a href="contacto.html">Contacto</a>
+        <a href="blogs.html"class="nav-link">Blogs</a>
+        <a href="contacto.html"class="nav-link">Contacto</a>
       </nav>
     </div>
     
@@ -50,41 +51,11 @@
 
   <!-- MAIN -->
   <main class="container my-5">
-    <div class="producto-detalle row justify-content-center align-items-start g-5">
-      <!-- Imagen principal -->
-      <div class="col-12 col-md-5 text-center">
-        <img id="imgProducto" src="../img/placeholder.jpg" alt="Producto" class="img-fluid rounded shadow" />
-      </div>
 
-      <!-- Detalles -->
-      <div class="col-12 col-md-6">
-        <h2 id="nombreProducto" class="fw-bold mb-3">Nombre del producto</h2>
-        <p id="categoriaProducto" class="text-muted mb-2"></p>
-        <h3 id="precioProducto" class="text-danger mb-4">$0</h3>
-        <p id="descripcionProducto" class="mb-4"></p>
-
-        <div class="mb-3">
-          <label for="cantidad" class="form-label fw-bold">Cantidad</label>
-          <input id="cantidad" type="number" class="form-control" min="1" value="1" style="max-width: 100px" />
-        </div>
-
-        <button id="btnAgregarCarrito" class="boton">🛒 Agregar al carrito</button>
-      </div>
-    </div>
-
-    <!-- Productos relacionados -->
-    <hr class="my-5" />
-    <section>
-      <h3 class="text-center mb-4">Productos relacionados</h3>
-      <div id="relacionados" class="row g-4 justify-content-center"></div>
-    </section>
   </main>
-
-  <footer class="bg-dark text-white text-center p-3 mt-5">
-    By CodeLegion FKR © 2025
-  </footer>
 
   <div id="react-root"></div>
   <script src="/static/js/bundle.js"></script>
+  <script src="../JS/carritoHeader.js"></script>
 </body>
 </html>

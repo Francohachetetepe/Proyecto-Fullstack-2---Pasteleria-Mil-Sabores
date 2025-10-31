@@ -1,98 +1,188 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../../config/firebase";
-import { doc, getDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 const Detalle_product = () => {
   const [producto, setProducto] = useState(null);
-  const [relacionados, setRelacionados] = useState([]);
+  const [cargando, setCargando] = useState(true);
 
+  // ✅ Obtener ID del producto desde la URL (sin useSearchParams)
+  const queryParams = new URLSearchParams(window.location.search);
+  const idProducto = queryParams.get("id");
+
+  // ==========================
+  // 🔍 Cargar producto por ID
+  // ==========================
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get("id");
-    if (!id) return;
-
-    const cargarProducto = async () => {
+    const obtenerProducto = async () => {
       try {
-        const docRef = doc(db, "producto", id);
-        const docSnap = await getDoc(docRef);
+        if (!idProducto) return;
+        const productoRef = doc(db, "producto", idProducto);
+        const docSnap = await getDoc(productoRef);
 
         if (docSnap.exists()) {
-          const data = { id: docSnap.id, ...docSnap.data() };
-          setProducto(data);
-          await cargarRelacionados(data.categoria, id);
+          setProducto({ id: docSnap.id, ...docSnap.data() });
+        } else {
+          console.error("Producto no encontrado");
         }
       } catch (error) {
-        console.error("Error al cargar producto:", error);
+        console.error("Error al obtener producto:", error);
+      } finally {
+        setCargando(false);
       }
     };
 
-    const cargarRelacionados = async (categoria, idActual) => {
-      try {
-        const q = query(collection(db, "producto"), where("categoria", "==", categoria));
-        const snapshot = await getDocs(q);
-        const lista = snapshot.docs
-          .map((d) => ({ id: d.id, ...d.data() }))
-          .filter((p) => p.id !== idActual)
-          .slice(0, 4);
-        setRelacionados(lista);
-      } catch (error) {
-        console.error("Error al cargar relacionados:", error);
+    obtenerProducto();
+  }, [idProducto]);
+
+  // ==========================
+  // 🔧 Actualizar stock en Firebase
+  // ==========================
+  const actualizarStockFirebase = async (productId, cantidad) => {
+    try {
+      const productoRef = doc(db, "producto", productId);
+      const productoSnap = await getDoc(productoRef);
+
+      if (productoSnap.exists()) {
+        const stockActual = productoSnap.data().stock;
+        const nuevoStock = Math.max(stockActual - cantidad, 0);
+        await updateDoc(productoRef, { stock: nuevoStock });
+        console.log(`Stock actualizado: ${nuevoStock}`);
       }
-    };
+    } catch (error) {
+      console.error("Error actualizando stock:", error);
+    }
+  };
 
-    cargarProducto();
-  }, []);
-
-  useEffect(() => {
+  // ==========================
+  // 🛒 Agregar producto al carrito
+  // ==========================
+  const agregarAlCarrito = (producto) => {
     if (!producto) return;
 
-    // Cargar datos en el HTML
-    document.getElementById("imgProducto").src = producto.image;
-    document.getElementById("nombreProducto").textContent = producto.nombre;
-    document.getElementById("categoriaProducto").textContent = producto.categoria;
-    document.getElementById("precioProducto").textContent = `$${(
-      producto.precio_oferta || producto.precio
-    ).toLocaleString("es-CL")}`;
-    document.getElementById("descripcionProducto").textContent = producto.descripcion;
-
-    // Evento para agregar al carrito
-    const btnAgregar = document.getElementById("btnAgregarCarrito");
-    if (btnAgregar) {
-      btnAgregar.onclick = () => {
-        const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-        const existente = carrito.find((p) => p.id === producto.id);
-        if (existente) existente.cantidad += 1;
-        else carrito.push({ ...producto, cantidad: 1 });
-        localStorage.setItem("carrito", JSON.stringify(carrito));
-        alert(`"${producto.nombre}" agregado al carrito 🛒`);
-      };
+    const stockActual = producto.stock !== undefined ? producto.stock : 100;
+    if (stockActual <= 0) {
+      mostrarNotificacion("Producto sin stock disponible", "error");
+      return;
     }
-  }, [producto]);
 
-  // Cargar relacionados
-  useEffect(() => {
-    const cont = document.getElementById("relacionados");
-    if (!cont) return;
-    cont.innerHTML = "";
+    const carritoActual = JSON.parse(localStorage.getItem("carrito")) || [];
+    const existente = carritoActual.find((p) => p.id === producto.id);
+    let nuevoCarrito;
 
-    relacionados.forEach((r) => {
-      const card = document.createElement("div");
-      card.className = "col-6 col-md-3 text-center";
-      card.innerHTML = `
-        <div class="card h-100 shadow-sm" style="cursor:pointer;">
-          <img src="${r.image}" class="card-img-top" style="height:180px; object-fit:cover;">
-          <div class="card-body">
-            <h6>${r.nombre}</h6>
-            <p class="producto-precio">$${(r.precio_oferta || r.precio).toLocaleString("es-CL")}</p>
+    if (existente) {
+      if ((existente.cantidad || 1) >= producto.stock) {
+        mostrarNotificacion("No hay más unidades disponibles", "error");
+        return;
+      }
+      nuevoCarrito = carritoActual.map((p) =>
+        p.id === producto.id
+          ? { ...p, cantidad: (p.cantidad || 1) + 1 }
+          : p
+      );
+    } else {
+      nuevoCarrito = [...carritoActual, { ...producto, cantidad: 1 }];
+    }
+
+    localStorage.setItem("carrito", JSON.stringify(nuevoCarrito));
+    mostrarNotificacion(`"${producto.nombre}" agregado al carrito`);
+    actualizarStockFirebase(producto.id, 1);
+  };
+
+  // ==========================
+  // 💬 Mostrar notificación
+  // ==========================
+  const mostrarNotificacion = (mensaje, tipo = "success") => {
+    const notif = document.createElement("div");
+    notif.textContent = mensaje;
+    notif.style.position = "fixed";
+    notif.style.bottom = "20px";
+    notif.style.right = "20px";
+    notif.style.background = tipo === "success" ? "#4caf50" : "#e53935";
+    notif.style.color = "white";
+    notif.style.padding = "12px 20px";
+    notif.style.borderRadius = "5px";
+    notif.style.boxShadow = "0 3px 8px rgba(0,0,0,0.3)";
+    notif.style.zIndex = "1000";
+    notif.style.fontWeight = "600";
+    notif.style.transition = "opacity 0.4s ease";
+    notif.style.opacity = "1";
+
+    document.body.appendChild(notif);
+    setTimeout(() => {
+      notif.style.opacity = "0";
+      setTimeout(() => notif.remove(), 400);
+    }, 2500);
+  };
+
+  // ==========================
+  // ⏳ Vista de carga
+  // ==========================
+  if (cargando) {
+    return <p className="text-center mt-5">Cargando detalles del producto...</p>;
+  }
+
+  if (!producto) {
+    return <p className="text-center mt-5 text-danger">Producto no encontrado.</p>;
+  }
+
+  // ==========================
+  // 🧁 Render principal
+  // ==========================
+  return (
+    <div className="container my-5 p-4 producto-detalle">
+      <div className="row justify-content-center align-items-center g-4">
+        {/* Imagen */}
+        <div className="col-12 col-md-5 text-center">
+          <img
+            className="img-producto-detalle"
+            src={
+              producto.image ||
+              producto.imagen ||
+              "https://via.placeholder.com/300x300?text=Sin+imagen"
+            }
+            alt={producto.nombre}
+            style={{ width: "100%", borderRadius: "10px" }}
+          />
+        </div>
+
+        {/* Info */}
+        <div className="col-12 col-md-6">
+          <p className="text-muted mb-2">{producto.categoria}</p>
+          <h2 className="mb-3">{producto.nombre}</h2>
+          <p className="precio fw-bold mb-3">
+            ${producto.precio?.toLocaleString("es-CL")}
+          </p>
+          <p className="mb-4">{producto.descripcion}</p>
+          <p><strong>Stock disponible:</strong> {producto.stock}</p>
+
+          {/* Botones */}
+          <div className="d-flex gap-3 mt-4">
+            <button
+              className="boton btn-volver"
+              onClick={() => (window.location.href = "../page/catalogo.html")}
+            >
+              ← Volver al catálogo
+            </button>
+            <button
+              className="boton btn-agregar"
+              onClick={() => agregarAlCarrito(producto)}
+            >
+              🛒 Agregar al carrito
+            </button>
+          </div>
+
+          {/* Compartir */}
+          <div className="mt-5 compartir">
+            <p>¡Comparte este producto!</p>
+            <button className="btn-facebook">Facebook</button>
+            <button className="btn-twitter">Twitter</button>
+            <button className="btn-whatsapp">WhatsApp</button>
           </div>
         </div>
-      `;
-      card.onclick = () => (window.location.href = `detalle_product.html?id=${r.id}`);
-      cont.appendChild(card);
-    });
-  }, [relacionados]);
-
-  return null;
+      </div>
+    </div>
+  );
 };
 
 export default Detalle_product;
