@@ -48,9 +48,11 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     } else {
       // 🚪 Usuario no registrado: mostrar botones de login y registro
+      // Detecta si estás en index (raíz) o dentro de /assets/page/
+      const basePath = window.location.pathname.includes("/assets/page/") ? "./" : "assets/page/";
       header.innerHTML = `
-        <button class="btn-login" onclick="window.location.href='inicio_sesion.html'">Iniciar Sesión</button>
-        <button class="btn-signup" onclick="window.location.href='registro_usuario.html'">Crear Cuenta</button>
+        <button class="btn-login" onclick="window.location.href='${basePath}inicio_sesion.html'">Iniciar Sesión</button>
+        <button class="btn-signup" onclick="window.location.href='${basePath}registro_usuario.html'">Crear Cuenta</button>
       `;
     }
   }, 350); // ← ajusta este valor si aún se renderiza después del bundle (500 ms máximo)

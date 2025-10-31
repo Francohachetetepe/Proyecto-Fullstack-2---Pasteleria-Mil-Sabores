@@ -1,100 +1,97 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nosotros</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../CSS/style.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-  <link rel="icon" href="../img/logo-fndo-blanco.png">
-</head>
-
-<body>
-  <!-- HEADER -->
-  <header class="header">
-    <!-- 🔹 LOGO -->
-    <div class="logo">
-      <a href="../../index.html">
-        <img src="../img/logo-fndo-blanco.png" alt="Logo de la tienda">
-      </a>
-    </div>
-    
-    <div class="header-center">
-      <!-- 🔹 BLOQUE CENTRAL (buscador + navbar) -->
-      <div class="search-container">
-        <input type="text" id="buscador" placeholder="Buscar productos..." class="search-input">
-        <button id="btnBuscar" class="btn-buscar">Buscar</button>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosotros</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../CSS/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="icon" href="../img/logo-fndo-blanco.png">
+  </head>
+  
+  <body>
+    <!-- HEADER -->
+    <header class="header">
+      <!-- 🔹 LOGO -->
+      <div class="logo">
+        <a href="../../index.html">
+          <img src="../img/logo-fndo-blanco.png" alt="Logo de la tienda">
+        </a>
       </div>
       
-      <nav class="navbar">
-        <a href="../../index.html"class="nav-link">Inicio</a>
-        <a href="catalogo.html" class="nav-link">Categorías ⌄</a>
-        <a href="oferta.html" class="nav-link">Oferta</a>
-        <a href="nosotros.html" class="nav-link">Nosotros</a>
-        <a href="blogs.html"class="nav-link">Blogs</a>
-        <a href="contacto.html"class="nav-link">Contacto</a>
-      </nav>
-    </div>
-    
-    <!-- 🔹 BLOQUE DERECHO (login + carrito) -->
-    <!-- 🔹 BLOQUE DERECHO (login + carrito) -->
-    <div class="header-right">
-      <div class="auth-buttons">
-        <div class="header-right">
-    <!-- ⬇️ Aquí va tu contenedor dinámico -->
-    <div id="header-usuario" class="auth-buttons">
-      <!-- Se llena dinámicamente con JS -->
-    </div>
-
-      <button class="btn-carrito" onclick="window.location.href='carrito.html'">
+      <div class="header-center">
+        <!-- 🔹 BLOQUE CENTRAL (buscador + navbar) -->
+        <div class="search-container">
+          <input type="text" id="buscador" placeholder="Buscar productos..." class="search-input">
+          <button id="btnBuscar" class="btn-buscar">Buscar</button>
+        </div>
+        
+        <nav class="navbar">
+          <a href="../../index.html"class="nav-link">Inicio</a>
+          <a href="catalogo.html" class="nav-link">Categorías ⌄</a>
+          <a href="oferta.html" class="nav-link">Oferta</a>
+          <a href="nosotros.html" class="nav-link active">Nosotros</a>
+          <a href="blogs.html"class="nav-link">Blogs</a>
+          <a href="contacto.html"class="nav-link">Contacto</a>
+        </nav>
+      </div>
+      
+  
+      <!-- 🔹 BLOQUE DERECHO (login + carrito) -->
+      <div class="header-right">
+        <!-- ⬇️ Aquí va tu contenedor dinámico -->
+        <div id="header-usuario" class="auth-buttons">
+          <!-- Se llena dinámicamente con JS -->
+        </div>
+        <button class="btn-carrito" onclick="window.location.href='carrito.html'">
           <span class="carrito-icon">🛒</span>
           Total: $<span class="carrito-total">0</span>
         </button>
-    </div>
-  </header>
+      </div>
+    </header>
 
-  <!-- Sección Nosotros -->
-  <main class="container my-5">
-    <div class="text-center mb-5">
-      <img src="../img/logo-fndo-blanco.png" alt="Logo empresa" class="img-fluid mb-3" style="max-height: 150px;">
-      <h1>Sobre Nosotros</h1>
-      <p class="lead">Un viaje lleno de dulzura, creatividad y tradición en cada receta.</p>
-    </div>
+    <!-- Sección Nosotros -->
+    <main class="container my-5">
+      <div class="text-center mb-5">
+        <img src="../img/logo-fndo-blanco.png" alt="Logo empresa" class="img-fluid mb-3" style="max-height: 150px;">
+        <h1>Sobre Nosotros</h1>
+        <p class="lead">Un viaje lleno de dulzura, creatividad y tradición en cada receta.</p>
+      </div>
 
-    <div class="row g-4">
-      <!-- Misión -->
-      <div class="col-md-6">
-        <div class="card card-nosotros h-100 text-center p-4">
-          <div class="card-body">
-            <h2 class="card-title">Nuestra Misión</h2>
-            <p class="card-text">
-              Ofrecer una experiencia dulce y memorable a nuestros clientes, proporcionando tortas y productos
-              de repostería de alta calidad para todas las ocasiones, mientras celebramos nuestras raíces
-              históricas y fomentamos la creatividad en la repostería.
-            </p>
+      <div class="row g-4">
+        <!-- Misión -->
+        <div class="col-md-6">
+          <div class="card card-nosotros h-100 text-center p-4">
+            <div class="card-body">
+              <h2 class="card-title">Nuestra Misión</h2>
+              <p class="card-text">
+                Ofrecer una experiencia dulce y memorable a nuestros clientes, proporcionando tortas y productos
+                de repostería de alta calidad para todas las ocasiones, mientras celebramos nuestras raíces
+                históricas y fomentamos la creatividad en la repostería.
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- Visión -->
+        <div class="col-md-6">
+          <div class="card card-nosotros h-100 text-center p-4">
+            <div class="card-body">
+              <h2 class="card-title">Nuestra Visión</h2>
+              <p class="card-text">
+                Convertirnos en la tienda online líder de productos de repostería en Chile, conocida por nuestra
+                innovación, calidad y el impacto positivo en la comunidad, especialmente en la formación de nuevos
+                talentos en gastronomía.
+              </p>
+            </div>
           </div>
         </div>
       </div>
-      <!-- Visión -->
-      <div class="col-md-6">
-        <div class="card card-nosotros h-100 text-center p-4">
-          <div class="card-body">
-            <h2 class="card-title">Nuestra Visión</h2>
-            <p class="card-text">
-              Convertirnos en la tienda online líder de productos de repostería en Chile, conocida por nuestra
-              innovación, calidad y el impacto positivo en la comunidad, especialmente en la formación de nuevos
-              talentos en gastronomía.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
-  
-  <script src="/static/js/bundle.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../JS/carritoHeader.js"></script>
-  <script src="../JS/header.js"></script>
-</body>
+    </main>
+    
+    <script src="/static/js/bundle.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../JS/carritoHeader.js"></script>
+    <script src="../JS/header.js"></script>
+  </body>
 </html>

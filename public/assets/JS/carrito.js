@@ -203,30 +203,33 @@ function renderizarCarrito() {
  */
 function agregarProductoAlCarrito(productId) {
   const producto = productosOferta.find(p => p.id === productId);
-  
   if (!producto) return;
-  
+
   // Verificar stock antes de agregar
   if (producto.stock <= 0) {
     mostrarNotificacion('Producto sin stock disponible', 'error');
     return;
   }
 
-  // Calcular precio final (oferta o normal)
-  const precioFinal = producto.precio_oferta && producto.precio_oferta < producto.precio
-    ? producto.precio_oferta
-    : producto.precio;
+  // Determinar precio final (oferta o normal)
+  const precioFinal =
+    producto.precio_oferta && producto.precio_oferta < producto.precio
+      ? producto.precio_oferta
+      : producto.precio;
 
-  // Buscar si ya existe en carrito
+  // Buscar producto en carrito
   const productoExistente = carrito.find(item => item.id === productId);
 
   if (productoExistente) {
-    if (productoExistente.cantidad >= producto.stock) {
+    const stockRestante = (producto.stock_original ?? producto.stock) - productoExistente.cantidad;
+    if (stockRestante <= 0) {
       mostrarNotificacion('No hay suficiente stock disponible', 'error');
       return;
     }
     productoExistente.cantidad++;
   } else {
+    // Guardar stock original antes de empezar a descontar
+    producto.stock_original = producto.stock;
     carrito.push({
       ...producto,
       precio: precioFinal,
@@ -234,22 +237,22 @@ function agregarProductoAlCarrito(productId) {
     });
   }
 
-  // Guardar y refrescar interfaz
+  // 🔄 Actualizar Firebase y stock local
+  actualizarStockFirebase(producto.id, 1).then(nuevoStock => {
+    if (nuevoStock !== null) {
+      producto.stock = nuevoStock;
+      if (producto.stock_original === undefined) producto.stock_original = nuevoStock;
+      renderizarProductosOferta(productosOferta);
+    }
+  });
+
+  // 💾 Guardar cambios
   guardarCarrito();
   renderizarCarrito();
   calcularTotal();
   actualizarCarritoHeader();
 
-  // 🔸 Actualizar stock real y reflejarlo en pantalla
-  actualizarStockFirebase(producto.id, 1)
-    .then(nuevoStock => {
-      if (nuevoStock !== null) {
-        producto.stock = nuevoStock; // actualizar stock en memoria
-        console.log(`Stock actualizado localmente: ${producto.nombre} → ${nuevoStock}`);
-        renderizarProductosOferta(productosOferta); // refrescar las tarjetas
-      }
-    });
-
+  // 🔔 Notificación
   mostrarNotificacion(`"${producto.nombre}" agregado al carrito`);
 }
 
@@ -342,26 +345,44 @@ async function aumentarCantidad(index) {
  */
 async function disminuirCantidad(index) {
   const producto = carrito[index];
+  if (!producto) return;
 
   if (producto.cantidad > 1) {
-    carrito[index].cantidad--;
+    // 🔹 Disminuir una unidad
+    producto.cantidad--;
     guardarCarrito();
     renderizarCarrito();
     calcularTotal();
 
-    // 🔹 Restaurar stock en Firebase
+    // 🔹 Restaurar solo 1 unidad en Firebase
     const nuevoStock = await restaurarStockFirebase(producto.id, 1);
-    
-    // 🔹 Actualizar stock también en memoria local (productosOferta)
     const productoOferta = productosOferta.find(p => p.id === producto.id);
     if (productoOferta && nuevoStock !== null) {
       productoOferta.stock = nuevoStock;
     }
-
-    // 🔹 Re-renderizar ofertas para reflejar el nuevo stock
     renderizarProductosOferta(productosOferta);
+  } else {
+    // ⚠️ Si llega a 0 → eliminar del carrito
+    const cantidadRestaurar = producto.cantidad || 1;
+    carrito.splice(index, 1);
+    guardarCarrito();
+    renderizarCarrito();
+    calcularTotal();
+
+    // 🔹 Restaurar stock completo eliminado
+    const nuevoStock = await restaurarStockFirebase(producto.id, cantidadRestaurar);
+    const productoOferta = productosOferta.find(p => p.id === producto.id);
+    if (productoOferta && nuevoStock !== null) {
+      productoOferta.stock = nuevoStock;
+    }
+    renderizarProductosOferta(productosOferta);
+
+    mostrarNotificacion(`"${producto.nombre}" eliminado del carrito`);
   }
+
+  actualizarCarritoHeader();
 }
+
 
 /**
  * Elimina un producto del carrito

@@ -45,50 +45,96 @@ const Ofertas = () => {
         const stockActual = productoSnap.data().stock;
         const nuevoStock = Math.max(stockActual - cantidad, 0);
         await updateDoc(productoRef, { stock: nuevoStock });
-        console.log(`Stock actualizado para ${productoSnap.data().nombre}: ${nuevoStock}`);
+        return nuevoStock;
       }
     } catch (error) {
       console.error("Error actualizando stock:", error);
     }
+    return null;
   };
 
   // ===============================
   // 🛒 Agregar producto al carrito
   // ===============================
-  const agregarAlCarrito = (producto) => {
+  const agregarAlCarrito = async (producto) => {
     if (!producto) return;
 
-    const stockActual = producto.stock !== undefined ? producto.stock : 100;
-    if (stockActual <= 0) {
-      mostrarNotificacion("Producto sin stock disponible", "error");
-      return;
-    }
-
-    const carritoActual = JSON.parse(localStorage.getItem("carrito")) || [];
-    const existente = carritoActual.find((p) => p.id === producto.id);
-    let nuevoCarrito;
-
-    if (existente) {
-      if ((existente.cantidad || 1) >= producto.stock) {
-        mostrarNotificacion("No hay más unidades disponibles", "error");
+    try {
+      // 🟢 Obtener stock actualizado desde Firestore
+      const productoRef = doc(db, "producto", producto.id);
+      const snap = await getDoc(productoRef);
+      if (!snap.exists()) {
+        mostrarNotificacion("Producto no encontrado", "error");
         return;
       }
-      nuevoCarrito = carritoActual.map((p) =>
-        p.id === producto.id
-          ? { ...p, cantidad: (p.cantidad || 1) + 1 }
-          : p
-      );
-    } else {
-      nuevoCarrito = [...carritoActual, { ...producto, cantidad: 1 }];
-    }
 
-    localStorage.setItem("carrito", JSON.stringify(nuevoCarrito));
-    mostrarNotificacion(`"${producto.nombre}" agregado al carrito`);
-    actualizarStockFirebase(producto.id, 1);
+      const data = snap.data();
+      const stockDisponible = data.stock ?? 0;
+      if (stockDisponible <= 0) {
+        mostrarNotificacion("Producto sin stock disponible", "error");
+        return;
+      }
+
+      // 🏷️ Determinar precio correcto (oferta o normal)
+      const precioNormal = Number(data.precio) || 0;
+      const precioOferta = Number(data.precio_oferta) || 0;
+      const precioFinal = precioOferta > 0 && precioOferta < precioNormal ? precioOferta : precioNormal;
+
+      // 🧾 Obtener carrito actual
+      const carritoActual = JSON.parse(localStorage.getItem("carrito")) || [];
+      const existente = carritoActual.find((p) => p.id === producto.id);
+      let nuevoCarrito;
+
+      if (existente) {
+        const disponibleTotal = stockDisponible + (existente.cantidad || 0);
+        if (existente.cantidad >= disponibleTotal) {
+          mostrarNotificacion("No hay más unidades disponibles", "error");
+          return;
+        }
+        nuevoCarrito = carritoActual.map((p) =>
+          p.id === producto.id
+            ? { ...p, cantidad: (p.cantidad || 1) + 1 }
+            : p
+        );
+      } else {
+        nuevoCarrito = [
+          ...carritoActual,
+          {
+            ...producto,
+            precio: precioFinal,
+            cantidad: 1,
+            stock: stockDisponible,
+          },
+        ];
+      }
+
+      // 💾 Guardar carrito
+      localStorage.setItem("carrito", JSON.stringify(nuevoCarrito));
+
+      // 🔄 Actualizar header
+      window.dispatchEvent(new Event("carritoActualizado"));
+
+      // 🟠 Descontar stock en Firebase
+      const nuevoStock = await actualizarStockFirebase(producto.id, 1);
+
+      // 🔵 Actualizar stock visual
+      if (nuevoStock !== null) {
+        setProductos((prev) =>
+          prev.map((p) =>
+            p.id === producto.id ? { ...p, stock: nuevoStock } : p
+          )
+        );
+      }
+
+      mostrarNotificacion(`"${producto.nombre}" agregado al carrito`);
+    } catch (error) {
+      console.error("Error al agregar producto:", error);
+      mostrarNotificacion("Ocurrió un error al agregar el producto", "error");
+    }
   };
 
   // ===============================
-  // 💬 Mostrar notificación visual
+  // 💬 Notificación visual
   // ===============================
   const mostrarNotificacion = (mensaje, tipo = "success") => {
     const notif = document.createElement("div");
@@ -114,27 +160,16 @@ const Ofertas = () => {
   };
 
   // ===============================
-  // 🕓 Render condicional
+  // 🕓 Render
   // ===============================
   if (cargando) {
-    return (
-      <div className="cargando">
-        <p>🔄 Cargando productos en oferta...</p>
-      </div>
-    );
+    return <p style={{ textAlign: "center" }}>Cargando productos...</p>;
   }
 
   if (productos.length === 0) {
-    return (
-      <div className="sin-ofertas">
-        <h3>😕 No hay productos en oferta por el momento.</h3>
-      </div>
-    );
+    return <p style={{ textAlign: "center" }}>No hay productos en oferta.</p>;
   }
 
-  // ===============================
-  // 🎨 Render principal
-  // ===============================
   return (
     <div className="productos-grid">
       {productos.map((p) => {
@@ -159,7 +194,7 @@ const Ofertas = () => {
             />
 
             <div className="producto-info">
-              <h3 className="producto-nombre">{p.nombre || "Sin nombre"}</h3>
+              <h3 className="producto-nombre">{p.nombre}</h3>
 
               <div className="precio-superior">
                 <p className="producto-anterior">
@@ -179,8 +214,9 @@ const Ofertas = () => {
               <button
                 className="btn-agregar"
                 onClick={() => agregarAlCarrito(p)}
+                disabled={p.stock <= 0}
               >
-                🛒 Agregar al carrito
+                {p.stock > 0 ? "🛒 Agregar al carrito" : "Sin stock"}
               </button>
             </div>
           </div>
