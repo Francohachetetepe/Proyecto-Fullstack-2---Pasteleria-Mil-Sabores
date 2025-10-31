@@ -215,6 +215,59 @@ button:hover, .boton:hover {
   transform: translateY(-2px);
 }
 
+/* Contenedor del usuario dentro del header */
+.usuario-info {
+  display: flex;
+  flex-direction: row;    /* nombre y botones en fila */
+  align-items: center;    /* centrados verticalmente */
+  gap: 10px;              /* espacio entre nombre y botones */
+
+
+/* Ajustes de posición */
+  margin-bottom: 4px;      /* separa del carrito */
+  transform: translate(-250px, 8px); /* mueve un poquito a la izquierda y arriba */
+}
+
+/* Nombre del usuario */
+/*.nombre-usuario {
+  font-weight: bold;
+  color: #5d4037;
+  font-size: 14px;
+  background-color: #fff5e1;
+  border-radius: 25px;
+  padding: 4px 10px;
+  box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+}*/
+
+/* Botones del usuario */
+/*.btn-perfil,
+.btn-logout {
+  border: 2px solid #8b4513;
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: 'Lato', sans-serif;
+  transition: all 0.3s ease;
+  background-color: #fff5e1;
+  color: #8b4513;
+}*/
+
+/* Hover */
+/*.btn-perfil:hover {
+  background-color: #f8d9b7;
+}
+
+.btn-logout {
+  background-color: #8b4513;
+  color: #fff5e1;
+}
+
+.btn-logout:hover {
+  background-color: #a05a2b;
+}*/
+
+
 /* 🔹 Carrito más pequeño, con sombra y desplazado a la derecha */
 .carrito-container {
   position: relative;
@@ -252,6 +305,30 @@ button:hover, .boton:hover {
 
 .carrito-total {
   font-weight: bold;
+}
+
+/* 🔹 Usuario en el header */
+.user-info {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  font-family: 'Lato', sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  color: #5d4037;
+  background-color: #fff5e1;
+  padding: 6px 12px;
+  border-radius: 25px;
+  box-shadow: 0 2px 4px rgba(139, 69, 19, 0.2);
+  transform: translateY(2px);
+}
+.user-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 /* RESPONSIVE HEADER */

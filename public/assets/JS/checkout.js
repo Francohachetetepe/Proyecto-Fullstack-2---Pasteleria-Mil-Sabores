@@ -59,24 +59,7 @@ async function cargarRegiones() {
     selectRegion.appendChild(option);
   });
 }
-/*async function cargarRegiones() {
-  const selectRegion = document.getElementById('region');
-  selectRegion.innerHTML = '<option value="">Selecciona una región</option>';
 
-  const regionesLocales = Object.keys(regionesComunas).map(normalizar);
-  const regionesDesdeFirestore = (await obtenerRegionesDesdeFirestore()).map(normalizar);
-
-  const todasLasRegiones = [...regionesLocales, ...regionesDesdeFirestore];
-  const regionesUnicas = [...new Set(todasLasRegiones)];
-
-  regionesUnicas.sort().forEach(region => {
-    const option = document.createElement('option');
-    option.value = region;
-    option.textContent = region;
-    selectRegion.appendChild(option);
-
-  });
-}*/
 
 async function obtenerRegionesDesdeFirestore() {
   const db = firebase.firestore();
@@ -140,28 +123,6 @@ async function obtenerComunasDesdeFirestore(regionSeleccionada) {
 
   return comunas;
 }
-
-
-/*function cargarComunas(region) {
-    const selectComuna = document.getElementById('comuna');
-    const comunas = regionesComunas[region] || [];
-    
-    // Limpiar select de comunas
-    selectComuna.innerHTML = '<option value="">Selecciona una comuna</option>';
-    
-    // Ordenar comunas alfabéticamente
-    comunas.sort().forEach(comuna => {
-        const option = document.createElement('option');
-        option.value = comuna;
-        option.textContent = comuna;
-        selectComuna.appendChild(option);
-    });
-    
-    // Habilitar el select de comunas
-    selectComuna.disabled = false;
-}/*
-
-
 
 
 /**

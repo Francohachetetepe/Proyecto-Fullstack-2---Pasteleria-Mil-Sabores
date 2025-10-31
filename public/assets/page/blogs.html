@@ -39,18 +39,21 @@
       </nav>
     </div>
     
-    <!-- 🔹 BLOQUE DERECHO (login + carrito) -->
-    <div class="header-right">
-      <div class="auth-buttons">
-        <button class="btn-login" onclick="window.location.href='inicio_sesion.html'">Iniciar Sesión</button>
-        <button class="btn-signup" onclick="window.location.href='registro_usuario.html'">Crear Cuenta</button>
-      </div>
-      <button class="btn-carrito" onclick="window.location.href='carrito.html'">
-          <span class="carrito-icon">🛒</span>
-          Total: $<span class="carrito-total">0</span>
-        </button>
-    </div>
-  </header>
+    <!-- BLOQUE DERECHO (login + carrito) -->
+     <div class="header-right">
+  <!-- Contenedor dinámico para login o usuario -->
+  <div id="header-usuario" class="auth-buttons">
+    <!-- Se llenará con JS -->
+  </div>
+
+  <!-- Carrito permanece intacto -->
+  <button class="btn-carrito" onclick="window.location.href='carrito.html'">
+    <span class="carrito-icon">🛒</span>
+    Total: $<span class="carrito-total">0</span>
+  </button>
+</div>
+
+</header>
         <!--fin menú-->
         
         
@@ -124,7 +127,7 @@
                 </div> <!-- fin acordeon-->
             </div>
             
-            <!-- imagen uwu -->
+            <!-- imagen -->
              <div class="img_blog">
                 <img src="../img/tartaleta.png" alt="Cargando..." width="300px" >
              </div>
@@ -191,7 +194,7 @@
                 </div> <!-- fin acordeon-->
             </div>
             
-            <!-- imagen uwu -->
+            <!-- imagen -->
              <div class="img_blog">
                 <img src="../img/articulo.png" alt="Cargando..." width="300px" >
              </div>
@@ -236,16 +239,17 @@
                 </div> <!-- fin acordeon-->
             </div>
             
-            <!-- imagen uwu -->
+            <!-- imagen -->
              <div class="img_blog">
                 <img src="../img/merengue.png" alt="Cargando..." width="300px" >
              </div>
         </div>
-    <!-- 🔹 Punto de montaje React -->
        
-
-        <!-- 🔹 Script del bundle React -->
+        
         <script src="/static/js/bundle.js"></script>
         <script src="../JS/carritoHeader.js"></script>
+        <script src="../JS/header.js"></script>
+
+        
 </body>
 </html>

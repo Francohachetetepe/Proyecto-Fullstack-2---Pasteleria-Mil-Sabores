@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { auth } from "../../config/firebase";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
+
+const auth = getAuth();
+const db = getFirestore();
 
 const LoginForm = () => {
   const [correo, setCorreo] = useState("");
   const [password, setPassword] = useState("");
   const [mensaje, setMensaje] = useState("");
-  const db = getFirestore();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -19,23 +21,27 @@ const LoginForm = () => {
 
     setMensaje("⏳ Verificando credenciales...");
 
-    try {
-      // Intentar login con Firebase Auth (admin o cliente registrado en Auth)
-      const userCredential = await auth.signInWithEmailAndPassword(correo, password);
-      const user = userCredential.user;
-
-      //Verificar si es el admin
-      if (correo === "admin@admin.cl") {
+    // Si es el admin, usar Firebase Auth
+    if (correo === "admin@admin.cl") {
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, correo, password);
         localStorage.setItem("usuario", JSON.stringify({ nombre: "Administrador", correo, rol: "admin" }));
         setMensaje("✅ Bienvenido Administrador, redirigiendo...");
         setTimeout(() => window.location.href = "../page/home_admin.html", 1000);
         return;
+      } catch (error) {
+        console.error("Error en login admin:", error);
+        setMensaje("❌ Correo o contraseña incorrectos para administrador.");
+        return;
       }
+    }
 
-      //Si no es admin, buscar en Firestore para obtener más datos
+    // Buscar cliente en Firestore
+    try {
       const q = query(
         collection(db, "usuario"),
-        where("correo", "==", correo)
+        where("correo", "==", correo),
+        where("password", "==", password) // ⚠️ Solo si estás guardando la contraseña en texto plano
       );
       const result = await getDocs(q);
 
@@ -45,15 +51,11 @@ const LoginForm = () => {
         setMensaje("✅ Bienvenido Cliente, redirigiendo...");
         setTimeout(() => window.location.href = "../page/saludo.html", 1000);
       } else {
-        // Si no está en Firestore, igual lo dejamos pasar como cliente básico
-        localStorage.setItem("usuario", JSON.stringify({ nombre: correo, correo, rol: "cliente" }));
-        setMensaje("✅ Sesión iniciada, redirigiendo...");
-        setTimeout(() => window.location.href = "../page/saludo.html", 1000);
+        setMensaje("❌ Correo o contraseña incorrectos.");
       }
-
     } catch (error) {
-      console.error("Error en login:", error);
-      setMensaje("❌ Correo o contraseña incorrectos.");
+      console.error("Error en login cliente:", error);
+      setMensaje("❌ Error al verificar credenciales.");
     }
   };
 
@@ -97,4 +99,3 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
-
