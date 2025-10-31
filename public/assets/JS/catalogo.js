@@ -177,34 +177,51 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
     // Limpiar grid antes de renderizar
-    productosGrid.innerHTML = productos.map(producto => `
-      
-      <div class="producto-card">
-        <img src="${producto.image}" 
-             alt="${producto.nombre}" 
-             class="producto-imagen"
-             onerror="this.src='https://via.placeholder.com/400x300/cccccc/969696?text=Imagen+No+Disponible'">
-        <div class="producto-info">
-          <h3 class="producto-nombre">${producto.nombre || 'Sin nombre'}</h3>
-          <p class="producto-precio">$${(producto.precio || 0).toLocaleString('es-CL')}</p>
+   productosGrid.innerHTML = productos.map(producto => `
+  <div class="producto-card">
+    <img
+      src="${producto.image}"
+      alt="${producto.nombre}"
+      class="producto-imagen"
+      onerror="this.src='https://via.placeholder.com/400x300/cccccc/969696?text=Imagen+No+Disponible'"
+      data-id="${producto.id}"
+    >
+    <div class="producto-info">
+      <h3 class="producto-nombre">${producto.nombre || 'Sin nombre'}</h3>
+      <p class="producto-precio">$${(producto.precio || 0).toLocaleString('es-CL')}</p>
+      <p class="producto-stock">Stock: ${producto.stock}</p>
+      <button class="btn-agregar" data-id="${producto.id}">
+        🛒 Agregar al carrito
+      </button>
+    </div>
+  </div>
+`).join("");
 
-          <!--AGREGAR ESTA LÍNEA PARA MOSTRAR STOCK -->
-          <p class="producto-stock">Stock: ${producto.stock}</p>
-          
-          <button class="btn-agregar" data-id="${producto.id}">
-            🛒 Agregar al carrito
-          </button>
-        </div>
-      </div>
-    `).join("");
+// Botones de agregar al carrito
+document.querySelectorAll(".btn-agregar").forEach(btn => {
+  btn.addEventListener("click", function () {
+    const productId = this.dataset.id;
+    agregarAlCarrito(productId);
+  });
+});
 
-    // Agregar eventos a los botones de comprar
-    document.querySelectorAll('.btn-agregar').forEach(btn => { // Seleccionar todos los botones
-      btn.addEventListener('click', function() { // Usar función normal para mantener el contexto de 'this'
-        const productId = this.dataset.id; // Obtener ID del producto desde data-attribute
-        agregarAlCarrito(productId); // Agregar producto al carrito
-      });
-    });
+
+// ✅ Redirigir al detalle del producto al hacer clic en la imagen
+document.querySelectorAll('.producto-imagen').forEach(img => {
+  img.addEventListener('click', () => {
+    const id = img.dataset.id;
+
+    // Detectar si estamos dentro de /assets/page/
+    const basePath = window.location.pathname.includes('/assets/page/')
+      ? 'detalle_product.html'
+      : 'assets/page/detalle_product.html';
+
+    // Redirigir correctamente con parámetro ID
+    window.location.href = `${basePath}?id=${id}`;
+  });
+});
+
+
   }
   // Agregar producto al carrito
   function agregarAlCarrito(productId) { // productId es el ID del producto a agregar

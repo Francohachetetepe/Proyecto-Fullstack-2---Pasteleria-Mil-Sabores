@@ -141,6 +141,25 @@ function renderizarProductosOferta(productos) {
       </div>
     `;
   }).join('');
+    contenedor.innerHTML = productos.map(producto => `
+        <div class="producto-card">
+            <img src="${producto.image}" 
+                 alt="${producto.nombre}" 
+                 class="producto-imagen"
+                 onerror="this.src='https://via.placeholder.com/400x300/cccccc/969696?text=Imagen+No+Disponible'">
+            <div class="producto-info">
+                <h3 class="producto-nombre">${producto.nombre}</h3>
+                <div class="precios-oferta">
+                    <span class="precio-anterior">$${producto.precioAnterior?.toLocaleString('es-CL')}</span>
+                    <span class="precio-actual">$${producto.precio?.toLocaleString('es-CL')}</span>
+                </div>
+                <p class="stock-disponible">Stock: ${producto.stock || 10}</p>
+                <button class="btn-agregar-oferta" data-id="${producto.id}">
+                    Añadir
+                </button>
+            </div>
+        </div>
+    `).join('');
 
   // Eventos para agregar productos
   document.querySelectorAll('.btn-agregar-oferta').forEach(btn => {
@@ -174,6 +193,7 @@ function renderizarCarrito() {
     tbody.innerHTML = carrito.map((producto, index) => `
         <tr>
             <td>
+                <img src="${producto.image}" 
                 <img src="${producto.image}" 
                      alt="${producto.nombre}" 
                      class="imagen-tabla"
