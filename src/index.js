@@ -17,7 +17,8 @@ import { createRoot } from "react-dom/client";
 import RouterConfig from "./routes/RouterConfig";
 import Detalle_product from "./components/pages/Detalle_product";
 import Catalogo from "./components/pages/Catalogo";
-import Ofertas from "./components/pages/Oferta"; // ✅ Importación agregada
+import Ofertas from "./components/pages/Oferta";
+import Inicio_sesion from "./components/pages/Inicio_sesion"; // ✅ Agregado para el manejo híbrido
 
 // --- Montaje principal de React ---
 document.addEventListener("DOMContentLoaded", () => {
@@ -27,15 +28,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const root = createRoot(rootDiv);
   const path = window.location.pathname;
 
-  // ✅ Montaje según página actual (modo híbrido)
+  // ✅ Modo híbrido: detecta qué HTML está cargado
   if (path.includes("detalle_product.html")) {
     root.render(<Detalle_product />);
-  } else if (path.includes("catalogo")) {
+  } else if (path.includes("catalogo.html") || path.includes("catalogo")) {
     root.render(<Catalogo />);
-  } else if (path.includes("oferta")) {
+  } else if (path.includes("oferta.html") || path.includes("oferta")) {
     root.render(<Ofertas />);
+  } else if (path.includes("inicio_sesion.html")) {
+    root.render(<Inicio_sesion />);
   } else {
-    // En todas las demás páginas se mantiene el RouterConfig general
+    // Si no es ninguno de los anteriores, usa el RouterConfig global
     root.render(<RouterConfig />);
   }
 });
@@ -137,25 +140,22 @@ document.addEventListener("DOMContentLoaded", () => {
         "Eres menor de 18 años, ¡pide a un adulto que te supervise en las compras!";
     }
 
-     //descuentos
-     let descuento = 0;
+    // --- Descuentos ---
+    let descuento = 0;
 
-// --- descuentos permanentes ---
-if (codigo === "FELICES50") {
-  descuento = 10; // código fijo
-} else if (edad >= 50) {
-  descuento = 50; // descuento por edad
-}
+    // Descuentos permanentes
+    if (codigo === "FELICES50") {
+      descuento = 10;
+    } else if (edad >= 50) {
+      descuento = 50;
+    }
 
-// --- descuentos temporales ---
-const [anio, mes, dia] = fechaNacimiento.split("-").map(Number);
-const hoy = new Date();
-const esCumpleHoy = dia === hoy.getDate() && (mes - 1) === hoy.getMonth();
-const esCorreoDuoc = correo.toLowerCase().endsWith("@duoc.cl");
-
-// esta variable solo indica si hoy tiene descuento, no lo aplica en BD
-const tieneCumpleHoy = esCumpleHoy && esCorreoDuoc;
-
+    // Descuentos temporales
+    const [anio, mes, dia] = fechaNacimiento.split("-").map(Number);
+    const hoy = new Date();
+    const esCumpleHoy = dia === hoy.getDate() && (mes - 1) === hoy.getMonth();
+    const esCorreoDuoc = correo.toLowerCase().endsWith("@duoc.cl");
+    const tieneCumpleHoy = esCumpleHoy && esCorreoDuoc;
 
     try {
       await addUser({
@@ -177,14 +177,14 @@ const tieneCumpleHoy = esCumpleHoy && esCorreoDuoc;
       mensaje.innerText = "El formulario fue enviado correctamente :)";
 
       setTimeout(() => {
+        // 🔁 Redirigir usando ruta HTML estática, no Router
         window.location.href = "/assets/page/inicio_sesion.html";
       }, 1000);
     } catch (error) {
       console.error("Error al guardar usuario: ", error);
-      mensaje.innerText = "Error al guardar usuario en Firebase"
+      mensaje.innerText = "Error al guardar usuario en Firebase";
+    }
+  });
 
-     }
-    });
-
-    console.log("Usuario ingresado:", JSON.parse(localStorage.getItem("usuario")));
+  console.log("Usuario ingresado:", JSON.parse(localStorage.getItem("usuario")));
 });
