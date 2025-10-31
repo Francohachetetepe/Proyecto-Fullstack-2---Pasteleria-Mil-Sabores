@@ -92,19 +92,6 @@ button:hover, .boton:hover {
   max-width: 300px;
 }
 
-.search-input {
-  flex: 1;
-  border: 2px solid #8b4513;
-  border-radius: 25px;
-  padding: 8px 16px;
-  background-color: #fff5e1;
-  color: #5d4037;
-  font-size: 15px;
-  font-family: 'Lato', sans-serif;
-  outline: none;
-  box-shadow: 0 2px 5px rgba(139, 69, 19, 0.15);
-}
-
 .search-input::placeholder {
   color: #a8745b;
 }
@@ -164,11 +151,19 @@ button:hover, .boton:hover {
   flex-direction: column;
   align-items: flex-end;
   justify-content: flex-start;
-  gap: 12px;
+  gap: 8px;
   height: 100%;
-  margin-top: 0 !important;
-  top:32px;
-  transform: translateY(4px); /* pequeño ajuste visual */
+  position: relative;   /* 👈 CLAVE: referencia para posicionar el carrito */
+}
+
+#header-usuario {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* Botones de sesión */
@@ -277,30 +272,29 @@ button:hover, .boton:hover {
 .btn-carrito {
   background-color: #8b4513;
   color: #fff5e1;
-  position:relative;
   border: none;
   border-radius: 25px;
-  padding: 6px 14px;
+  padding: 8px 16px;
   font-size: 14px;
   font-weight: bold;
+  font-family: 'Lato', sans-serif;
   display: flex;
   align-items: center;
   gap: 6px;
-  top: -42px;
-  right: 350px;
-  transition: all 0.3s ease;
-  font-family: 'Lato', sans-serif;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  transform: scale(0.95);
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  top: 70px; /* Ajusta según altura del navbar */
+  z-index: 10;
+  transition: none;         /* ❌ sin transiciones */
+  box-shadow: none;         /* ❌ sin sombra */
+  transform: none;          /* ❌ sin escala */
 }
+
 
 .btn-carrito:hover {
-  background-color: #a05a2b;
-  transform: translateY(-2px);
-}
-
-.carrito-icon {
-  font-size: 16px;
+  background-color: #8b4513; /* mantiene color */
+  opacity: 0.9;              /* solo un leve cambio */
 }
 
 .carrito-total {
@@ -1192,48 +1186,19 @@ button:hover, .boton:hover {
    ============================================================ */
 
 .search-input {
-  flex: 1;
-  padding: 10px 15px;
   border: 2px solid #8b4513;
   border-radius: 25px;
+  padding: 8px 16px;
   background-color: #fff5e1;
   color: #5d4037;
-  outline: none;
+  font-size: 15px;
   font-family: 'Lato', sans-serif;
+  outline: none;
+  box-shadow: 0 2px 5px rgba(139, 69, 19, 0.15);
 }
 
 .search-input:focus {
   border-color: #a05a2b;
-}
-
-.btn-buscar {
-  padding: 10px 20px;
-  background-color: #8b4513;
-  color: #fff5e1;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-
-.btn-buscar:hover {
-  background-color: #a05a2b;
-}
-
-.btn-login, .btn-signup {
-  border: 2px solid #8b4513;
-  border-radius: 25px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  padding: 6px 12px;
-  font-size: 14px;
-}
-
-.btn-login {
-  background: transparent;
-  color: #8b4513;
 }
 
 .btn-login:hover {
@@ -1243,38 +1208,6 @@ button:hover, .boton:hover {
 .btn-signup {
   background-color: #8b4513;
   color: #fff5e1;
-}
-
-.btn-signup:hover {
-  background-color: #a05a2b;
-}
-
-.btn-carrito {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  background-color: #8b4513;
-  color: #fff5e1;
-  border: none;
-  border-radius: 25px;
-  padding: 8px 16px;
-  font-size: 14px;
-  font-weight: bold;
-  font-family: 'Lato', sans-serif;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s ease;
-  cursor: pointer;
-  position: absolute;
-  right: 60px;          /* mueve horizontalmente según tu gusto */
-  top: 90px;           /* altura exacta para alinearlo con la navbar */
-  transform: translateY(-50%);
-  z-index: 10;
-}
-
-.btn-carrito:hover {
-  background-color: #a05a2b;
-  transform: translateY(-52%);
 }
 
 .carrito-icon {
