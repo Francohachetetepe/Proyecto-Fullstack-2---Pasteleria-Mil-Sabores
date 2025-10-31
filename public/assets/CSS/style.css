@@ -153,14 +153,14 @@ button:hover, .boton:hover {
   justify-content: flex-start;
   gap: 8px;
   height: 100%;
-  position: relative;   /* 👈 CLAVE: referencia para posicionar el carrito */
+  position: relative;   
 }
 
 #header-usuario {
   display: flex;
   align-items: center;
   gap: 10px;
-  max-width: 200px;
+  max-width: 500px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -223,44 +223,54 @@ button:hover, .boton:hover {
   transform: translate(-250px, 8px); /* mueve un poquito a la izquierda y arriba */
 }
 
-/* Nombre del usuario */
-/*.nombre-usuario {
-  font-weight: bold;
-  color: #5d4037;
-  font-size: 14px;
-  background-color: #fff5e1;
-  border-radius: 25px;
-  padding: 4px 10px;
-  box-shadow: 0 2px 3px rgba(0,0,0,0.1);
-}*/
-
-/* Botones del usuario */
-/*.btn-perfil,
-.btn-logout {
-  border: 2px solid #8b4513;
-  border-radius: 20px;
-  padding: 5px 12px;
-  font-size: 13px;
+.dropdown-usuario {
+  position: relative;
+  display: flex;
+  align-items: center;
   cursor: pointer;
+}
+
+/* Botón del dropdown */
+.dropdown-usuario .dropdown-toggle {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-family: 'Lato', sans-serif;
-  transition: all 0.3s ease;
-  background-color: #fff5e1;
+  font-size: 14px;
   color: #8b4513;
-}*/
+  padding: 10px 90px;
+  transform: translate(-80px);
+  transition: background 0.3s;
+}
 
-/* Hover */
-/*.btn-perfil:hover {
+.dropdown-usuario .dropdown-toggle:hover {
+  background-color: #fff5e1
+}
+
+
+/* Mostrar menú cuando tenga la clase 'show' */
+.dropdown-usuario .dropdown-menu.show {
+  display: flex;
+}
+
+/* Items del menú */
+.dropdown-usuario .dropdown-item {
+  padding: 6px 12px;
+  font-size: 13px;
+  color: #8b4513;
+  text-align: left;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.dropdown-usuario .dropdown-item:hover {
   background-color: #f8d9b7;
+  border-radius: 4px;
 }
-
-.btn-logout {
-  background-color: #8b4513;
-  color: #fff5e1;
-}
-
-.btn-logout:hover {
-  background-color: #a05a2b;
-}*/
 
 
 /* 🔹 Carrito más pequeño, con sombra y desplazado a la derecha */

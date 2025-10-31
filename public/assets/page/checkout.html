@@ -43,11 +43,15 @@
     </div>
     
     <!-- 🔹 BLOQUE DERECHO (login + carrito) -->
+    <!-- 🔹 BLOQUE DERECHO (login + carrito) -->
     <div class="header-right">
       <div class="auth-buttons">
-        <button class="btn-login" onclick="window.location.href='inicio_sesion.html'">Iniciar Sesión</button>
-        <button class="btn-signup" onclick="window.location.href='registro_usuario.html'">Crear Cuenta</button>
-      </div>
+        <div class="header-right">
+    <!-- ⬇️ Aquí va tu contenedor dinámico -->
+    <div id="header-usuario" class="auth-buttons">
+      <!-- Se llena dinámicamente con JS -->
+    </div>
+
       <button class="btn-carrito" onclick="window.location.href='carrito.html'">
           <span class="carrito-icon">🛒</span>
           Total: $<span class="carrito-total">0</span>
@@ -160,5 +164,6 @@
   
   <script src="/static/js/bundle.js"></script>
   <script src="../js/checkout.js"></script>
+  <script src="../JS/header.js"></script>
 </body>
 </html>
