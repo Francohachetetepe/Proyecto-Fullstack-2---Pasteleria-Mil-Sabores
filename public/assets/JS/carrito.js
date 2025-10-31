@@ -81,32 +81,66 @@ function inicializarCarrito() {
  * Carga productos en oferta desde Firestore
  */
 async function cargarProductosOferta() {
-    try {
-        const snapshot = await db.collection("producto").get();
-        productosOferta = snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-        }));
-        
-        // Filtrar productos con oferta (precio anterior)
-        const productosConOferta = productosOferta.filter(producto => producto.precioAnterior);
-        renderizarProductosOferta(productosConOferta);
-    } catch (error) {
-        console.error("Error cargando productos en oferta:", error);
-    }
+  try {
+    // 🔹 Trae todos los productos con precio_oferta menor al precio normal
+    const snapshot = await db.collection("producto").get();
+    const productos = snapshot.docs
+      .map(doc => ({ id: doc.id, ...doc.data() }))
+      .filter(p => p.precio_oferta && p.precio_oferta < p.precio);
+
+    productosOferta = productos;
+    renderizarProductosOferta(productos);
+  } catch (error) {
+    console.error("Error cargando productos en oferta:", error);
+    const contenedor = document.getElementById("productosOferta");
+    if (contenedor) contenedor.innerHTML = `<p>Error al cargar las ofertas.</p>`;
+  }
 }
 
 /**
  * Renderiza los productos en oferta
  */
 function renderizarProductosOferta(productos) {
-    const contenedor = document.getElementById('productosOferta');
-    
-    if (productos.length === 0) {
-        contenedor.innerHTML = '<p>No hay productos en oferta en este momento.</p>';
-        return;
-    }
+  const contenedor = document.getElementById('productosOferta');
+  if (!contenedor) return;
 
+  if (productos.length === 0) {
+    contenedor.innerHTML = '<p>No hay productos en oferta en este momento.</p>';
+    return;
+  }
+
+  contenedor.innerHTML = productos.map(producto => {
+    const precioNormal = Number(producto.precio) || 0;
+    const precioOferta = Number(producto.precio_oferta) || 0;
+    const descuento = precioNormal > 0 
+      ? Math.round(((precioNormal - precioOferta) / precioNormal) * 100)
+      : 0;
+
+    return `
+      <div class="producto-card">
+        <img src="${producto.image || '../img/sin-imagen.png'}" 
+             alt="${producto.nombre}" 
+             class="producto-imagen"
+             onerror="this.src='https://via.placeholder.com/400x300/cccccc/969696?text=Imagen+No+Disponible'">
+
+        <div class="producto-info">
+          <h3 class="producto-nombre">${producto.nombre}</h3>
+
+          <div class="precio-superior">
+            <span class="producto-anterior">$${precioNormal.toLocaleString('es-CL')}</span>
+            <span class="producto-precio">$${precioOferta.toLocaleString('es-CL')}</span>
+            ${descuento > 0 ? `<span class="porcentaje-descuento">-${descuento}%</span>` : ''}
+          </div>
+
+          <p class="stock-disponible">Stock: ${producto.stock ?? '—'}</p>
+
+          <button class="btn-agregar-oferta" data-id="${producto.id}">
+            Añadir
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
     contenedor.innerHTML = productos.map(producto => `
         <div class="producto-card">
             <img src="${producto.image}" 
@@ -127,13 +161,13 @@ function renderizarProductosOferta(productos) {
         </div>
     `).join('');
 
-    // Agregar eventos a los botones de añadir
-    document.querySelectorAll('.btn-agregar-oferta').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const productId = this.getAttribute('data-id');
-            agregarProductoAlCarrito(productId);
-        });
+  // Eventos para agregar productos
+  document.querySelectorAll('.btn-agregar-oferta').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const id = this.getAttribute('data-id');
+      agregarProductoAlCarrito(id);
     });
+  });
 }
 
 /**
@@ -159,6 +193,7 @@ function renderizarCarrito() {
     tbody.innerHTML = carrito.map((producto, index) => `
         <tr>
             <td>
+                <img src="${producto.image}" 
                 <img src="${producto.image}" 
                      alt="${producto.nombre}" 
                      class="imagen-tabla"
@@ -446,3 +481,5 @@ function configurarEventos() {
 window.aumentarCantidad = aumentarCantidad;
 window.disminuirCantidad = disminuirCantidad;
 window.eliminarDelCarrito = eliminarDelCarrito;
+
+console.log("Usuario ingresado:", JSON.parse(localStorage.getItem("usuario")));

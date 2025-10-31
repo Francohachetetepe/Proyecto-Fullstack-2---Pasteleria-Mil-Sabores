@@ -494,4 +494,6 @@ document.querySelectorAll('.producto-imagen').forEach(img => {
   window.limpiarCarrito = limpiarCarritoYRestaurarStock;
 
   console.log("Catálogo inicializado correctamente");
+
+console.log("Usuario ingresado:", JSON.parse(localStorage.getItem("usuario")));
 });

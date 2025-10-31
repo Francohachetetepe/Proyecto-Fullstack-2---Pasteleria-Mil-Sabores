@@ -137,16 +137,25 @@ document.addEventListener("DOMContentLoaded", () => {
         "Eres menor de 18 años, ¡pide a un adulto que te supervise en las compras!";
     }
 
-    // --- Descuentos ---
-    let descuento = 0;
-    if (codigo === "FELICES50") descuento = 10;
-    else if (edad >= 50) descuento = 50;
+     //descuentos
+     let descuento = 0;
 
-    const [anio, mes, dia] = fechaNacimiento.split("-").map(Number);
-    const hoy = new Date();
-    const esCumpleHoy = dia === hoy.getDate() && mes - 1 === hoy.getMonth();
-    const esCorreoDuoc = correo.toLowerCase().endsWith("@duoc.cl");
-    const tieneCumpleHoy = esCumpleHoy && esCorreoDuoc;
+// --- descuentos permanentes ---
+if (codigo === "FELICES50") {
+  descuento = 10; // código fijo
+} else if (edad >= 50) {
+  descuento = 50; // descuento por edad
+}
+
+// --- descuentos temporales ---
+const [anio, mes, dia] = fechaNacimiento.split("-").map(Number);
+const hoy = new Date();
+const esCumpleHoy = dia === hoy.getDate() && (mes - 1) === hoy.getMonth();
+const esCorreoDuoc = correo.toLowerCase().endsWith("@duoc.cl");
+
+// esta variable solo indica si hoy tiene descuento, no lo aplica en BD
+const tieneCumpleHoy = esCumpleHoy && esCorreoDuoc;
+
 
     try {
       await addUser({
@@ -172,7 +181,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 1000);
     } catch (error) {
       console.error("Error al guardar usuario: ", error);
-      mensaje.innerText = "Error al guardar usuario en Firebase";
-    }
-  });
+      mensaje.innerText = "Error al guardar usuario en Firebase"
+
+     }
+    });
+
+    console.log("Usuario ingresado:", JSON.parse(localStorage.getItem("usuario")));
 });
