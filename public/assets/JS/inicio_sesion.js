@@ -1,5 +1,3 @@
-
-
 /* al usar react, esto ya no es necesario*/
 /*document.addEventListener("DOMContentLoaded", () => {
 
