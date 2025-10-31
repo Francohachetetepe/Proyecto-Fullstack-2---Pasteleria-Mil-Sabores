@@ -42,24 +42,107 @@ document.addEventListener('DOMContentLoaded', function() {
 /**
  * Carga las regiones en el select correspondiente
  */
-function cargarRegiones() {
-    const selectRegion = document.getElementById('region');
-    
-    // Ordenar regiones alfabéticamente
-    const regionesOrdenadas = Object.keys(regionesComunas).sort();
-    
-    regionesOrdenadas.forEach(region => {
-        const option = document.createElement('option');
-        option.value = region;
-        option.textContent = region;
-        selectRegion.appendChild(option);
+
+async function cargarRegiones() {
+  const selectRegion = document.getElementById('region');
+  selectRegion.innerHTML = '<option value="">Selecciona una región</option>';
+
+  const regionesDesdeFirestore = await obtenerRegionesDesdeFirestore();
+
+  // Eliminar duplicados y ordenar
+  const regionesUnicas = [...new Set(regionesDesdeFirestore)];
+
+  regionesUnicas.sort().forEach(region => {
+    const option = document.createElement('option');
+    option.value = region;
+    option.textContent = region;
+    selectRegion.appendChild(option);
+  });
+}
+/*async function cargarRegiones() {
+  const selectRegion = document.getElementById('region');
+  selectRegion.innerHTML = '<option value="">Selecciona una región</option>';
+
+  const regionesLocales = Object.keys(regionesComunas).map(normalizar);
+  const regionesDesdeFirestore = (await obtenerRegionesDesdeFirestore()).map(normalizar);
+
+  const todasLasRegiones = [...regionesLocales, ...regionesDesdeFirestore];
+  const regionesUnicas = [...new Set(todasLasRegiones)];
+
+  regionesUnicas.sort().forEach(region => {
+    const option = document.createElement('option');
+    option.value = region;
+    option.textContent = region;
+    selectRegion.appendChild(option);
+
+  });
+}*/
+
+async function obtenerRegionesDesdeFirestore() {
+  const db = firebase.firestore();
+  const regiones = [];
+
+  try {
+    const snapshot = await db.collection("regiones").get();
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      if (data.nombre) regiones.push(data.nombre);
     });
+  } catch (error) {
+    console.error("Error al obtener regiones desde Firestore:", error);
+  }
+
+  return regiones;
 }
 
 /**
  * Carga las comunas según la región seleccionada
  */
-function cargarComunas(region) {
+
+async function cargarComunas(region) {
+  const selectComuna = document.getElementById('comuna');
+
+  // 🔹 Limpiar el select
+  selectComuna.innerHTML = '<option value="">Selecciona una comuna</option>';
+
+  // 🔹 Obtener comunas desde Firestore
+  const comunasDesdeBD = await obtenerComunasDesdeFirestore(region);
+
+  // 🔹 Eliminar duplicados y ordenar
+  const comunasUnicas = [...new Set(comunasDesdeBD)];
+
+  comunasUnicas.sort().forEach(comuna => {
+    const option = document.createElement('option');
+    option.value = comuna;
+    option.textContent = comuna;
+    selectComuna.appendChild(option);
+  });
+
+  selectComuna.disabled = false;
+}
+
+async function obtenerComunasDesdeFirestore(regionSeleccionada) {
+  const db = firebase.firestore();
+  const comunas = [];
+
+  try {
+    const snapshot = await db.collection("comunas")
+      .where("region", "==", regionSeleccionada)
+      .get();
+
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      if (data.nombre) comunas.push(data.nombre);
+    });
+  } catch (error) {
+    console.error("Error al obtener comunas desde Firestore:", error);
+  }
+
+  return comunas;
+}
+
+
+/*function cargarComunas(region) {
     const selectComuna = document.getElementById('comuna');
     const comunas = regionesComunas[region] || [];
     
@@ -76,7 +159,10 @@ function cargarComunas(region) {
     
     // Habilitar el select de comunas
     selectComuna.disabled = false;
-}
+}/*
+
+
+
 
 /**
  * Inicializa la interfaz del checkout
