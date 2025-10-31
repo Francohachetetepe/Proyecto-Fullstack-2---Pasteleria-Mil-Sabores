@@ -1,131 +1,77 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Productos</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="stylesheet" href="../CSS/style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detalle del Producto</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../CSS/style.css" />
 </head>
 
 <body>
-   <header class="header">
-        <div class="logo">
-            <a href="../../index.html">
-                <img src="../img/logo-fndo-blanco.png" alt="Logo de la tienda">
-            </a>
-        </div>
-        
-        <nav class="navbar">
-            <a href="../../index.html">Inicio</a>
-            <span>|</span>
-            
-            <div class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="productos.html" id="productosDropdown" role="button">Productos</a>
-                <div class="dropdown-menu" aria-labelledby="productosDropdown">
-                    <a class="dropdown-item" href="productos.html?categoria=Tortas%20Cuadradas">Tortas Cuadradas</a>
-                    <a class="dropdown-item" href="productos.html?categoria=Tortas%20Circulares">Tortas Circulares</a>
-                    <a class="dropdown-item" href="productos.html?categoria=Postres%20Individuales">Postres Individuales</a>
-                    <a class="dropdown-item" href="productos.html?categoria=Productos%20Sin%20Azúcar">Productos Sin Azúcar</a>
-                    <a class="dropdown-item" href="productos.html?categoria=Pastelería%20Tradicional">Pastelería Tradicional</a>
-                    <a class="dropdown-item" href="productos.html?categoria=Productos%20Sin%20Gluten">Productos Sin Gluten</a>
-                    <a class="dropdown-item" href="productos.html?categoria=Productos%20Vegana">Productos Vegana</a>
-                    <a class="dropdown-item" href="productos.html?categoria=Tortas%20Especiales">Tortas Especiales</a>
-                </div>
-            </div>
-            <span>|</span>
-            <a href="../page/nosotros.html">Nosotros</a>
-            <span>|</span>
-            <a href="../page/blogs.html">Blogs</a>
-            <span>|</span>
-            <a href="../page/contacto.html">Contacto</a>
-        </nav>
-        
-        <div class="d-flex align-items-center ms-3">
-          
-        </form>
-
-        <div class="acciones-usuario dropdown">
-
-        
-        <div class="carrito">
-            <a href="../page/carrito.html">
-                <i class="bi bi-cart3"></i>
-                <span class="badge" id="contador">0</span>
-            </a>
-        </div>
-    </header>
-
-    <main class="container my-5">
-        <h2 id="tituloCategoria">Detalle del Producto</h2>
-        
-    </main>
-    <div class="producto-detalle container my-5 p-4">
-    <div class="row justify-content-center align-items-center g-4">
-        <!-- Imagen del producto -->
-        <div class="col-12 col-md-5 text-center">
-            <img class="img-producto-detalle" id="img" src="" alt="">
-        </div>
-
-        <!-- Información del producto -->
-        <div class="col-12 col-md-6">
-            
-            <p id="categoria" class="text-muted mb-2"></p>
-            <div style="display: flex; align-items: center; gap: 40px;" >
-                <h2 id="nombre" class="mb-3" ></h2>
-                
-                <h2 class="mb-3" id="precio"></h2>
-            </div>
-            <p id="descripcion" class="mb-4"></p>
-            <div class="personalizacion">
-            <label>
-                <input type="checkbox" id="chkPersonalizacion">
-                ¿Deseas añadir un mensaje especial en la torta?
-            </label>
-            
-            <!-- Campo oculto por defecto -->
-            <input type="text" 
-                id="mensajePersonalizado" 
-                class="form-control mt-2" 
-                placeholder="Escribe tu mensaje (máx. 30 caracteres)" 
-                maxlength="30" 
-                style="display:none;">
-            </div>
-            <br>
-            <div class="cantidad-container-detalle">
-                <h3> Cantidad </h3>
-                <select id="cantidad" name="cantidad">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                </select>
-            </div>
-            <br>
-            <div class="botones-container-detalle"  >
-                <button class="boton" id="btnAgregarCarrito" style="padding: 10px 200px;" onclick="alert('Agregaste al carrito')" >Agregar al carrito</button>
-            </div>
-            <br>
-            <br>
-            <div class="compartir">
-                <p>¡Comparte este producto!</p>
-                <button class="btn-facebook">Facebook</button>
-                <button class="btn-twitter">Twitter</button>
-                <button class="btn-whatsapp">WhatsApp</button>
-            </div>
-        </div>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo">
+      <a href="../../index.html">
+        <img src="../img/logo-fndo-blanco.png" alt="Logo" />
+      </a>
     </div>
-    <!-- Productos aleatorios -->
-    <main class="container my-5">
-        <h2 id="tituloCategoria">Productos que te pueden interesar</h2>
-        <div id="contenedorMiniCatalogo" class="row g-4 mt-3"></div>
-    </main>
-</div>
-    <div id="react-root"></div>
-    <script src="/static/js/bundle.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-    <script src="../JS/script.js"></script>
+
+    <nav class="navbar">
+      <a href="../../index.html">Inicio</a>
+      <span>|</span>
+      <a href="../page/catalogo.html">Catálogo</a>
+      <span>|</span>
+      <a href="../page/ofertas.html">Ofertas</a>
+      <span>|</span>
+      <a href="../page/contacto.html">Contacto</a>
+    </nav>
+
+    <div class="carrito">
+      <a href="../page/carrito.html">
+        <i class="bi bi-cart3"></i>
+        <span class="badge" id="contador">0</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="container my-5">
+    <div class="producto-detalle row justify-content-center align-items-start g-5">
+      <!-- Imagen principal -->
+      <div class="col-12 col-md-5 text-center">
+        <img id="imgProducto" src="../img/placeholder.jpg" alt="Producto" class="img-fluid rounded shadow" />
+      </div>
+
+      <!-- Detalles -->
+      <div class="col-12 col-md-6">
+        <h2 id="nombreProducto" class="fw-bold mb-3">Nombre del producto</h2>
+        <p id="categoriaProducto" class="text-muted mb-2"></p>
+        <h3 id="precioProducto" class="text-danger mb-4">$0</h3>
+        <p id="descripcionProducto" class="mb-4"></p>
+
+        <div class="mb-3">
+          <label for="cantidad" class="form-label fw-bold">Cantidad</label>
+          <input id="cantidad" type="number" class="form-control" min="1" value="1" style="max-width: 100px" />
+        </div>
+
+        <button id="btnAgregarCarrito" class="boton">🛒 Agregar al carrito</button>
+      </div>
+    </div>
+
+    <!-- Productos relacionados -->
+    <hr class="my-5" />
+    <section>
+      <h3 class="text-center mb-4">Productos relacionados</h3>
+      <div id="relacionados" class="row g-4 justify-content-center"></div>
+    </section>
+  </main>
+
+  <footer class="bg-dark text-white text-center p-3 mt-5">
+    By CodeLegion FKR © 2025
+  </footer>
+
+  <div id="react-root"></div>
+  <script src="/static/js/bundle.js"></script>
 </body>
 </html>
