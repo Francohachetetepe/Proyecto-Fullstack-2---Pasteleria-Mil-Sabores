@@ -148,12 +148,12 @@ button:hover, .boton:hover {
 /* 🔹 BLOQUE DERECHO (botones + carrito) */
 .header-right {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: flex-start;
-  gap: 8px;
+  flex-direction: column;       /* 🔹 en línea, no en columna */
+  align-items: center;       /* 🔹 centrado verticalmente */
+  justify-content: flex-end; /* 🔹 pegado a la derecha */
+  gap: 20px;                 /* 🔹 espacio entre usuario y carrito */
   height: 100%;
-  position: relative;   
+  position: relative;
 }
 
 #header-usuario {
@@ -235,14 +235,14 @@ button:hover, .boton:hover {
   background: none;
   border: none;
   display: flex;
-  align-items: center;
-  gap: 8px;
+  align-items: center;    /* ✅ ícono y nombre centrados */
+  gap: 6px;
   font-family: 'Lato', sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   color: #8b4513;
-  padding: 10px 90px;
-  transform: translate(-80px);
-  transition: background 0.3s;
+  padding: 8px 14px;      /* 🔹 más compacto */
+  cursor: pointer;
+  transition: background 0.3s ease;
 }
 
 .dropdown-usuario .dropdown-toggle:hover {
@@ -292,9 +292,9 @@ button:hover, .boton:hover {
   align-items: center;
   gap: 6px;
   cursor: pointer;
-  position: absolute;
+  position: relative;
   right: 0;
-  top: 70px; /* Ajusta según altura del navbar */
+  bottom: 10px; /* Ajusta según altura del navbar */
   z-index: 10;
   transition: none;         /* ❌ sin transiciones */
   box-shadow: none;         /* ❌ sin sombra */
