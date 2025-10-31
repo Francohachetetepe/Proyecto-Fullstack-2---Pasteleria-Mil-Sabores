@@ -146,25 +146,29 @@ button:hover, .boton:hover {
 }
 
 /* 🔹 BLOQUE DERECHO (botones + carrito) */
+
 .header-right {
   display: flex;
-  flex-direction: column;       /* 🔹 en línea, no en columna */
-  align-items: center;       /* 🔹 centrado verticalmente */
-  justify-content: flex-end; /* 🔹 pegado a la derecha */
-  gap: 20px;                 /* 🔹 espacio entre usuario y carrito */
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 20px;
   height: 100%;
   position: relative;
+  max-width: 100%;  /* para que no se corte */
+  overflow: visible; /* que los botones no se oculten */
 }
 
-#header-usuario {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  max-width: 500px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.dropdown {
+  margin-left: 20px; /* o ajusta según convenga */
+  /* o alternativamente */
+  position: relative;
+  left: -500px;
 }
+
+
+
+
 
 /* Botones de sesión */
 .auth-buttons {
@@ -213,14 +217,11 @@ button:hover, .boton:hover {
 /* Contenedor del usuario dentro del header */
 .usuario-info {
   display: flex;
-  flex-direction: row;    /* nombre y botones en fila */
-  align-items: center;    /* centrados verticalmente */
-  gap: 10px;              /* espacio entre nombre y botones */
-
-
-/* Ajustes de posición */
-  margin-bottom: 4px;      /* separa del carrito */
-  transform: translate(-250px, 8px); /* mueve un poquito a la izquierda y arriba */
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 0; /* evita separación vertical */
+  transform: none;  /* elimina el desplazamiento */
 }
 
 .dropdown-usuario {
@@ -257,11 +258,12 @@ button:hover, .boton:hover {
 
 /* Items del menú */
 .dropdown-usuario .dropdown-item {
-  padding: 6px 12px;
+  padding: 10px 14px;
   font-size: 13px;
   color: #8b4513;
   text-align: left;
-  border: none;
+  border: 2px;
+  border-radius: 12px;
   background: none;
   cursor: pointer;
   transition: background 0.2s;
@@ -294,7 +296,7 @@ button:hover, .boton:hover {
   cursor: pointer;
   position: relative;
   right: 0;
-  bottom: 10px; /* Ajusta según altura del navbar */
+  bottom: 0px; /* Ajusta según altura del navbar */
   z-index: 10;
   transition: none;         /* ❌ sin transiciones */
   box-shadow: none;         /* ❌ sin sombra */
