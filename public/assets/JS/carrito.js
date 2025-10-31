@@ -202,122 +202,165 @@ function renderizarCarrito() {
  * Agrega un producto al carrito
  */
 function agregarProductoAlCarrito(productId) {
-    const producto = productosOferta.find(p => p.id === productId);
-    
-    if (producto) {
-        // Verificar stock antes de agregar
-        if (producto.stock <= 0) {
-            mostrarNotificacion('Producto sin stock disponible', 'error');
-            return;
-        }
-        
-        // Verificar si el producto ya está en el carrito
-        const productoExistente = carrito.find(item => item.id === productId);
-        
-        if (productoExistente) {
-            productoExistente.cantidad = (productoExistente.cantidad || 1) + 1;
-        } else {
-            carrito.push({
-                ...producto,
-                cantidad: 1
-            });
-        }
-        
-        guardarCarrito();
-        renderizarCarrito();
-        calcularTotal();
-        
-        // ACTUALIZAR STOCK EN FIREBASE - AGREGAR ESTA LÍNEA
-        actualizarStockFirebase(productId, 1);
-        
-        mostrarNotificacion(`"${producto.nombre}" agregado al carrito`);
+  const producto = productosOferta.find(p => p.id === productId);
+  
+  if (!producto) return;
+  
+  // Verificar stock antes de agregar
+  if (producto.stock <= 0) {
+    mostrarNotificacion('Producto sin stock disponible', 'error');
+    return;
+  }
+
+  // Calcular precio final (oferta o normal)
+  const precioFinal = producto.precio_oferta && producto.precio_oferta < producto.precio
+    ? producto.precio_oferta
+    : producto.precio;
+
+  // Buscar si ya existe en carrito
+  const productoExistente = carrito.find(item => item.id === productId);
+
+  if (productoExistente) {
+    if (productoExistente.cantidad >= producto.stock) {
+      mostrarNotificacion('No hay suficiente stock disponible', 'error');
+      return;
     }
+    productoExistente.cantidad++;
+  } else {
+    carrito.push({
+      ...producto,
+      precio: precioFinal,
+      cantidad: 1
+    });
+  }
+
+  // Guardar y refrescar interfaz
+  guardarCarrito();
+  renderizarCarrito();
+  calcularTotal();
+  actualizarCarritoHeader();
+
+  // 🔸 Actualizar stock real y reflejarlo en pantalla
+  actualizarStockFirebase(producto.id, 1)
+    .then(nuevoStock => {
+      if (nuevoStock !== null) {
+        producto.stock = nuevoStock; // actualizar stock en memoria
+        console.log(`Stock actualizado localmente: ${producto.nombre} → ${nuevoStock}`);
+        renderizarProductosOferta(productosOferta); // refrescar las tarjetas
+      }
+    });
+
+  mostrarNotificacion(`"${producto.nombre}" agregado al carrito`);
 }
 
 /**
  * Actualizar stock en Firebase cuando se agrega al carrito
  */
 async function actualizarStockFirebase(productId, cantidad) {
-    try {
-        const productoRef = db.collection("producto").doc(productId);
-        const productoDoc = await productoRef.get();
-        
-        if (productoDoc.exists) {
-            const stockActual = productoDoc.data().stock;
-            const nuevoStock = stockActual - cantidad;
-            
-            await productoRef.update({
-                stock: nuevoStock
-            });
-            
-            console.log(`Stock actualizado: ${productoDoc.data().nombre} - Nuevo stock: ${nuevoStock}`);
-        }
-    } catch (error) {
-        console.error("Error actualizando stock en Firebase:", error);
-    }
+  try {
+    const productoRef = db.collection("producto").doc(productId);
+    const productoDoc = await productoRef.get();
+
+    if (!productoDoc.exists) return null;
+
+    const data = productoDoc.data();
+    const stockActual = Number(data.stock) || 0;
+    const nuevoStock = stockActual - cantidad;
+
+    // 🔹 Asegurar que el stock nunca sea negativo
+    const stockFinal = nuevoStock < 0 ? 0 : nuevoStock;
+
+    await productoRef.update({ stock: stockFinal });
+    console.log(`✅ Stock actualizado en Firebase: ${data.nombre} (${stockActual} → ${stockFinal})`);
+
+    return stockFinal; // devolver nuevo valor real
+  } catch (error) {
+    console.error("Error actualizando stock en Firebase:", error);
+    return null;
+  }
 }
 
 /**
  * Restaurar stock cuando se elimina del carrito
  */
 async function restaurarStockFirebase(productId, cantidad) {
-    try {
-        const productoRef = db.collection("producto").doc(productId);
-        const productoDoc = await productoRef.get();
-        
-        if (productoDoc.exists) {
-            const stockActual = productoDoc.data().stock;
-            const nuevoStock = stockActual + cantidad;
-            
-            await productoRef.update({
-                stock: nuevoStock
-            });
-            
-            console.log(`Stock restaurado: ${productoDoc.data().nombre} - Nuevo stock: ${nuevoStock}`);
-        }
-    } catch (error) {
-        console.error("Error restaurando stock en Firebase:", error);
+  try {
+    const productoRef = db.collection("producto").doc(productId);
+    const productoDoc = await productoRef.get();
+    
+    if (productoDoc.exists) {
+      const stockActual = productoDoc.data().stock || 0;
+      const nuevoStock = stockActual + cantidad;
+      
+      await productoRef.update({
+        stock: nuevoStock
+      });
+      
+      console.log(`Stock restaurado: ${productoDoc.data().nombre} - Nuevo stock: ${nuevoStock}`);
+      return nuevoStock; // 👈 importante
     }
+  } catch (error) {
+    console.error("Error restaurando stock en Firebase:", error);
+  }
+  return null;
 }
 
 
 /**
  * Aumenta la cantidad de un producto en el carrito
  */
-function aumentarCantidad(index) {
-    const producto = carrito[index];
-    
-    // Verificar stock antes de aumentar
-    if (producto.stock <= producto.cantidad) {
-        mostrarNotificacion('No hay suficiente stock disponible', 'error');
-        return;
-    }
-    
-    carrito[index].cantidad = (carrito[index].cantidad || 1) + 1;
-    guardarCarrito();
-    renderizarCarrito();
-    calcularTotal();
-    
-    // Actualizar stock en Firebase
-    actualizarStockFirebase(producto.id, 1);
+async function aumentarCantidad(index) {
+  const producto = carrito[index];
+  
+  // Verificar stock antes de aumentar
+  if (producto.stock <= producto.cantidad) {
+    mostrarNotificacion('No hay suficiente stock disponible', 'error');
+    return;
+  }
+
+  carrito[index].cantidad++;
+  guardarCarrito();
+  renderizarCarrito();
+  calcularTotal();
+
+  // 🔹 Actualizar stock en Firebase
+  const nuevoStock = await actualizarStockFirebase(producto.id, 1);
+  
+  // 🔹 Actualizar stock también en memoria local (productosOferta)
+  const productoOferta = productosOferta.find(p => p.id === producto.id);
+  if (productoOferta && nuevoStock !== null) {
+    productoOferta.stock = nuevoStock;
+  }
+
+  // 🔹 Re-renderizar ofertas para reflejar el nuevo stock
+  renderizarProductosOferta(productosOferta);
 }
 
 
 /**
  * Disminuye la cantidad de un producto en el carrito
  */
-function disminuirCantidad(index) {
-    const producto = carrito[index];
+async function disminuirCantidad(index) {
+  const producto = carrito[index];
+
+  if (producto.cantidad > 1) {
+    carrito[index].cantidad--;
+    guardarCarrito();
+    renderizarCarrito();
+    calcularTotal();
+
+    // 🔹 Restaurar stock en Firebase
+    const nuevoStock = await restaurarStockFirebase(producto.id, 1);
     
-    if (carrito[index].cantidad > 1) {
-        carrito[index].cantidad--;
-        guardarCarrito();
-        renderizarCarrito();
-        calcularTotal();
-        
-        // Restaurar stock en Firebase
-        restaurarStockFirebase(producto.id, 1);
+    // 🔹 Actualizar stock también en memoria local (productosOferta)
+    const productoOferta = productosOferta.find(p => p.id === producto.id);
+    if (productoOferta && nuevoStock !== null) {
+      productoOferta.stock = nuevoStock;
     }
+
+    // 🔹 Re-renderizar ofertas para reflejar el nuevo stock
+    renderizarProductosOferta(productosOferta);
+  }
 }
 
 /**
@@ -397,19 +440,41 @@ function guardarCarrito() {
 /**
  * Limpia todo el carrito
  */
-function limpiarCarrito() {
-    if (carrito.length === 0) {
-        alert('El carrito ya está vacío');
-        return;
+async function limpiarCarrito() {
+  if (carrito.length === 0) {
+    alert('El carrito ya está vacío');
+    return;
+  }
+
+  if (!confirm('¿Estás seguro de que quieres limpiar todo el carrito?')) {
+    return;
+  }
+
+  // 1. Recorremos el carrito ANTES de vaciarlo
+  for (const item of carrito) {
+    const cant = item.cantidad || 1;
+
+    // 🔄 Restaurar en Firestore
+    const nuevoStock = await restaurarStockFirebase(item.id, cant);
+
+    // 🔄 Reflejar también en memoria local (productosOferta)
+    const productoOferta = productosOferta.find(p => p.id === item.id);
+    if (productoOferta && nuevoStock !== null) {
+      productoOferta.stock = nuevoStock;
     }
-    
-    if (confirm('¿Estás seguro de que quieres limpiar todo el carrito?')) {
-        carrito = [];
-        guardarCarrito();
-        renderizarCarrito();
-        calcularTotal();
-        mostrarNotificacion('Carrito limpiado correctamente');
-    }
+  }
+
+  // 2. Vaciar carrito en memoria y en localStorage
+  carrito = [];
+  guardarCarrito();
+
+  // 3. Refrescar pantallas
+  renderizarCarrito();
+  calcularTotal();
+  actualizarCarritoHeader();
+  renderizarProductosOferta(productosOferta);
+
+  mostrarNotificacion('Carrito limpiado correctamente');
 }
 
 /**
