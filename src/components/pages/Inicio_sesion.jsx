@@ -20,18 +20,22 @@ const LoginForm = () => {
     setMensaje("⏳ Verificando credenciales...");
 
     try {
+      // Intentar login con Firebase Auth (admin o cliente registrado en Auth)
+      const userCredential = await auth.signInWithEmailAndPassword(correo, password);
+      const user = userCredential.user;
+
+      //Verificar si es el admin
       if (correo === "admin@admin.cl") {
-        await auth.signInWithEmailAndPassword(correo, password);
         localStorage.setItem("usuario", JSON.stringify({ nombre: "Administrador", correo, rol: "admin" }));
         setMensaje("✅ Bienvenido Administrador, redirigiendo...");
         setTimeout(() => window.location.href = "../page/home_admin.html", 1000);
         return;
       }
 
+      //Si no es admin, buscar en Firestore para obtener más datos
       const q = query(
         collection(db, "usuario"),
-        where("correo", "==", correo),
-        where("password", "==", password)
+        where("correo", "==", correo)
       );
       const result = await getDocs(q);
 
@@ -41,11 +45,15 @@ const LoginForm = () => {
         setMensaje("✅ Bienvenido Cliente, redirigiendo...");
         setTimeout(() => window.location.href = "../page/saludo.html", 1000);
       } else {
-        setMensaje("❌ Correo o contraseña incorrectos.");
+        // Si no está en Firestore, igual lo dejamos pasar como cliente básico
+        localStorage.setItem("usuario", JSON.stringify({ nombre: correo, correo, rol: "cliente" }));
+        setMensaje("✅ Sesión iniciada, redirigiendo...");
+        setTimeout(() => window.location.href = "../page/saludo.html", 1000);
       }
+
     } catch (error) {
       console.error("Error en login:", error);
-      setMensaje("❌ Error al verificar usuario.");
+      setMensaje("❌ Correo o contraseña incorrectos.");
     }
   };
 
@@ -90,51 +98,3 @@ const LoginForm = () => {
 
 export default LoginForm;
 
-
-/*import { useEffect } from "react";
-import { auth } from "../../config/firebase";
-
-const Registro_usuario = () => {
-  useEffect(() => {
-    const form = document.getElementById("formLogin");
-    const togglePass = document.getElementById("togglePass");
-    const mensajeLogin = document.getElementById("mensajeLogin");
-    const passwordInput = document.getElementById("password");
-
-    // 🔹 Mostrar/ocultar contraseña
-    togglePass?.addEventListener("click", () => {
-      if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-        togglePass.textContent = "Ocultar";
-      } else {
-        passwordInput.type = "password";
-        togglePass.textContent = "Mostrar";
-      }
-    });
-
-    // 🔹 Login con Firebase Auth
-    form?.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const correo = document.getElementById("correo").value;
-      const password = passwordInput.value;
-
-      try {
-        await auth.signInWithEmailAndPassword(correo, password);
-        mensajeLogin.textContent = "✅ Sesión iniciada correctamente.";
-        mensajeLogin.style.color = "green";
-
-        setTimeout(() => {
-          window.location.href = "../../index.html";
-        }, 1500);
-      } catch (error) {
-        mensajeLogin.textContent =
-          "❌ Error: correo o contraseña incorrectos.";
-        mensajeLogin.style.color = "brown";
-      }
-    });
-  }, []);
-
-  return null;
-};
-
-export default Registro_usuario;*/
