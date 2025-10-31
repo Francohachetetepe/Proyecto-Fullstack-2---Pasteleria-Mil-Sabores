@@ -2234,3 +2234,44 @@ button:hover, .boton:hover {
   gap: 8px;
   justify-content: center;
 }
+
+/* ============================
+   🔹 Mensaje de registro/login
+   ============================ */
+.mensaje-registro {
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  border-radius: 10px;
+  padding: 15px 20px;
+  margin: 20px auto;
+  max-width: 700px;
+  text-align: center;
+  font-size: 1rem;
+  color: #856404;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.mensaje-registro p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.mensaje-registro a {
+  font-weight: bold;
+  text-decoration: none;
+  color: #6b4f3b;
+  transition: color 0.2s ease;
+}
+
+.mensaje-registro a:hover {
+  color: #a86c4f;
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .mensaje-registro {
+    font-size: 0.9rem;
+    padding: 12px;
+    margin: 15px;
+  }
+}
