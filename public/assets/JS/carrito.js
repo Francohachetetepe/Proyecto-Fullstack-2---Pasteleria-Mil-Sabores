@@ -528,3 +528,6 @@ window.disminuirCantidad = disminuirCantidad;
 window.eliminarDelCarrito = eliminarDelCarrito;
 
 console.log("Usuario ingresado:", JSON.parse(localStorage.getItem("usuario")));
+
+// 🔄 Mantener sincronizado el total del header en todas las vistas
+document.addEventListener('DOMContentLoaded', actualizarCarritoHeader);
