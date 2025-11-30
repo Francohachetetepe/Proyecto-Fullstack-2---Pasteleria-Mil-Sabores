@@ -33,6 +33,13 @@ class DashboardManager {
                 messagingSenderId: "408928911689",
                 appId: "1:408928911689:web:d8b313c7e15fc528661a98",
                 measurementId: "G-Y1DW47VEWZ"
+                /*apiKey: "AIzaSyAzRg6nsE4TZgdvMeeU7Nvjo64k7m8HrrE",
+                authDomain: "tiendapasteleriamilsabor-de980.firebaseapp.com",
+                projectId: "tiendapasteleriamilsabor-de980",
+                storageBucket: "tiendapasteleriamilsabor-de980.firebasestorage.app",
+                messagingSenderId: "925496431859",
+                appId: "1:925496431859:web:ff7f0ae09b002fe94e5386",
+                measurementId: "G-1X6TSB46XN"*/
             };
 
             if (typeof firebase === 'undefined') {
