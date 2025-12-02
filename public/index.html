@@ -44,23 +44,21 @@
             </nav>
         </div>
         
-        <!-- 🔹 BLOQUE DERECHO (login + carrito) -->
         <div class="header-right">
             <div class="auth-buttons">
                 <div class="header-right">
                     <!-- ⬇️ Aquí va tu contenedor dinámico -->
-                    <div id="header-usuario" class="auth-buttons">
+                     <div id="header-usuario" class="auth-buttons">
                         <!-- Se llena dinámicamente con JS -->
+                        </div>
+                        <button class="btn-carrito" onclick="window.location.href='carrito.html'">
+                            <span class="carrito-icon">🛒</span>
+                            Total: $<span class="carrito-total">0</span>
+                        </button>
                     </div>
-                    
-                    <button class="btn-carrito" onclick="window.location.href='assets/page/carrito.html'">
-                        <span class="carrito-icon">🛒</span>
-                        Total: $<span class="carrito-total">0</span>
-                    </button>
                 </div>
             </div>
-        </div>
-    </header>
+        </header>
 
     <!-- carrusel -->
      <div class="carrusel">
@@ -265,9 +263,9 @@
             </div>
         </div>
     </footer>
-    <!--<script src="/static/js/bundle.js"></script>
+    <script src="/static/js/bundle.js"></script>
     <script src="assets/JS/header.js"></script>
-    <script src="assets/JS/carritoHeader.js"></script>--
+    <script src="assets/JS/carritoHeader.js"></script>
     
 </body>
 </html>
