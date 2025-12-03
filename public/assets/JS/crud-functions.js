@@ -1360,8 +1360,7 @@ function actualizarPerfil(event) {
     
     const perfilData = {
         nombre: document.getElementById('profileNombre').value,
-        email: document.getElementById('profileEmail').value,
-        clave: document.getElementById('profileClave').value,
+        email: document.getElementById('profileCorreo').value,
         telefono: document.getElementById('profileTelefono').value
     };
 
