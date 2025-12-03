@@ -1,0 +1,511 @@
+openapi: 3.0.0
+info:
+  title: API Panel de Administración - Tienda Online
+  description: Documentación de servicios Firebase Firestore - Los ejemplos son estáticos
+  version: 1.0.0
+servers:
+  - url: https://firestore.googleapis.com/v1
+
+tags:
+  - name: Dashboard
+  - name: Productos
+  - name: Órdenes
+  - name: Usuarios
+  - name: Regiones
+  - name: Contacto
+  - name: Administrador
+
+paths:
+  /api/productos:
+    get:
+      tags:
+        - Productos
+      summary: Obtener lista de productos
+      description: Obtiene todos los productos desde la colección "producto" de Firebase Firestore.
+      responses:
+        '200':
+          description: Lista de productos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Producto'
+    post:
+      tags:
+        - Productos
+      summary: Crear un nuevo producto
+      description: Crea un nuevo producto en la colección "producto" de Firebase Firestore.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductoInput'
+      responses:
+        '201':
+          description: Producto creado correctamente
+  /api/productos/{id}:
+    get:
+      tags:
+        - Productos
+      summary: Obtener detalles de un producto
+      description: Obtiene el producto desde la colección "producto" por su ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Detalles del producto
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Producto'
+    put:
+      tags:
+        - Productos
+      summary: Actualizar producto
+      description: Actualiza un producto en la colección "producto" de Firebase Firestore.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductoInput'
+      responses:
+        '200':
+          description: Producto actualizado correctamente
+    delete:
+      tags:
+        - Productos
+      summary: Eliminar producto
+      description: Elimina un producto de la colección "producto" en Firebase Firestore.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Producto eliminado correctamente
+
+  /api/ordenes:
+    get:
+      tags:
+        - Órdenes
+      summary: Obtener lista de órdenes
+      description: Obtiene todas las órdenes desde la colección "compras" de Firebase Firestore.
+      responses:
+        '200':
+          description: Lista de órdenes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Orden'
+    post:
+      tags:
+        - Órdenes
+      summary: Crear una nueva orden
+      description: Crea una nueva orden en la colección "compras" de Firebase Firestore.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrdenInput'
+      responses:
+        '201':
+          description: Orden creada correctamente
+  /api/ordenes/{id}:
+    get:
+      tags:
+        - Órdenes
+      summary: Obtener detalles de una orden
+      description: Obtiene los detalles de una orden desde la colección "compras" por su ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Detalles de la orden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Orden'
+    put:
+      tags:
+        - Órdenes
+      summary: Actualizar estado de la orden
+      description: Actualiza el estado de una orden en la colección "compras" de Firebase Firestore.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrdenInput'
+      responses:
+        '200':
+          description: Estado de la orden actualizado correctamente
+
+  /api/usuarios:
+    get:
+      tags:
+        - Usuarios
+      summary: Obtener lista de usuarios
+      description: Obtiene todos los usuarios desde la colección "usuario" de Firebase Firestore.
+      responses:
+        '200':
+          description: Lista de usuarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Usuario'
+    post:
+      tags:
+        - Usuarios
+      summary: Crear un nuevo usuario
+      description: Crea un nuevo usuario en la colección "usuario" de Firebase Firestore.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsuarioInput'
+      responses:
+        '201':
+          description: Usuario creado correctamente
+    put:
+      tags:
+        - Usuarios
+      summary: Actualizar información de usuario
+      description: Permite al usuario actualizar su nombre y número de contacto.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsuarioInput'
+      responses:
+        '200':
+          description: Usuario actualizado correctamente
+    delete:
+      tags:
+        - Usuarios
+      summary: Eliminar usuario
+      description: Elimina un usuario de la colección "usuario" en Firebase Firestore.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Usuario eliminado correctamente
+
+  /api/contacto:
+    get:
+      tags:
+        - Contacto
+      summary: Obtener todos los formularios de contacto
+      description: El administrador puede visualizar todos los formularios de contacto enviados.
+      responses:
+        '200':
+          description: Lista de formularios de contacto
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contacto'
+    post:
+      tags:
+        - Contacto
+      summary: Enviar formulario de contacto
+      description: Envía un mensaje desde el formulario de contacto y lo guarda en la colección "contacto".
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactoInput'
+      responses:
+        '201':
+          description: Mensaje de contacto enviado correctamente
+    put:
+      tags:
+        - Contacto
+      summary: Modificar formulario de contacto
+      description: Permite al administrador modificar un formulario de contacto existente.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactoInput'
+      responses:
+        '200':
+          description: Formulario de contacto actualizado correctamente
+    delete:
+      tags:
+        - Contacto
+      summary: Eliminar formulario de contacto
+      description: Elimina un formulario de contacto desde la colección "contacto".
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Formulario de contacto eliminado correctamente
+
+  /api/admin:
+    put:
+      tags:
+        - Administrador
+      summary: Actualizar información del administrador
+      description: Permite al administrador modificar su información en Firebase Authentication.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminInput'
+      responses:
+        '200':
+          description: Información del administrador actualizada correctamente
+
+components:
+  schemas:
+    Producto:
+      type: object
+      properties:
+        id:
+          type: string
+        nombre:
+          type: string
+        descripcion:
+          type: string
+        precio:
+          type: number
+        precio_oferta:
+          type: number
+        stock:
+          type: integer
+        categoria:
+          type: string
+        image:
+          type: string
+        activo:
+          type: boolean
+          nullable: true
+        updatedAt:
+          type: string
+          format: date-time
+          nullable: true
+    ProductoInput:
+      type: object
+      properties:
+        nombre:
+          type: string
+        descripcion:
+          type: string
+        precio:
+          type: number
+        precio_oferta:
+          type: number
+        stock:
+          type: integer
+        categoria:
+          type: string
+        image:
+          type: string
+    Orden:
+      type: object
+      properties:
+        cliente:
+          type: object
+          properties:
+            nombre:
+              type: string
+            apellidos:
+              type: string
+            correo:
+              type: string
+        direccion:
+          type: object
+          properties:
+            calle:
+              type: string
+            comuna:
+              type: string
+            departamento:
+              type: string
+            indicaciones:
+              type: string
+            region:
+              type: string
+        estado:
+          type: string
+        fecha:
+          type: string
+          format: date-time
+        numeroOrden:
+          type: string
+        productos:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              nombre:
+                type: string
+              categoria:
+                type: string
+              image:
+                type: string
+              precio:
+                type: number
+              precio_oferta:
+                type: number
+              stock:
+                type: integer
+              cantidad:
+                type: integer
+        total:
+          type: number
+    OrdenInput:
+      type: object
+      properties:
+        cliente:
+          type: object
+          properties:
+            nombre:
+              type: string
+            apellidos:
+              type: string
+            correo:
+              type: string
+        direccion:
+          type: object
+          properties:
+            calle:
+              type: string
+            comuna:
+              type: string
+            departamento:
+              type: string
+            indicaciones:
+              type: string
+            region:
+              type: string
+        productos:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              cantidad:
+                type: integer
+    Region:
+      type: object
+      properties:
+        nombre:
+          type: string
+        comuna:
+          type: array
+          items:
+            type: string
+    Usuario:
+      type: object
+      properties:
+        nombre:
+          type: string
+        apellidos:
+          type: string
+        correo:
+          type: string
+        password:
+          type: string
+        confirmPassword:
+          type: string
+        fechaNacimiento:
+          type: string
+        comuna:
+          type: string
+        region:
+          type: string
+        direccion:
+          type: string
+        run:
+          type: string
+        codigoPromo:
+          type: string
+        descuento:
+          type: number
+        tieneCumpleHoy:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+    Contacto:
+      type: object
+      properties:
+        asunto:
+          type: string
+        email:
+          type: string
+        mensaje:
+          type: string
+        nombre:
+          type: string
+        tipo:
+          type: string
+    AdminInput:
+      type: object
+      properties:
+        nombre:
+          type: string
+        correo:
+          type: string
+        telefono:
+          type: string

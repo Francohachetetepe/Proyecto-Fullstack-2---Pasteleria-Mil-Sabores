@@ -316,6 +316,9 @@ function navegarA(seccion) {
 function irATienda() {
     window.location.href = '../../index.html';
 }
+function irADocApi() {
+    window.location.href = '../../docs/api-launcher.html';
+}
 
 // Inicialización
 document.addEventListener('DOMContentLoaded', () => {
