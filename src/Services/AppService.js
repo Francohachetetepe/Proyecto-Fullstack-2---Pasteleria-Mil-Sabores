@@ -56,10 +56,9 @@ export class UserManager {
         //en localStorage
         this.usuarios.push(nuevoUsuario);
         localStorage.setItem("usuarios", JSON.stringify(this.usuarios));
-        
 
         //en firebase
-         addUser(nuevoUsuario)
+        addUser(nuevoUsuario)
         .then((docRef) => {
             console.log("Usuario guardado en Firebase con ID:", docRef.id);
         })

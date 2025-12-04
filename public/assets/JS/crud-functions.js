@@ -361,7 +361,7 @@ class CRUDFunctions {
                     'productoPrecio': producto.precio || '',
                     'productoStock': producto.stock || '',
                     'productoCategoria': producto.categoria || producto.categoría || '',
-                    'productoImagen': producto.image || ''
+                    'productoImagen': producto.imagen || ''
                 };
 
                 for (const [id, value] of Object.entries(elementos)) {
@@ -391,7 +391,7 @@ class CRUDFunctions {
                 precio: parseFloat(productoData.precio),
                 stock: parseInt(productoData.stock),
                 categoria: productoData.categoria,
-                imagen: productoData.image,
+                image: productoData.image,
                 activo: true,
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             };
@@ -1249,7 +1249,7 @@ function guardarProducto(event) {
         precio: document.getElementById('productoPrecio').value,
         stock: document.getElementById('productoStock').value,
         categoria: document.getElementById('productoCategoria').value,
-        imagen: document.getElementById('productoImagen').value
+        image: document.getElementById('productoImagen').value
     };
 
     if (crudFunctions) {
