@@ -80,7 +80,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProductoInput'  # Revisión del $ref aquí
+              $ref: '#/components/schemas/ProductoInput'
       responses:
         '200':
           description: Producto actualizado correctamente
@@ -124,7 +124,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OrdenInput'  # Revisión del $ref aquí
+              $ref: '#/components/schemas/OrdenInput'
       responses:
         '201':
           description: Orden creada correctamente
@@ -163,10 +163,24 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OrdenInput'  # Revisión del $ref aquí
+              $ref: '#/components/schemas/OrdenInput'
       responses:
         '200':
           description: Estado de la orden actualizado correctamente
+    delete:
+      tags:
+        - Órdenes
+      summary: Eliminar orden
+      description: Elimina una orden de la colección "compras" en Firebase Firestore.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Orden eliminada correctamente
 
   /api/usuarios:
     get:
@@ -183,6 +197,73 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Usuario'
+    post:
+      tags:
+        - Usuarios
+      summary: Crear un nuevo usuario
+      description: Crea un nuevo usuario en la colección "usuario" de Firebase Firestore.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+      responses:
+        '201':
+          description: Usuario creado correctamente
+  /api/usuarios/{id}:
+    get:
+      tags:
+        - Usuarios
+      summary: Obtener detalles de un usuario
+      description: Obtiene los detalles de un usuario desde la colección "usuario" por su ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Detalles del usuario
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+    put:
+      tags:
+        - Usuarios
+      summary: Actualizar información de usuario
+      description: Permite al usuario actualizar su nombre y número de contacto.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+      responses:
+        '200':
+          description: Usuario actualizado correctamente
+    delete:
+      tags:
+        - Usuarios
+      summary: Eliminar usuario
+      description: Elimina un usuario de la colección "usuario" en Firebase Firestore.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Usuario eliminado correctamente
 
   /api/region:
     get:
@@ -201,6 +282,20 @@ paths:
                   $ref: '#/components/schemas/Region'
 
   /api/contacto:
+    get:
+      tags:
+        - Contacto
+      summary: Obtener todos los formularios de contacto
+      description: El administrador puede visualizar todos los formularios de contacto enviados.
+      responses:
+        '200':
+          description: Lista de formularios de contacto
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contacto'
     post:
       tags:
         - Contacto
@@ -215,7 +310,61 @@ paths:
       responses:
         '201':
           description: Mensaje de contacto enviado correctamente
-/api/admin:
+  /api/contacto/{id}:
+    get:
+      tags:
+        - Contacto
+      summary: Obtener detalles de un formulario de contacto
+      description: Obtiene los detalles de un formulario de contacto desde la colección "contacto" por su ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Detalles del formulario de contacto
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contacto'
+    put:
+      tags:
+        - Contacto
+      summary: Modificar formulario de contacto
+      description: Permite al administrador modificar un formulario de contacto existente.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Contacto'
+      responses:
+        '200':
+          description: Formulario de contacto actualizado correctamente
+    delete:
+      tags:
+        - Contacto
+      summary: Eliminar formulario de contacto
+      description: Elimina un formulario de contacto desde la colección "contacto".
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Formulario de contacto eliminado correctamente
+
+  /api/admin:
     put:
       tags:
         - Administrador
@@ -230,6 +379,7 @@ paths:
       responses:
         '200':
           description: Información del administrador actualizada correctamente
+
 components:
   schemas:
     Producto:
@@ -376,6 +526,8 @@ components:
     Usuario:
       type: object
       properties:
+        id:
+          type: string
         nombre:
           type: string
         apellidos:
@@ -408,6 +560,8 @@ components:
     Contacto:
       type: object
       properties:
+        id:
+          type: string
         asunto:
           type: string
         email:
@@ -417,4 +571,13 @@ components:
         nombre:
           type: string
         tipo:
+          type: string
+    AdminInput:
+      type: object
+      properties:
+        nombre:
+          type: string
+        correo:
+          type: string
+        telefono:
           type: string
