@@ -482,6 +482,76 @@
                     </div>
                 </div>
             </section>
+
+            <section id="tienda" style="display: none;">
+                <div class="welcome-section">
+                    <h2 class="welcome-title">Gestión de Promociones</h2>
+                    <p class="welcome-subtitle">
+                        Administra descuentos automáticos, beneficios permanentes y promociones especiales de la tienda.
+                    </p>
+                </div>
+
+                <div class="crud-container">
+
+                    <!-- ==== CARD DE PROMOCIÓN ==== -->
+                    <div class="promo-card crud-info">
+                        <h3 class="promo-title">Promoción Código <span class="promo-highlight">FELICES50</span></h3>
+
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="promoFelices50Activa">
+                            <span class="checkmark"></span>
+                            Activar promoción
+                        </label>
+
+                        <div class="form-group">
+                            <label for="promoFelices50Desc">Descuento (%)</label>
+                            <input type="number" min="0" max="100" id="promoFelices50Desc" placeholder="10">
+                            <span class="text-muted">Porcentaje de descuento aplicado al ingresar el código.</span>
+                        </div>
+                    </div>
+
+                    <!-- ==== CARD DE PROMOCIÓN ==== -->
+                    <div class="promo-card crud-info">
+                        <h3 class="promo-title">Descuento Adulto Mayor (+50 años)</h3>
+
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="promoMayores50Activa">
+                            <span class="checkmark"></span>
+                            Activar promoción
+                        </label>
+
+                        <div class="form-group">
+                            <label for="promoMayores50Desc">Descuento (%)</label>
+                            <input type="number" min="0" max="100" id="promoMayores50Desc" placeholder="50">
+                            <span class="text-muted">Se aplica automáticamente según la fecha de nacimiento.</span>
+                        </div>
+                    </div>
+
+                    <!-- ==== CARD DE PROMOCIÓN ==== -->
+                    <div class="promo-card crud-info">
+                        <h3 class="promo-title">Promoción Cumpleaños DUOC</h3>
+
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="promoDuocActiva">
+                            <span class="checkmark"></span>
+                            Activar promoción
+                        </label>
+
+                        <div class="form-group">
+                            <label for="promoDuocRegalo">Regalo de cumpleaños</label>
+                            <input type="text" id="promoDuocRegalo" placeholder="Torta especial de cumpleaños">
+                            <span class="text-muted">Solo válido para correos @duocuc.cl.</span>
+                        </div>
+                    </div>
+
+                    <!-- ==== BOTONES ==== -->
+                    <div class="form-actions promo-actions">
+                        <button class="btn btn-primary" onclick="guardarPromociones()">Guardar cambios</button>
+                        <button class="btn btn-secondary" onclick="cargarPromociones()">Recargar</button>
+                    </div>
+                </div>
+            </section>
+
         </main>
     </div>
 

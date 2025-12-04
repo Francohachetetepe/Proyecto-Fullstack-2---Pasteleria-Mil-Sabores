@@ -3106,3 +3106,54 @@ button:hover, .boton:hover {
   }
 }
 
+/* === PROMO CARDS — Adaptadas a tu paleta === */
+.promo-card {
+    background: rgb(255, 235, 211);
+    border: 2px solid #8b4513;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 3px 6px rgba(139, 69, 19, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.promo-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 10px rgba(139, 69, 19, 0.25);
+}
+
+/* Títulos */
+.promo-title {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-family: 'Pacifico', cursive;
+    font-size: 1.4rem;
+    color: #8b4513;
+}
+
+.promo-highlight {
+    color: #b33f52;
+}
+
+/* Inputs adaptados */
+.promo-card .form-group input {
+    background-color: #fff5e1;
+    border: 2px solid #d67ca0;
+}
+
+.promo-card .form-group input:focus {
+    border-color: #8b4513;
+}
+
+/* Botones de acciones */
+.promo-actions .btn {
+    border-radius: 8px;
+    padding: 10px 20px;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .promo-card {
+        padding: 1.2rem;
+    }
+}
