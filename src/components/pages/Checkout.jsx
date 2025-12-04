@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { db } from "../../config/firebase";
+import { db } from "../../config/firebase"; // Configuración de Firestore
 import { collection, addDoc, updateDoc, doc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
-
+import { getAuth } from 'firebase/auth';  // Importa getAuth para la autenticación
+import { getFirestore } from 'firebase/firestore';  // Importa getFirestore para Firestore
 
 /**
  * Componente de Checkout - Procesamiento de compra
@@ -81,6 +82,15 @@ const Checkout = () => {
    * Procesa el pago y guarda la compra en Firestore
    */
   const procesarPago = async () => {
+    // Verificar si el usuario está autenticado
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if (!user) {
+      // Si no está autenticado, redirigir a errorPago
+      navigate('/errorPago');
+      return;
+    }
+
     if (!validarFormulario()) return;
 
     setProcesando(true);
@@ -241,7 +251,7 @@ const Checkout = () => {
       {/* Información del Cliente */}
       <section className="info-cliente">
         <h2 className="section-title">Información del Cliente</h2>
-        <p className="section-subtitle">Completa la siguiente información</p>
+        <p className="section-subtitulo">Completa la siguiente información</p>
         
         <div className="form-cliente">
           <div className="form-row">
@@ -282,7 +292,7 @@ const Checkout = () => {
       {/* Dirección de Entrega */}
       <section className="direccion-entrega">
         <h2 className="section-title">Dirección de entrega de los productos</h2>
-        <p className="section-subtitle">Ingrese dirección de forma detallada</p>
+        <p className="section-subtitulo">Ingrese dirección de forma detallada</p>
         
         <div className="form-direccion">
           <div className="form-row">
