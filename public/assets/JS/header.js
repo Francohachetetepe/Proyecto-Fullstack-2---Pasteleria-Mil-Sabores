@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <span>${usuario.nombre}</span>
           </button>
           <div class="dropdown-menu">
-            <a href="saludo.html" class="dropdown-item">Mi perfil</a>
+            <a href="#" id="btn-mi-perfil" class="dropdown-item">Mi perfil</a>
             <button id="cerrar-sesion" class="dropdown-item">Cerrar sesión</button>
           </div>
         </div>
@@ -27,11 +27,24 @@ document.addEventListener("DOMContentLoaded", () => {
       const toggle = header.querySelector(".dropdown-toggle");
       const menu = header.querySelector(".dropdown-menu");
       const btnCerrar = document.getElementById("cerrar-sesion");
+      const btnMiPerfil = document.getElementById("btn-mi-perfil");
 
-      // 🟤 Mostrar/ocultar menú al hacer clic en el nombre
+      // 🟤 Mostrar/ocultar menú
       toggle.addEventListener("click", (e) => {
         e.stopPropagation();
         menu.classList.toggle("show");
+      });
+
+      // 🎯 Redirección correcta según tipo de usuario
+      btnMiPerfil.addEventListener("click", () => {
+        const usuario = JSON.parse(localStorage.getItem("usuario"));
+        if (!usuario) return;
+
+        if (usuario.rol === "admin") {
+          window.location.href = "/assets/page/home_admin.html"; 
+        } else {
+          window.location.href = "/assets/page/saludo.html"; 
+        }
       });
 
       // 🔴 Cerrar sesión
@@ -40,20 +53,22 @@ document.addEventListener("DOMContentLoaded", () => {
         location.reload();
       });
 
-      // ⚪ Cerrar menú si se hace clic fuera del header
+      // ⚪ Cerrar menú si se hace clic fuera
       document.addEventListener("click", (e) => {
         if (!header.contains(e.target)) {
           menu.classList.remove("show");
         }
       });
+
     } else {
-      // 🚪 Usuario no registrado: mostrar botones de login y registro
-      // Detecta si estás en index (raíz) o dentro de /assets/page/
+      // 🚪 Usuario no registrado: mostrar botones de login/registro
       const basePath = window.location.pathname.includes("/assets/page/") ? "./" : "assets/page/";
+
       header.innerHTML = `
         <button class="btn-login" onclick="window.location.href='${basePath}inicio_sesion.html'">Iniciar Sesión</button>
         <button class="btn-signup" onclick="window.location.href='${basePath}registro_usuario.html'">Crear Cuenta</button>
       `;
     }
-  }, 350); // ← ajusta este valor si aún se renderiza después del bundle (500 ms máximo)
+
+  }, 350);
 });
