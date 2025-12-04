@@ -86,446 +86,317 @@ info:
   title: API Panel de Administración - Tienda Online
   description: Documentación de servicios Firebase Firestore - Los ejemplos son estáticos
   version: 1.0.0
-  contact:
-    name: Soporte Técnico
-    email: soporte@tiendaonline.com
-
 servers:
   - url: https://firestore.googleapis.com/v1
-    description: Firebase Firestore API
 
 tags:
   - name: Dashboard
-    description: Operaciones del panel de control
   - name: Productos
-    description: Gestión de productos
   - name: Órdenes
-    description: Gestión de órdenes de compra
   - name: Usuarios
-    description: Gestión de usuarios
-  - name: Categorías
-    description: Gestión de categorías
+  - name: Regiones
+  - name: Contacto
+  - name: Administrador
 
 paths:
-  /api/dashboard/estadisticas:
-    get:
-      tags:
-        - Dashboard
-      summary: Obtener estadísticas del dashboard
-      description: Servicio Firebase - DashboardService.getEstadisticasCompletas()
-      responses:
-        '200':
-          description: Estadísticas obtenidas correctamente
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EstadisticasDashboard'
-              example:
-                totalCompras: 24
-                proyeccionCompras: 15
-                totalProductos: 156
-                inventarioTotal: 1248
-                totalUsuarios: 89
-                nuevosUsuariosMes: 12
-
   /api/productos:
     get:
       tags:
         - Productos
       summary: Obtener lista de productos
-      description: Servicio Firebase - CrudService.getProductos()
+      description: Obtiene todos los productos desde la colección "producto" de Firebase Firestore.
       responses:
         '200':
-          description: Lista de productos obtenida correctamente
+          description: Lista de productos
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Producto'
-              example:
-                - id: "prod123"
-                  nombre: "Laptop Gaming"
-                  precio: 1299.99
-                  stock: 15
-                  categoria: "Tecnología"
-                  imagen: "https://ejemplo.com/laptop.jpg"
-                  activo: true
-                - id: "prod456"
-                  nombre: "Mouse Inalámbrico"
-                  precio: 49.99
-                  stock: 30
-                  categoria: "Accesorios"
-                  imagen: "https://ejemplo.com/mouse.jpg"
-                  activo: true
-                - id: "prod789"
-                  nombre: "Teclado Mecánico"
-                  precio: 89.99
-                  stock: 25
-                  categoria: "Accesorios"
-                  activo: true
-
     post:
       tags:
         - Productos
       summary: Crear un nuevo producto
-      description: Servicio Firebase - CrudService.createProducto()
+      description: Crea un nuevo producto en la colección "producto" de Firebase Firestore.
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ProductoInput'
-            example:
-              nombre: "Tablet Android 10''"
-              precio: 299.99
-              stock: 25
-              categoria: "Tecnología"
-              imagen: "https://ejemplo.com/tablet.jpg"
       responses:
         '201':
           description: Producto creado correctamente
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-              example:
-                id: "nuevoIdGeneradoPorFirestore123"
-
   /api/productos/{id}:
     get:
       tags:
         - Productos
-      summary: Obtener producto por ID
-      description: Servicio Firebase - CrudService.getProductoById()
+      summary: Obtener detalles de un producto
+      description: Obtiene el producto desde la colección "producto" por su ID.
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
           schema:
             type: string
-          example: "prod123"
       responses:
         '200':
-          description: Producto encontrado
+          description: Detalles del producto
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Producto'
-              example:
-                id: "prod123"
-                nombre: "Laptop Gaming"
-                precio: 1299.99
-                stock: 15
-                categoria: "Tecnología"
-                imagen: "https://ejemplo.com/laptop.jpg"
-                activo: true
-        '404':
-          description: Producto no encontrado
-          content:
-            application/json:
-              example:
-                error: "Producto no encontrado"
-                message: "El producto con ID prod123 no existe"
-
     put:
       tags:
         - Productos
-      summary: Actualizar producto existente
-      description: Servicio Firebase - CrudService.updateProducto()
+      summary: Actualizar producto
+      description: Actualiza un producto en la colección "producto" de Firebase Firestore.
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
           schema:
             type: string
-          example: "prod123"
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ProductoInput'
-            example:
-              nombre: "Laptop Gaming Pro"
-              precio: 1399.99
-              stock: 10
-              categoria: "Tecnología Premium"
       responses:
         '200':
           description: Producto actualizado correctamente
-          content:
-            application/json:
-              example:
-                success: true
-                message: "Producto actualizado correctamente"
-        '404':
-          description: Producto no encontrado
-
     delete:
       tags:
         - Productos
-      summary: Eliminar producto del sistema
-      description: Servicio Firebase - CrudService.deleteProducto()
+      summary: Eliminar producto
+      description: Elimina un producto de la colección "producto" en Firebase Firestore.
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
           schema:
             type: string
-          example: "prod123"
       responses:
         '200':
           description: Producto eliminado correctamente
-          content:
-            application/json:
-              example:
-                success: true
-                message: "Producto eliminado correctamente"
-        '404':
-          description: Producto no encontrado
 
   /api/ordenes:
     get:
       tags:
         - Órdenes
       summary: Obtener lista de órdenes
-      description: Servicio Firebase - CrudService.getOrdenes()
+      description: Obtiene todas las órdenes desde la colección "compras" de Firebase Firestore.
       responses:
         '200':
-          description: Lista de órdenes obtenida correctamente
+          description: Lista de órdenes
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Orden'
-              example:
-                - id: "orden123"
-                  clienteNombre: "Juan Pérez"
-                  total: 199.99
-                  estado: "completado"
-                  fecha: "2024-01-15T10:30:00Z"
-                  productos:
-                    - id: "prod123"
-                      nombre: "Laptop Gaming"
-                      cantidad: 1
-                      precio: 1299.99
-                    - id: "prod456"
-                      nombre: "Mouse Inalámbrico"
-                      cantidad: 1
-                      precio: 49.99
-                - id: "orden124"
-                  clienteNombre: "María García"
-                  total: 299.99
-                  estado: "procesando"
-                  fecha: "2024-01-14T15:45:00Z"
-                  productos:
-                    - id: "prod789"
-                      nombre: "Teclado Mecánico"
-                      cantidad: 2
-                      precio: 89.99
-
-  /api/ordenes/{id}:
-    get:
+    post:
       tags:
         - Órdenes
-      summary: Obtener orden por ID
-      description: Servicio Firebase - CrudService.getOrdenById()
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-          example: "orden123"
-      responses:
-        '200':
-          description: Orden encontrada
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Orden'
-              example:
-                id: "orden123"
-                clienteNombre: "Juan Pérez"
-                total: 199.99
-                estado: "completado"
-                fecha: "2024-01-15T10:30:00Z"
-                productos:
-                  - id: "prod123"
-                    nombre: "Laptop Gaming"
-                    cantidad: 1
-                    precio: 1299.99
-                  - id: "prod456"
-                    nombre: "Mouse Inalámbrico"
-                    cantidad: 1
-                    precio: 49.99
-        '404':
-          description: Orden no encontrada
-
-  /api/ordenes/{id}/estado:
-    put:
-      tags:
-        - Órdenes
-      summary: Actualizar estado de orden
-      description: Servicio Firebase - CrudService.updateOrdenEstado()
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-          example: "orden123"
+      summary: Crear una nueva orden
+      description: Crea una nueva orden en la colección "compras" de Firebase Firestore.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                estado:
-                  type: string
-                  enum: [pendiente, procesando, completado, cancelado]
-            example:
-              estado: "completado"
+              $ref: '#/components/schemas/OrdenInput'
+      responses:
+        '201':
+          description: Orden creada correctamente
+  /api/ordenes/{id}:
+    get:
+      tags:
+        - Órdenes
+      summary: Obtener detalles de una orden
+      description: Obtiene los detalles de una orden desde la colección "compras" por su ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
       responses:
         '200':
-          description: Estado actualizado correctamente
+          description: Detalles de la orden
           content:
             application/json:
-              example:
-                success: true
-                message: "Estado actualizado a completado"
-        '404':
-          description: Orden no encontrada
+              schema:
+                $ref: '#/components/schemas/Orden'
+    put:
+      tags:
+        - Órdenes
+      summary: Actualizar estado de la orden
+      description: Actualiza el estado de una orden en la colección "compras" de Firebase Firestore.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrdenInput'
+      responses:
+        '200':
+          description: Estado de la orden actualizado correctamente
 
   /api/usuarios:
     get:
       tags:
         - Usuarios
       summary: Obtener lista de usuarios
-      description: Servicio Firebase - CrudService.getUsuarios()
+      description: Obtiene todos los usuarios desde la colección "usuario" de Firebase Firestore.
       responses:
         '200':
-          description: Lista de usuarios obtenida correctamente
+          description: Lista de usuarios
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Usuario'
-              example:
-                - id: "user123"
-                  nombre: "Ana López"
-                  email: "ana@ejemplo.com"
-                  rol: "admin"
-                  activo: true
-                  telefono: "+56912345678"
-                  direccion: "Av. Principal 123"
-                - id: "user124"
-                  nombre: "Carlos Ruiz"
-                  email: "carlos@ejemplo.com"
-                  rol: "cliente"
-                  activo: true
-                  telefono: "+56987654321"
-                - id: "user125"
-                  nombre: "María González"
-                  email: "maria@ejemplo.com"
-                  rol: "cliente"
-                  activo: false
-
-  /api/usuarios/{id}:
-    get:
+    post:
       tags:
         - Usuarios
-      summary: Obtener usuario por ID
-      description: Servicio Firebase - CrudService.getUsuarioById()
+      summary: Crear un nuevo usuario
+      description: Crea un nuevo usuario en la colección "usuario" de Firebase Firestore.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsuarioInput'
+      responses:
+        '201':
+          description: Usuario creado correctamente
+    put:
+      tags:
+        - Usuarios
+      summary: Actualizar información de usuario
+      description: Permite al usuario actualizar su nombre y número de contacto.
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
           schema:
             type: string
-          example: "user123"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsuarioInput'
       responses:
         '200':
-          description: Usuario encontrado
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Usuario'
-              example:
-                id: "user123"
-                nombre: "Ana López"
-                email: "ana@ejemplo.com"
-                rol: "admin"
-                activo: true
-                telefono: "+56912345678"
-                direccion: "Av. Principal 123"
-                createdAt: "2024-01-01T00:00:00Z"
-        '404':
-          description: Usuario no encontrado
+          description: Usuario actualizado correctamente
+    delete:
+      tags:
+        - Usuarios
+      summary: Eliminar usuario
+      description: Elimina un usuario de la colección "usuario" en Firebase Firestore.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Usuario eliminado correctamente
 
-  /api/categorias:
+  /api/contacto:
     get:
       tags:
-        - Categorías
-      summary: Obtener lista de categorías
-      description: Servicio Firebase - CrudService.getCategorias()
+        - Contacto
+      summary: Obtener todos los formularios de contacto
+      description: El administrador puede visualizar todos los formularios de contacto enviados.
       responses:
         '200':
-          description: Lista de categorías obtenida correctamente
+          description: Lista de formularios de contacto
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Categoria'
-              example:
-                - id: "cat123"
-                  nombre: "Electrónicos"
-                  descripcion: "Dispositivos electrónicos y tecnológicos"
-                  productosCount: 45
-                  activa: true
-                - id: "cat124"
-                  nombre: "Hogar"
-                  descripcion: "Productos para el hogar"
-                  productosCount: 32
-                  activa: true
-                - id: "cat125"
-                  nombre: "Ropa"
-                  descripcion: "Ropa y accesorios"
-                  productosCount: 28
-                  activa: false
+                  $ref: '#/components/schemas/Contacto'
+    post:
+      tags:
+        - Contacto
+      summary: Enviar formulario de contacto
+      description: Envía un mensaje desde el formulario de contacto y lo guarda en la colección "contacto".
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactoInput'
+      responses:
+        '201':
+          description: Mensaje de contacto enviado correctamente
+    put:
+      tags:
+        - Contacto
+      summary: Modificar formulario de contacto
+      description: Permite al administrador modificar un formulario de contacto existente.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactoInput'
+      responses:
+        '200':
+          description: Formulario de contacto actualizado correctamente
+    delete:
+      tags:
+        - Contacto
+      summary: Eliminar formulario de contacto
+      description: Elimina un formulario de contacto desde la colección "contacto".
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Formulario de contacto eliminado correctamente
+
+  /api/admin:
+    put:
+      tags:
+        - Administrador
+      summary: Actualizar información del administrador
+      description: Permite al administrador modificar su información en Firebase Authentication.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminInput'
+      responses:
+        '200':
+          description: Información del administrador actualizada correctamente
 
 components:
   schemas:
-    EstadisticasDashboard:
-      type: object
-      properties:
-        totalCompras:
-          type: integer
-          example: 24
-        proyeccionCompras:
-          type: integer
-          example: 15
-        totalProductos:
-          type: integer
-          example: 156
-        inventarioTotal:
-          type: integer
-          example: 1248
-        totalUsuarios:
-          type: integer
-          example: 89
-        nuevosUsuariosMes:
-          type: integer
-          example: 12
-
     Producto:
       type: object
       properties:
@@ -533,54 +404,74 @@ components:
           type: string
         nombre:
           type: string
-          example: "Laptop Gaming"
+        descripcion:
+          type: string
         precio:
           type: number
-          example: 1299.99
+        precio_oferta:
+          type: number
         stock:
           type: integer
-          example: 15
         categoria:
           type: string
-          example: "Tecnología"
-        imagen:
+        image:
           type: string
         activo:
           type: boolean
-          example: true
-
+          nullable: true
+        updatedAt:
+          type: string
+          format: date-time
+          nullable: true
     ProductoInput:
       type: object
-      required:
-        - nombre
-        - precio
-        - stock
       properties:
         nombre:
           type: string
+        descripcion:
+          type: string
         precio:
+          type: number
+        precio_oferta:
           type: number
         stock:
           type: integer
         categoria:
           type: string
-        imagen:
+        image:
           type: string
-
     Orden:
       type: object
       properties:
-        id:
-          type: string
-        clienteNombre:
-          type: string
-        total:
-          type: number
+        cliente:
+          type: object
+          properties:
+            nombre:
+              type: string
+            apellidos:
+              type: string
+            correo:
+              type: string
+        direccion:
+          type: object
+          properties:
+            calle:
+              type: string
+            comuna:
+              type: string
+            departamento:
+              type: string
+            indicaciones:
+              type: string
+            region:
+              type: string
         estado:
           type: string
         fecha:
           type: string
           format: date-time
+        numeroOrden:
+          type: string
         productos:
           type: array
           items:
@@ -590,45 +481,117 @@ components:
                 type: string
               nombre:
                 type: string
-              cantidad:
-                type: integer
+              categoria:
+                type: string
+              image:
+                type: string
               precio:
                 type: number
-
+              precio_oferta:
+                type: number
+              stock:
+                type: integer
+              cantidad:
+                type: integer
+        total:
+          type: number
+    OrdenInput:
+      type: object
+      properties:
+        cliente:
+          type: object
+          properties:
+            nombre:
+              type: string
+            apellidos:
+              type: string
+            correo:
+              type: string
+        direccion:
+          type: object
+          properties:
+            calle:
+              type: string
+            comuna:
+              type: string
+            departamento:
+              type: string
+            indicaciones:
+              type: string
+            region:
+              type: string
+        productos:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              cantidad:
+                type: integer
+    Region:
+      type: object
+      properties:
+        nombre:
+          type: string
+        comuna:
+          type: array
+          items:
+            type: string
     Usuario:
       type: object
       properties:
-        id:
-          type: string
         nombre:
           type: string
-        email:
+        apellidos:
           type: string
-        rol:
+        correo:
           type: string
-        activo:
-          type: boolean
-        telefono:
+        password:
+          type: string
+        confirmPassword:
+          type: string
+        fechaNacimiento:
+          type: string
+        comuna:
+          type: string
+        region:
           type: string
         direccion:
           type: string
+        run:
+          type: string
+        codigoPromo:
+          type: string
+        descuento:
+          type: number
+        tieneCumpleHoy:
+          type: boolean
         createdAt:
           type: string
           format: date-time
-
-    Categoria:
+    Contacto:
       type: object
       properties:
-        id:
+        asunto:
+          type: string
+        email:
+          type: string
+        mensaje:
           type: string
         nombre:
           type: string
-        descripcion:
+        tipo:
           type: string
-        productosCount:
-          type: integer
-        activa:
-          type: boolean`;
+    AdminInput:
+      type: object
+      properties:
+        nombre:
+          type: string
+        correo:
+          type: string
+        telefono:
+          type: string`;
 
     function launchSwaggerEditor() {
       const btn = document.getElementById('launchBtn');
