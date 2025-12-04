@@ -361,7 +361,7 @@ class CRUDFunctions {
                     'productoPrecio': producto.precio || '',
                     'productoStock': producto.stock || '',
                     'productoCategoria': producto.categoria || producto.categoría || '',
-                    'productoImagen': producto.imagen || ''
+                    'productoImagen': producto.image || ''
                 };
 
                 for (const [id, value] of Object.entries(elementos)) {
@@ -391,7 +391,7 @@ class CRUDFunctions {
                 precio: parseFloat(productoData.precio),
                 stock: parseInt(productoData.stock),
                 categoria: productoData.categoria,
-                imagen: productoData.imagen,
+                imagen: productoData.image,
                 activo: true,
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             };

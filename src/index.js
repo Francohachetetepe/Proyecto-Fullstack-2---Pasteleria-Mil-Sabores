@@ -1,5 +1,6 @@
 // --- Importaciones funcionales y servicios ---
 import { addUser } from "./Services/firestoreService";
+import { addContactMessage } from "./Services/firestoreService"; // Asegúrate de importar la función addContactMessage
 import {
   validarRun,
   validarCorreo,
@@ -8,6 +9,7 @@ import {
   validarCodigoPromo,
   validarEdad,
 } from "./utils/validaciones";
+
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "./config/firebase";
 
@@ -88,8 +90,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // --- Formulario de registro ---
-  const form = document.getElementById("formUsuario");
-  if (!form) return;
+  const formRegistro = document.getElementById("formUsuario");
+  if (!formRegistro) return;
 
   const runInput = document.getElementById("run");
   const nombreInput = document.getElementById("nombre");
@@ -100,11 +102,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const codigoPromoInput = document.getElementById("codigoPromo");
   const direccionInput = document.getElementById("direccion");
   const fechaNacimientoInput = document.getElementById("fechaNacimiento");
-  const mensaje = document.getElementById("mensaje");
+  const mensajeRegistro = document.getElementById("mensaje");
 
-  form.addEventListener("submit", async (e) => {
+  formRegistro.addEventListener("submit", async (e) => {
     e.preventDefault();
-    mensaje.innerText = "";
+    mensajeRegistro.innerText = "";
 
     const run = runInput.value.trim().toUpperCase();
     const nombre = nombreInput.value.trim();
@@ -119,24 +121,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const fechaNacimiento = fechaNacimientoInput.value;
 
     // --- Validaciones ---
-    if (!validarRun(run)) return (mensaje.innerText = "Run incorrecto");
-    if (!nombre) return (mensaje.innerText = "Nombre en blanco");
-    if (!apellidos) return (mensaje.innerText = "Apellidos en blanco");
+    if (!validarRun(run)) return (mensajeRegistro.innerText = "Run incorrecto");
+    if (!nombre) return (mensajeRegistro.innerText = "Nombre en blanco");
+    if (!apellidos) return (mensajeRegistro.innerText = "Apellidos en blanco");
     if (!validarCorreo(correo))
-      return (mensaje.innerText =
+      return (mensajeRegistro.innerText =
         "Correo inválido. Solo se permite @duoc.cl, @profesor.duoc.cl o @gmail.com");
     if (!validarPassword(password))
-      return (mensaje.innerText = "Contraseña debe tener más de 4 caracteres");
+      return (mensajeRegistro.innerText = "Contraseña debe tener más de 4 caracteres");
     if (!validarPasswordsIguales(password, confirmPassword))
-      return (mensaje.innerText = "Las contraseñas no coinciden");
+      return (mensajeRegistro.innerText = "Las contraseñas no coinciden");
     if (!validarCodigoPromo(codigo))
-      return (mensaje.innerText = "Código promocional inválido");
+      return (mensajeRegistro.innerText = "Código promocional inválido");
     if (!region || !comuna)
-      return (mensaje.innerText = "Debe seleccionar una región y comuna");
+      return (mensajeRegistro.innerText = "Debe seleccionar una región y comuna");
 
     const edad = validarEdad(fechaNacimiento);
     if (edad > 0 && edad < 18) {
-      mensaje.innerText =
+      mensajeRegistro.innerText =
         "Eres menor de 18 años, ¡pide a un adulto que te supervise en las compras!";
     }
 
@@ -174,7 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
         tieneCumpleHoy,
       });
 
-      mensaje.innerText = "El formulario fue enviado correctamente :)";
+      mensajeRegistro.innerText = "El formulario fue enviado correctamente :)";
 
       setTimeout(() => {
         // 🔁 Redirigir usando ruta HTML estática, no Router
@@ -182,9 +184,62 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 1000);
     } catch (error) {
       console.error("Error al guardar usuario: ", error);
-      mensaje.innerText = "Error al guardar usuario en Firebase";
+      mensajeRegistro.innerText = "Error al guardar usuario en Firebase";
     }
   });
 
   console.log("Usuario ingresado:", JSON.parse(localStorage.getItem("usuario")));
+});
+
+// --- Código de manejo del formulario de contacto ---
+document.addEventListener("DOMContentLoaded", () => {
+  const formContacto = document.getElementById("formContacto");
+  if (!formContacto) return;
+
+  const nombreContactoInput = document.getElementById("nombreContacto");
+  const correoContactoInput = document.getElementById("correoContacto");
+  const tipoMensajeInput = document.getElementById("tipoMensajeContacto");
+  const mensajeContactoInput = document.getElementById("mensajeContacto");
+  const mensajeEnv = document.getElementById("mensajeEnv");
+
+  formContacto.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    mensajeEnv.innerText = ""; // Limpiar mensaje de error/success
+
+    const nombre = nombreContactoInput.value.trim();
+    const correo = correoContactoInput.value.trim();
+    const tipoMensaje = tipoMensajeInput.value;
+    const mensaje = mensajeContactoInput.value.trim();
+
+    // --- Validaciones ---
+    if (!nombre) {
+      mensajeEnv.innerText = "El nombre es obligatorio.";
+      return;
+    }
+    if (!validarCorreo(correo)) {
+      mensajeEnv.innerText = "Correo inválido. Solo se permite @duoc.cl, @profesor.duoc.cl o @gmail.com";
+      return;
+    }
+    if (!mensaje) {
+      mensajeEnv.innerText = "El mensaje es obligatorio.";
+      return;
+    }
+    if (!tipoMensaje) {
+      mensajeEnv.innerText = "Selecciona un tipo de mensaje.";
+      return;
+    }
+
+    try {
+      const result = await addContactMessage({ nombre, correo, tipoMensaje, mensaje });
+
+      if (result.id) {
+        console.log("Mensaje enviado con éxito", result);
+        mensajeEnv.innerText = "Mensaje enviado con éxito.";
+      } else {
+        mensajeEnv.innerText = "Error al enviar el mensaje. Por favor intente nuevamente.";
+      }
+    } catch (error) {
+      mensajeEnv.innerText = "Error al enviar el mensaje. Por favor intente más tarde.";
+    }
+  });
 });
