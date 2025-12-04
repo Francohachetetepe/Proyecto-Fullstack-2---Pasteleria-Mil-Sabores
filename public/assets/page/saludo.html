@@ -1,176 +1,157 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home Cliente</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../CSS/style.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-  <link rel="icon" href="../img/logo-fndo-blanco.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saludo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="../CSS/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <link rel="icon" href="../img/logo-fndo-blanco.png">
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header class="header d-flex justify-content-between align-items-center">
-    <!-- Logo -->
-    <div class="logo">
-      <a href="../../index.html">
-        <img src="../img/logo-fndo-blanco.png" alt="Logo de la tienda">
-      </a>
-    </div>
-
-    <!-- Centro: buscador + navbar -->
-    <div class="header-center">
-      <div class="search-container">
-        <input type="text" id="buscador" placeholder="Buscar productos..." class="search-input">
-        <button id="btnBuscar" class="btn-buscar">Buscar</button>
-      </div>
-      <nav class="navbar">
-        <a href="../../index.html" class="nav-link">Inicio</a>
-        <a href="catalogo.html" class="nav-link">Categorías ⌄</a>
-        <a href="oferta.html" class="nav-link">Oferta</a>
-        <a href="nosotros.html" class="nav-link">Nosotros</a>
-        <a href="blogs.html" class="nav-link">Blogs</a>
-        <a href="contacto.html" class="nav-link">Contacto</a>
-      </nav>
-    </div>
-
-    <!-- Derecha: usuario + carrito -->
-    <div class="header-right">
-      <div id="header-usuario" class="auth-buttons">
-        <!-- Se llena dinámicamente con JS -->
-      </div>
-      <button class="btn-carrito" onclick="window.location.href='carrito.html'">
-        <span class="carrito-icon">🛒</span>
-        Total: $<span class="carrito-total">0</span>
-      </button>
-    </div>
-  </header>
-  
-
-  <!-- Layout -->
-  <div class="layout d-flex">
-    <!-- Sidebar -->
-     <aside class="sidebar" id="sidebar">
-      <button id="toggleSidebar" class="toggle-btn">☰</button>
-      <ul>
-        <li><a href="#home"><i class="menu-link"></i><span>Home</span></a></li>
-        <li><a href="#historial"><i class="menu-link"></i><span>Historial</span></a></li>
-        <li><a href="#"><i class="menu-link"></i><span>Mis valoraciones</span></a></li>
-        <li><a href="#"><i class="menu-link"></i><span>Mis pedidos</span></a></li>
-        <li><a href="#"><i class="menu-link"></i><span>Notificaciones</span></a></li>
-        <li><a href="#"><i class="menu-link"></i><span>Ajustes</span></a></li>
-        <li><a href="../../index.html"><i class="bi bi-shop"></i><span>Tienda</span></a></li>
-        <li>
-          <button id="cerrarSesion" class="sidebar-btn">
-            <i class="bi bi-door-closed"></i>
-            <span class="btn-text">Cerrar sesión</span>
-          </button>
-        </li>
-      </ul>
-    </aside>
-
-
-    <!-- Contenido principal, me falta perfiiil -->
-     <main class="cliente-main flex-grow-1">
-      <!-- HOME -->
-       <section id="home" class="section-visible">
-        <h1 id="bienvenido" class="mb-4">¡Bienvenido!</h1>
-        <div class="row g-4">
-          <!-- Card resumen -->
-           <div class="col-lg-6">
-            <div class="card shadow-sm rounded-4">
-              <div class="card-body">
-                <h5 class="card-title fw-bold mb-3">Resumen de tu perfil</h5>
-                <div class="d-flex flex-column gap-2">
-                <p class="m-0"><strong>Nombre:</strong> <span id="resumenNombre"></span></p>
-                <p class="m-0"><strong>Apellido:</strong> <span id="resumenApellido"></span></p>
-                <p class="m-0"><strong>Correo:</strong> <span id="resumenEmail"></span></p>
-              </div>
-            </div>
-          </div>
+    <!-- HEADER -->
+    <header class="header">
+        <!-- 🔹 LOGO -->
+        <div class="logo">
+            <a href="../../index.html">
+                <img src="../img/logo-fndo-blanco.png" alt="Logo de la tienda">
+            </a>
         </div>
         
-        <!-- Card accesos directos -->
-         <div class="col-lg-6">
-          <div class="card shadow-sm rounded-4">
-            <div class="card-body">
-              <h5 class="card-title fw-bold mb-3">Accesos rápidos</h5>
-              <div class="d-grid gap-2">
-                <a href="#perfil" class="btn btn-outline-success btn-lg section-btn">Editar perfil</a>
-                <a href="#historial" class="btn btn-outline-primary btn-lg section-btn">Ver historial</a>
-                <a href="#" class="btn btn-outline-warning btn-lg">Mis pedidos</a>
-                <a href="#" class="btn btn-outline-info btn-lg">Notificaciones</a>
-              </div>
+        <div class="header-center">
+            <!-- 🔹 BLOQUE CENTRAL (buscador + navbar) -->
+            <div class="search-container">
+                <input type="text" id="buscador" placeholder="Buscar productos..." class="search-input">
+                <button id="btnBuscar" class="btn-buscar">Buscar</button>
             </div>
-          </div>
+
+            <nav class="navbar">
+                <a href="../../index.html" class="nav-link">Inicio</a>
+                <a href="catalogo.html" class="nav-link">Categorías ⌄</a>
+                <a href="oferta.html" class="nav-link">Oferta</a>
+                <a href="nosotros.html" class="nav-link">Nosotros</a>
+                <a href="blogs.html" class="nav-link">Blogs</a>
+                <a href="contacto.html" class="nav-link">Contacto</a>
+            </nav>
         </div>
-      </div>
-    </section>
-    
-    <!-- PERFIL -->
-     <section id="perfil" class="mt-4 section-hidden">
-      <h2 class="mb-4">Editar información personal</h2>
-      <div class="card shadow-sm rounded-4 p-4">
-        <form class="row g-3">
-          <div class="col-md-6">
-            <label for="nombreClienteInput" class="form-label">Nombre</label>
-            <input type="text" id="nombreClienteInput" class="form-control">
-          </div>
-          
-          <div class="col-md-6">
-            <label for="apellidoClienteInput" class="form-label">Apellido</label>
-            <input type="text" id="apellidoClienteInput" class="form-control">
-          </div>
-          
-          <div class="col-md-6">
-            <label for="emailCliente" class="form-label">Correo electrónico</label>
-            <input type="email" id="emailCliente" class="form-control">
-          </div>
-          
-          <div class="col-md-6">
-            <label for="telefonoCliente" class="form-label">Teléfono</label>
-            <input type="text" id="telefonoCliente" class="form-control">
-          </div>
-          
-          <hr class="my-4">
-          
-          <h3 class="h5">Cambiar contraseña</h3>
-          
-          <div class="col-md-6">
-            <label for="passwordNueva" class="form-label">Nueva contraseña</label>
-            <input type="password" id="passwordNueva" class="form-control">
-          </div>
-          
-          <div class="col-md-6">
-            <label for="passwordConfirm" class="form-label">Confirmar contraseña</label>
-            <input type="password" id="passwordConfirm" class="form-control">
-          </div>
-          
-          <div class="col-12 mt-3">
-            <button type="button" id="btnActualizarPerfil" class="btn btn-primary px-4">Guardar cambios</button>
-          </div>
-        
-        </form>
-      </div>
-    </section>
-    
-    <!-- HISTORIAL -->
-     <section id="historial" class="mt-4 section-hidden">
-      <h2 class="mb-4">Historial de compras</h2>
-      <div class="card shadow-sm rounded-4 p-3">
-        <ul id="historialCompras" class="list-group"></ul>
-      </div>
-    </section>
-  </main>
-</div>
+
+        <!-- 🔹 BLOQUE DERECHO (login + carrito) -->
+        <div class="header-right">
+            <div class="auth-buttons">
+                <div class="header-right">
+                    <!-- ⬇️ Aquí va tu contenedor dinámico -->
+                    <div id="header-usuario" class="auth-buttons">
+                        <!-- Se llena dinámicamente con JS -->
+                    </div>
+
+                    <button class="btn-carrito" onclick="window.location.href='carrito.html'">
+                        <span class="carrito-icon">🛒</span>
+                        Total: $<span class="carrito-total">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <button id="toggleSidebar" class="toggle-btn">☰</button>
+
+            <!-- Saludo en el sidebar -->
+            <div class="sidebar-greeting" id="sidebarGreeting">
+                <span class="greeting-text">¡Bienvenido </span>
+                <span class="greeting-name" id="sidebarUserName"></span> !
+            </div>
+
+            <ul>
+                <li><a class="menu-link" href="#home"><i class="bi bi-house"></i><span>home</span></a></li>
+                <li><a class="menu-link" href="#historial"><i class="bi bi-clock-history"></i><span>Historial</span></a></li>
+                <li><a class="menu-link" href="#contacto"><i class="bi bi-star"></i><span>Historial Contactos</span></a></li>
+                <li><a class="menu-link" href="#perfil"><i class="bi bi-bag-check"></i><span>Mi perfil</span></a></li> <!--cambiar logo-->
+                <!-- <li><a href="#"><i class="bi bi-bell"></i><span>Notificaciones</span></a></li> -->
+                <!-- <li><a href="#"><i class="bi bi-gear"></i><span>Ajustes</span></a></li> -->
+                <li><a href="../../index.html"><i class="bi bi-shop"></i><span>Tienda</span></a></li>
+
+                <li>
+                    <button id="cerrarSesion" class="sidebar-btn">
+                        <i class="bi bi-door-closed"></i>
+                        <span class="btn-text">Cerrar sesión</span>
+                    </button>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Contenido principal -->
+        <div>
+            <main class="p-4 flex-grow-1">
+
+                <!-- home -->
+                <section id="home" class="seccion">
+                    <h1 id="bienvenido" class="mb-3">Bienvenido!</h1> <!-- agregar nombre -->
+                    <p>Detalles perfil.</p>
+                    <div class="home">
+                      <h3>Mis órdenes recientes</h3>
+                      <div id="ordenes-lista"></div>
+                    </div>
+                </section>
+
+                <!-- historial -->
+                <section id="historial" class="seccion">
+                  <h2>Historial de compras</h2>
+                  <div id="historial-lista"></div>
+                </section>
+
+                <!-- comentarios -->
+                <section id="contacto" class="seccion">
+                  <h2>Historial de Contactos</h2> <!-- cambia el nombre-->
+                  <div id="contacto-lista"></div>
+                </section>
+
+                <!-- perfil -->
+                <section id="perfil" class="seccion">
+                    <div class="perfil-container" class="seccion">
+                        <h2>Mi Perfil</h2>
+
+                        <!-- lectura -->
+                        <div id="perfil-view" class="perfil-seccion">
+                            <p><strong>Nombre:</strong> <span id="view_nombre"></span></p>
+                            <!-- <p><strong>Apellidos:</strong> <span id="view_apellidos"></span></p> -->
+                            <p><strong>Correo:</strong> <span id="view_correo"></span></p>
+                        </div>
+
+                        <button id="btnEditarPerfil">Editar</button>
+
+                        <!-- SECCIÓN DE EDICIÓN -->
+                        <div id="perfil-edit" class="perfil-seccion" style="display:none;">
+                            <label>Nombre:</label>
+                            <input type="text" id="edit_nombre">
+
+                            <!-- <label>Apellidos:</label> -->
+                            <!-- <input type="text" id="edit_apellidos" disabled> -->
+
+                            <label>Correo:</label>
+                            <input type="text" id="edit_correo" disabled>
 
 
-  <!-- Scripts -->
-  <script src="../JS/saludo.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../JS/header.js"></script>
-  <script src="../JS/carritoHeader.js"></script>
+                            <button id="btnGuardarNombre">Guardar</button>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <script src="../JS/saludo.js"></script>
+    <script src="../JS/header.js"></script>
+    <script src="../JS/carritoHeader.js"></script>
+    <script src="../JS/perfil.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
