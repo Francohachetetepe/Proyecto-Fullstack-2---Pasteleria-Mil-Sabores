@@ -41,10 +41,13 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!usuario) return;
 
         if (usuario.rol === "admin") {
-          window.location.href = "/assets/page/home_admin.html"; 
-        } else {
-          window.location.href = "/assets/page/saludo.html"; 
-        }
+    window.location.href = "/assets/page/home_admin.html"; 
+} else if (usuario.rol === "vendedor") {
+    window.location.href = "/assets/page/vendedor.html"; 
+} else {
+    window.location.href = "/assets/page/saludo.html"; 
+}
+
       });
 
       // 🔴 Cerrar sesión

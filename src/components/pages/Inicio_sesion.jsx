@@ -36,6 +36,25 @@ const LoginForm = () => {
       }
     }
 
+    // Si es el vendedor, usar Firebase Auth
+if (correo.endsWith("@vendedor.cl")) { // o algún criterio para identificar vendedores
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, correo, password);
+    localStorage.setItem(
+      "usuario",
+      JSON.stringify({ nombre: "Vendedor", correo, rol: "vendedor" })
+    );
+    setMensaje("✅ Bienvenido Vendedor, redirigiendo...");
+    setTimeout(() => window.location.href = "../page/vendedor.html", 1000);
+    return;
+  } catch (error) {
+    console.error("Error en login vendedor:", error);
+    setMensaje("❌ Correo o contraseña incorrectos para vendedor.");
+    return;
+  }
+}
+
+
     // Buscar cliente en Firestore
     try {
       const q = query(
