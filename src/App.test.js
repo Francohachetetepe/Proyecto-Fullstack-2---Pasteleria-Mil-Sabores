@@ -1,8 +1,10 @@
 import { render, screen } from '@testing-library/react';
-import App from './App';
+import Blogs from '../src/components/pages/Blogs';
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+describe('Blogs component', () => {
+  it('renders Noticias text', () => {
+    render(<Blogs />);
+    const element = screen.getByText(/Noticias/i);
+    expect(element).not.toBeNull();
+  });
 });
