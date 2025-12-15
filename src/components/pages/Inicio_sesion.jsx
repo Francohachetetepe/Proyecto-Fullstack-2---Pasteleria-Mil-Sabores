@@ -51,12 +51,13 @@ const LoginForm = () => {
         localStorage.setItem("usuario", JSON.stringify({ nombre: userData.nombre || correo, correo, rol: "Cliente" }));
         setMensaje("✅ Bienvenido Cliente, redirigiendo...");
         setTimeout(() => window.location.href = "../page/saludo.html", 1000);
-
-      } else if (!result.empty) {
-        const userData = result.docs[0].data();
-        localStorage.setItem("usuario", JSON.stringify({ nombre: userData.nombre || correo, correo, rol: "Vendedor" }));
-        setMensaje("✅ Bienvenido Vendedor, redirigiendo...");
-        setTimeout(() => window.location.href = "../page/vendedor.html", 1000);
+        if (userData.rol === "Vendedor") {
+          setMensaje("✅ Bienvenido Vendedor, redirigiendo...");
+          setTimeout(() => window.location.href = "../page/vendedor.html", 1000);
+        }else{
+          setMensaje("✅ Bienvenido Cliente, redirigiendo...");
+          setTimeout(() => window.location.href = "../page/saludo.html", 1000);
+        }
 
       } else {
         setMensaje("❌ Correo o contraseña incorrectos.");
