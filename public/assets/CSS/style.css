@@ -1065,13 +1065,17 @@ button:hover, .boton:hover {
 
 .modal-content {
     background-color: rgb(248, 206, 206);
-    margin: 5% auto;
-    padding: 2rem;
+    margin: 0 auto;
+    padding: 1.5rem;
     border-radius: 12px;
     width: 90%;
-    max-width: 500px;
+    max-width: 600px;
     position: relative;
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    overflow-y: auto; /* Permite que el contenido del modal se desplace si es muy largo */
+    max-height: 90vh;
+    height: auto;
 }
 
 .close {
@@ -1106,11 +1110,12 @@ button:hover, .boton:hover {
 .form-group textarea,
 .form-group select {
     width: 100%;
-    padding: 0.75rem;
+    padding: 12rem;
     border: 1px solid #5d4037;
     border-radius: 6px;
     font-size: 0.875rem;
     transition: border-color 0.2s ease;
+    box-sizing: border-box;
 }
 
 .form-group input:focus,
