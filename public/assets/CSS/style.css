@@ -1901,6 +1901,28 @@ button:hover, .boton:hover {
 .sidebar i {
   margin-right: 10px;
 }
+/* Saludo en sidebar */
+.sidebar-greeting {
+  padding: 12px;
+  font-size: 14px;
+  text-align: center;
+  transition: opacity 0.3s;
+}
+
+/* ❌ Ocultar saludo cuando está colapsada */
+.sidebar:not(.expanded) .sidebar-greeting {
+  opacity: 0;
+  pointer-events: none;
+  height: 0;
+  overflow: hidden;
+}
+
+/* ✔️ Mostrar saludo cuando está expandida */
+.sidebar.expanded .sidebar-greeting {
+  opacity: 1;
+  height: auto;
+}
+
 
 /* Contenido principal */
 .main-content {

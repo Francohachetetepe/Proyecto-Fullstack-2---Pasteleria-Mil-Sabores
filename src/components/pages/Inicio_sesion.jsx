@@ -25,7 +25,7 @@ const LoginForm = () => {
     if (correo === "admin@admin.cl") {
       try {
         const userCredential = await signInWithEmailAndPassword(auth, correo, password);
-        localStorage.setItem("usuario", JSON.stringify({ nombre: "Administrador", correo, rol: "admin" }));
+        localStorage.setItem("usuario", JSON.stringify({ nombre: "Administrador", correo, rol: "Administrador" }));
         setMensaje("✅ Bienvenido Administrador, redirigiendo...");
         setTimeout(() => window.location.href = "../page/home_admin.html", 1000);
         return;
@@ -35,24 +35,6 @@ const LoginForm = () => {
         return;
       }
     }
-
-    // Si es el vendedor, usar Firebase Auth
-if (correo.endsWith("@vendedor.cl")) { // o algún criterio para identificar vendedores
-  try {
-    const userCredential = await signInWithEmailAndPassword(auth, correo, password);
-    localStorage.setItem(
-      "usuario",
-      JSON.stringify({ nombre: "Vendedor", correo, rol: "vendedor" })
-    );
-    setMensaje("✅ Bienvenido Vendedor, redirigiendo...");
-    setTimeout(() => window.location.href = "../page/vendedor.html", 1000);
-    return;
-  } catch (error) {
-    console.error("Error en login vendedor:", error);
-    setMensaje("❌ Correo o contraseña incorrectos para vendedor.");
-    return;
-  }
-}
 
 
     // Buscar cliente en Firestore
@@ -66,9 +48,16 @@ if (correo.endsWith("@vendedor.cl")) { // o algún criterio para identificar ven
 
       if (!result.empty) {
         const userData = result.docs[0].data();
-        localStorage.setItem("usuario", JSON.stringify({ nombre: userData.nombre || correo, correo, rol: "cliente" }));
+        localStorage.setItem("usuario", JSON.stringify({ nombre: userData.nombre || correo, correo, rol: "Cliente" }));
         setMensaje("✅ Bienvenido Cliente, redirigiendo...");
         setTimeout(() => window.location.href = "../page/saludo.html", 1000);
+
+      } else if (!result.empty) {
+        const userData = result.docs[0].data();
+        localStorage.setItem("usuario", JSON.stringify({ nombre: userData.nombre || correo, correo, rol: "Vendedor" }));
+        setMensaje("✅ Bienvenido Vendedor, redirigiendo...");
+        setTimeout(() => window.location.href = "../page/vendedor.html", 1000);
+
       } else {
         setMensaje("❌ Correo o contraseña incorrectos.");
       }
