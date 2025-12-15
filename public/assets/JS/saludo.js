@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const sidebar = document.getElementById("sidebar");
     if (toggleBtn && sidebar) {
         toggleBtn.addEventListener("click", () => {
-            sidebar.classList.toggle("open"); // Asegúrate que tu CSS tenga .sidebar.open
+            sidebar.classList.toggle("expanded"); // Asegúrate que tu CSS tenga .sidebar.open
         });
     }
 
