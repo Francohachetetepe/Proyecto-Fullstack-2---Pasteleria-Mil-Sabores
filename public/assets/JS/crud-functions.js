@@ -732,37 +732,34 @@ class CRUDFunctions {
     mostrarUsuarios(usuarios) {
         const tbody = document.getElementById('usuarios-tbody');
         if (!tbody) {
-            console.error('No se encontro el tbody de usuarios');
+            console.error('No se encontró el tbody de usuarios');
             return;
         }
 
         console.log('Mostrando usuarios:', usuarios);
 
         if (usuarios.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="8" class="no-data">No hay usuarios registrados</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="11" class="no-data">No hay usuarios registrados</td></tr>';
             return;
         }
 
         tbody.innerHTML = usuarios.map(usuario => `
             <tr>
-                <td>${usuario.run || 'Sin run'}</td>
-                <td>${usuario.nombre || 'Sin nombre'}</td>
-                <td>${usuario.email || usuario.correo || 'Sin email'}</td>
-                <td>${usuario.clave ||'Sin clave'}</td>
-                <td>${usuario.fecha ||'Sin fecha'}</td>
-                <td>${usuario.telefono || 'No especificado'}</td>
-                <td>${usuario.direccion || 'No especificada'}</td>
-                <td>
-                    <span class="badge ${this.getRolClass(usuario.rol)}">
-                        ${usuario.rol || 'usuario'}
-                    </span>
-                </td>
+                <td>${usuario.run || 'Sin run'}</td> <!-- Mostrar el campo 'run' -->
+                <td>${usuario.nombre || 'Sin nombre'}</td> <!-- Mostrar el campo 'nombre' -->
+                <td>${usuario.apellidos || 'Sin apellidos'}</td> <!-- Mostrar el campo 'apellidos' -->
+                <td>${usuario.correo || 'Sin email'}</td> <!-- Mostrar el campo 'email' -->
+                <td>${usuario.password || 'Sin clave'}</td> <!-- Mostrar el campo 'clave' -->
+                <td>${usuario.fechaNacimiento || 'Sin fecha'}</td> <!-- Mostrar el campo 'fecha_nacimiento' -->
+                <td>${usuario.codigoPromo || 'Sin código promocional'}</td> <!-- Mostrar el campo 'codigo_promocional' -->
+                <td>${usuario.direccion || 'No especificada'}</td> <!-- Mostrar el campo 'direccion' -->
+                <td>${usuario.rol || 'Sin rol'}</td> <!-- Mostrar el campo 'rol' -->
                 <td>
                     <span class="badge ${usuario.activo !== false ? 'activo' : 'inactivo'}">
                         ${usuario.activo !== false ? 'Activo' : 'Inactivo'}
                     </span>
                 </td>
-                <td>${this.formatFecha(usuario.createdAt)}</td>
+                <td>${this.formatFecha(usuario.createdAt)}</td> <!-- Mostrar la fecha de registro -->
                 <td class="acciones">
                     <button class="btn btn-sm btn-warning" onclick="editarUsuario('${usuario.id}')" title="Editar">
                         <i class="bi bi-pencil"></i>
@@ -781,6 +778,7 @@ class CRUDFunctions {
         `).join('');
     }
 
+
     async cargarDatosUsuario(usuarioId) {
         try {
             console.log('Cargando datos del usuario:', usuarioId);
@@ -795,7 +793,7 @@ class CRUDFunctions {
                     'usuarioRun': usuario.run || '',
                     'usuarioNombre': usuario.nombre || '',
                     'usuarioEmail': usuario.email || usuario.correo || '',
-                    'usuarioClave': '',
+                    'usuarioClave': usuario.password || '',
                     'usuarioFecha': usuario.fecha || '',
                     'usuarioTelefono': usuario.telefono || '',
                     'usuarioDireccion': usuario.direccion || '',
@@ -839,43 +837,41 @@ class CRUDFunctions {
         try {
             console.log('Guardando usuario:', usuarioData);
             
+            // Datos del usuario a guardar en Firestore
             const usuario = {
                 run: usuarioData.run,
                 nombre: usuarioData.nombre,
+                apellidos: usuarioData.apellidos,
                 email: usuarioData.email,
-                telefono: usuarioData.telefono,
+                clave: usuarioData.clave,  // Solo se guarda cuando se crea un nuevo usuario
+                fecha_nacimiento: usuarioData.fecha_nacimiento,
+                codigoPromocional: usuarioData.codigoPromocional,
                 direccion: usuarioData.direccion,
                 rol: usuarioData.rol,
                 activo: usuarioData.activo,
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(), // Timestamp de creación
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()  // Timestamp de última actualización
             };
 
-            if (usuarioData.fecha) {
-                usuario.fecha = usuarioData.fecha;
-            }
-
+            // Si el usuario tiene un ID (es una actualización)
             if (usuarioData.id) {
                 await this.db.collection("usuario").doc(usuarioData.id).update(usuario);
                 console.log('Usuario actualizado:', usuarioData.id);
             } else {
-                usuario.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-                
-                if (usuarioData.clave) {
-                    usuario.clave = usuarioData.clave;
-                }
-                
+                // Si no tiene ID, es un nuevo usuario (se crea)
                 const docRef = await this.db.collection("usuario").add(usuario);
                 console.log('Usuario creado con ID:', docRef.id);
             }
-            
+
             alert('Usuario guardado correctamente');
             this.cerrarModal('modalUsuario');
-            this.cargarUsuarios();
+            this.cargarUsuarios(); // Recargar los usuarios después de guardar
         } catch (error) {
             console.error('Error guardando usuario:', error);
             alert('Error al guardar el usuario: ' + error.message);
         }
     }
+
 
     async eliminarUsuario(usuarioId) {
         if (!confirm('Estas seguro de que deseas eliminar este usuario? Esta accion no se puede deshacer.')) return;
@@ -1307,29 +1303,32 @@ function mostrarModalUsuario(usuarioId = null) {
 }
 
 function guardarUsuario(event) {
-    event.preventDefault();
+    event.preventDefault(); // Evitar el comportamiento por defecto del formulario
     
     const usuarioData = {
         id: document.getElementById('usuarioId').value,
         run: document.getElementById('usuarioRun').value,
         nombre: document.getElementById('usuarioNombre').value,
+        apellidos: document.getElementById('usuarioApellidos').value,
         email: document.getElementById('usuarioEmail').value,
         clave: document.getElementById('usuarioClave').value,
-        fecha: document.getElementById('usuarioFecha').value,
-        telefono: document.getElementById('usuarioTelefono').value,
+        fecha_nacimiento: document.getElementById('usuarioFechaNacimiento').value,
+        codigoPromocional: document.getElementById('usuarioCodigoPromocional').value,
         direccion: document.getElementById('usuarioDireccion').value,
         rol: document.getElementById('usuarioRol').value,
         activo: document.getElementById('usuarioActivo').checked
     };
 
     if (!usuarioData.id) {
-        usuarioData.clave = document.getElementById('usuarioClave').value;
+        usuarioData.clave = document.getElementById('usuarioClave').value; // Clave solo se debe asignar cuando el usuario es nuevo
     }
 
+    // Llamar a la función que guarda el usuario
     if (crudFunctions) {
         crudFunctions.guardarUsuario(usuarioData);
     }
 }
+
 
 function eliminarUsuario(usuarioId) {
     if (crudFunctions) crudFunctions.eliminarUsuario(usuarioId);
