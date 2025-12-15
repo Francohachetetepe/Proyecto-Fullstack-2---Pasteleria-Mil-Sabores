@@ -799,7 +799,7 @@ class CRUDFunctions {
                     'usuarioFecha': usuario.fecha || '',
                     'usuarioTelefono': usuario.telefono || '',
                     'usuarioDireccion': usuario.direccion || '',
-                    'usuarioRol': usuario.rol || 'cliente',
+                    'usuarioRol': usuario.rol || 'Cliente',
                     'usuarioActivo': usuario.activo !== false
                 };
 
@@ -915,9 +915,9 @@ class CRUDFunctions {
         const nuevoRol = prompt('Ingrese el nuevo rol (admin/cliente):');
         if (!nuevoRol) return;
 
-        const rolesPermitidos = ['admin', 'cliente'];
+        const rolesPermitidos = ['Administrador', 'Cliente','Vendedor'];
         if (!rolesPermitidos.includes(nuevoRol.toLowerCase())) {
-            alert('Rol no valido. Use: admin o cliente');
+            alert('Rol no valido. Use: Admin, Cliente o vendedor');
             return;
         }
 
@@ -1117,9 +1117,7 @@ class CRUDFunctions {
 
     getRolClass(rol) {
         const roles = {
-            'admin': 'admin',
-            'cliente': 'cliente', 
-            'usuario': 'usuario'
+            
         };
         return roles[rol] || 'usuario';
     }

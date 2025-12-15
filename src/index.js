@@ -119,6 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const codigo = codigoPromoInput.value.trim().toUpperCase();
     const direccion = direccionInput.value.trim();
     const fechaNacimiento = fechaNacimientoInput.value;
+    const rol="Cliente";
 
     // --- Validaciones ---
     if (!validarRun(run)) return (mensajeRegistro.innerText = "Run incorrecto");
@@ -174,6 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
         direccion,
         fechaNacimiento,
         tieneCumpleHoy,
+        rol,
       });
 
       mensajeRegistro.innerText = "El formulario fue enviado correctamente :)";
