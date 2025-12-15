@@ -770,9 +770,7 @@ class CRUDFunctions {
                     <button class="btn btn-sm btn-secondary" onclick="cambiarEstadoUsuario('${usuario.id}', ${usuario.activo !== false})" title="${usuario.activo !== false ? 'Desactivar' : 'Activar'}">
                         <i class="bi bi-${usuario.activo !== false ? 'pause' : 'play'}"></i>
                     </button>
-                    <button class="btn btn-sm btn-info" onclick="cambiarRolUsuario('${usuario.id}')" title="Cambiar Rol">
-                        <i class="bi bi-person-gear"></i>
-                    </button>
+
                     <button class="btn btn-sm btn-danger" onclick="eliminarUsuario('${usuario.id}')" title="Eliminar">
                         <i class="bi bi-trash"></i>
                     </button>
@@ -1043,6 +1041,7 @@ class CRUDFunctions {
                 clave: perfilData.clave,
                 fecha: perfilData.fecha,
                 telefono: perfilData.telefono,
+                rol: perfilData.rol,
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             });
 

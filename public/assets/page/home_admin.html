@@ -661,8 +661,9 @@
                 <div class="form-group">
                     <label for="usuarioRol">Rol *</label>
                     <select id="usuarioRol" required>
-                        <option value="cliente">Cliente</option>
-                        <option value="admin">Administrador</option>
+                        <option value="Cliente">Cliente</option>
+                        <option value="Administrador">Administrador</option>
+                        <option value="Vendedor">Vendedor</option>
                     </select>
                 </div>
                 
@@ -676,7 +677,7 @@
                 
                 <div class="form-actions">
                     <button type="button" class="btn btn-secondary" onclick="cerrarModal('modalUsuario')">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar Usuario</button>
+                    <button type="submit" class="btn btn-primary" onclick="guardarUsuario(event)">Guardar Usuario</button>
                 </div>
             </form>
         </div>
