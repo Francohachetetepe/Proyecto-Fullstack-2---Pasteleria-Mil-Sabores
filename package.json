@@ -18,7 +18,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "test:karma": "karma start --single-run"
   },
   "eslintConfig": {
     "extends": [
@@ -46,8 +47,12 @@
     "jasmine-core": "^5.12.1",
     "karma": "^6.4.4",
     "karma-chrome-launcher": "^3.2.0",
+    "karma-coverage": "^2.2.1",
     "karma-edge-launcher": "^0.4.2",
     "karma-jasmine": "^5.1.0",
+    "karma-jasmine-html-reporter": "^2.1.0",
+    "karma-mocha-reporter": "^2.2.5",
+    "karma-spec-reporter": "^0.0.36",
     "karma-webpack": "^5.0.1",
     "style-loader": "^4.0.0",
     "webpack": "^5.102.1"

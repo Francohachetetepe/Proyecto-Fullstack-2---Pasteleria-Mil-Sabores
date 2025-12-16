@@ -1,40 +1,63 @@
-const webpackConfig = require('./webpack.config.js');
-
 module.exports = function(config) {
   config.set({
     frameworks: ['jasmine'],
+
+    // Archivos de test
     files: [
-      'src/**/*.test.js',
+      'src/test/unit/**/*.test.js'
+    ],
+
+    // Excluir lo que no quieres ejecutar
+    exclude: [
       'src/**/*.test.jsx',
       'src/**/*.test.ts',
       'src/**/*.test.tsx',
+      'src/App.test.js',
+      'src/components/**/*.test.js'
     ],
+
     preprocessors: {
-      'src/**/*.test.js': ['webpack'],
-      'src/**/*.test.jsx': ['webpack'],
-      'src/**/*.test.ts': ['webpack'],
-      'src/**/*.test.tsx': ['webpack'],
+      'src/test/unit/**/*.test.js': ['webpack']
     },
+
     webpack: {
-      ...webpackConfig,
       mode: 'development',
-      resolve: {
-        ...(webpackConfig.resolve || {}),
-        alias: {
-          ...(webpackConfig.resolve?.alias || {})
-        }
+      module: {
+        rules: [
+          {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            use: {
+              loader: 'babel-loader',
+              options: { presets: ['@babel/preset-env'] }
+            }
+          }
+        ]
+      },
+      resolve: { extensions: ['.js'] }
+    },
+
+    // Edge real con ventana visible
+    customLaunchers: {
+      EdgeCustom: {
+        base: 'Edge',
+        flags: ['--no-sandbox'],
+        executable: 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe' // Ajusta según tu instalación
       }
     },
-    browsers: ['Edge'], // 👈 ahora sí funciona con msedge.exe
+    browsers: ['EdgeCustom'],
+
     reporters: ['progress'],
-    logLevel: config.LOG_INFO,
-    autoWatch: true,
-    singleRun: process.env.CI === 'true',
-    concurrency: Infinity,
     plugins: [
       'karma-jasmine',
       'karma-webpack',
-      require('@chiragrupani/karma-chromium-edge-launcher') // 👈 usa este
-    ]
+      require('@chiragrupani/karma-chromium-edge-launcher')
+    ],
+
+    autoWatch: true,
+    singleRun: false,
+    logLevel: config.LOG_INFO,
+    colors: true,
+    browserNoActivityTimeout: 60000
   });
 };
