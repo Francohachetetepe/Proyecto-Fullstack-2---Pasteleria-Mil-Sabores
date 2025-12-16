@@ -50,4 +50,3 @@ export function validarCodigoPromo(codigo) {
 export function validarCamposVacios(...campos) {
     return campos.every(campo => campo && campo.trim() !== "");
 }
-

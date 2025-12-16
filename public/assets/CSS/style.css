@@ -3188,3 +3188,8 @@ button:hover, .boton:hover {
         padding: 1.2rem;
     }
 }
+
+.password-mask {
+    letter-spacing: 2px;
+    font-weight: bold;
+}
