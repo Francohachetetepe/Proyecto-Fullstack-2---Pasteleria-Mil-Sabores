@@ -2008,6 +2008,310 @@ button:hover, .boton:hover {
   margin-right: 10px; /* espacio entre ícono y texto */
 }
 
+/* Estilos para "Mis órdenes recientes" */
+.layout {
+  display: flex; /* asegura que sidebar y contenido estén lado a lado */
+}
+
+.layout > div {
+  flex-grow: 1;   /* el contenido principal se expande */
+  width: 80%;    /* ocupa todo el espacio libre */
+}
+.user-home {
+  background: rgb(248, 206, 206);
+  padding: 40px;
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  max-width: 900px;   /* nuevo */
+  margin: 0 auto;     /* nuevo */
+}
+
+.user-home h3 {
+  color: #6b4a3c;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* ===== ORDEN ITEM (versión principal) ===== */
+.orden-item {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 18px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+  border-left: 6px solid #6b4a3c;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.orden-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+}
+
+.orden-info h4 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #3e2b23;
+}
+
+.orden-info p {
+  margin: 4px 0;
+  font-size: 0.9rem;
+  color: #7a6a61;
+}
+
+/* Estados */
+.estado {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  width: fit-content;
+}
+
+.estado.pagado {
+  background: #e6f4ea;
+  color: #1e7f43;
+}
+
+.estado.pendiente {
+  background: #fff4e5;
+  color: #b26a00;
+}
+
+.estado.enviado {
+  background: #e7f0ff;
+  color: #1c4ed8;
+}
+
+/* Botón detalle */
+.btn-detalle {
+  background: #5d4037;
+  color: #fff;
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.btn-detalle:hover {
+  background: #5d4037;
+}
+
+/* ===== ÓRDENES RECIENTES (segunda sección) ===== */
+.orden-item {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-left: 6px solid #6b4a3c;
+}
+
+.orden-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.orden-header h4 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.orden-fecha {
+  font-size: 13px;
+  color: #777;
+}
+
+.orden-estado {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.orden-estado.completada {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.orden-productos {
+  border-top: 1px solid #eee;
+  margin-top: 10px;
+  padding-top: 10px;
+}
+
+.producto {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.producto img {
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.producto-nombre {
+  margin: 0;
+  font-weight: 600;
+}
+
+.producto-detalle {
+  margin: 0;
+  font-size: 13px;
+  color: #666;
+}
+
+.orden-footer {
+  text-align: right;
+  margin-top: 10px;
+  font-size: 15px;
+}
+.orden-item {
+  max-width: 900px;   /* achica el cuadrado */
+  margin: 0 auto 16px; /* lo centra y mantiene separación */
+}
+
+.orden-img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 15px;
+}
+
+/*historial*/
+
+.historial-home {
+  background: rgb(248, 206, 206);
+  padding: 40px;
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  max-width: 900px;
+  margin: 0 auto;
+}
+#historial-lista > div {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 18px 22px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-left: 6px solid #6b4a3c;
+}
+
+/* historial de contacto*/
+.contacto-home {
+  background: rgb(248, 206, 206);
+  padding: 40px;
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  max-width: 900px;
+  margin: 0 auto;
+}
+#contacto-lista > div {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 18px 22px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-left: 6px solid #6b4a3c;
+}
+
+/*Perfil usuario*/
+/* Contenedor rosado del perfil */
+.perfil-container {
+  background: rgb(248, 206, 206);
+  padding: 40px;
+  border-radius: 14px;
+  max-width: 900px;
+  margin: 0 auto;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* Título */
+.perfil-container h2 {
+  color: #6b4a3c;
+  font-weight: 700;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+/* Tarjeta blanca donde se muestran los datos */
+.perfil-seccion {
+  background: #ffffff;
+  padding: 20px 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  margin-bottom: 20px;
+}
+
+/* Texto dentro de la tarjeta */
+.perfil-seccion p {
+  margin: 10px 0;
+  font-size: 1rem;
+  color: #3e2b23;
+}
+
+.perfil-seccion strong {
+  color: #5d4037;
+}
+
+/* Inputs bonitos */
+.perfil-seccion input {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #d8c1b8;
+  margin-bottom: 15px;
+  font-size: 1rem;
+  background: #fff;
+  color: #3e2b23;
+}
+
+.perfil-seccion input:disabled {
+  background: #f3e9e7;
+  cursor: not-allowed;
+}
+
+/* Botones */
+#btnEditarPerfil,
+#btnGuardarNombre {
+  background: #6b4a3c;
+  color: #fff;
+  padding: 10px 22px;
+  border: none;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  display: block;
+  margin: 0 auto;
+}
+
+#btnEditarPerfil:hover,
+#btnGuardarNombre:hover {
+  background: #5d4037;
+}
+#perfil #btnEditarPerfil {
+  position: static !important;
+  margin: 20px auto 0 auto !important;
+  display: block !important;
+}
+
 
 /* ============================================================
    🧩 HEADER GRID — CATÁLOGO CON LAYOUT ORGANIZADO

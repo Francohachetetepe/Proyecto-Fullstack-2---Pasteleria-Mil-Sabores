@@ -55,9 +55,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const edicion = document.getElementById("perfil-edit");
 
     btnEditar.addEventListener("click", () => {
-        vista.style.display = "none";
-        edicion.style.display = "block";
-    });
+    vista.style.display = "none";
+    edicion.style.display = "block";
+    btnEditar.remove(); // ⬅️ elimina el botón del DOM
+
+});
 
     btnGuardar.addEventListener("click", () => {
         const nuevoNombre = camposEdit.nombre.value.trim();
@@ -70,6 +72,19 @@ document.addEventListener("DOMContentLoaded", () => {
         rellenarPerfil();
         vista.style.display = "block";
         edicion.style.display = "none";
+        // ⬇️ recrear el botón Editar
+const nuevoBoton = document.createElement("button");
+nuevoBoton.id = "btnEditarPerfil";
+nuevoBoton.textContent = "Editar";
+nuevoBoton.className = "btn-editar"; // opcional, si usas clases
+
+nuevoBoton.addEventListener("click", () => {
+  vista.style.display = "none";
+  edicion.style.display = "block";
+  nuevoBoton.remove(); // lo eliminamos otra vez
+});
+
+vista.appendChild(nuevoBoton); // lo agregamos al final del bloque de vista
         console.log("Nombre actualizado a:", nuevoNombre);
     });
 
@@ -194,50 +209,45 @@ document.addEventListener("DOMContentLoaded", () => {
     const ordenesLista = document.getElementById("ordenes-lista");
 
     function mostrarOrdenesHome() {
-        ordenesLista.innerHTML = "<p>Cargando tus órdenes...</p>";
+    ordenesLista.innerHTML = "<p>Cargando tus órdenes...</p>";
 
-        db.collection("compras")
-            .where("cliente.correo", "==", usuario.correo)
-            // .orderBy("fecha", "desc")
-            .get()
-            .then(querySnapshot => {
-                ordenesLista.innerHTML = "";
-                if (querySnapshot.empty) {
-                    ordenesLista.innerHTML = "<p>No has realizado órdenes todavía.</p>";
-                    return;
-                }
+    db.collection("compras")
+        .where("cliente.correo", "==", usuario.correo)
+        .get()
+        .then(querySnapshot => {
+            ordenesLista.innerHTML = "";
+            if (querySnapshot.empty) {
+                ordenesLista.innerHTML = "<p>No has realizado órdenes todavía.</p>";
+                return;
+            }
 
-                querySnapshot.forEach(doc => {
-                    const compra = doc.data();
-                    const estado = compra.estado || "pendiente"; // fallback
-                    let mensaje = "";
+            querySnapshot.forEach(doc => {
+                const compra = doc.data();
+                const producto = compra.productos[0]; // tomamos el primer producto para mostrar imagen
 
-                    switch (estado.toLowerCase()) {
-                        case "completada":
-                            mensaje = `✅ Orden ${compra.numeroOrden} realizada con éxito`;
-                            break;
-                        case "en curso":
-                            mensaje = `⏳ Orden ${compra.numeroOrden} en curso`;
-                            break;
-                        case "rechazada":
-                            mensaje = `❌ Orden ${compra.numeroOrden} rechazada`;
-                            break;
-                        default:
-                            mensaje = `ℹ️ Orden ${compra.numeroOrden} estado: ${estado}`;
-                    }
+                // Crear tarjeta
+                const div = document.createElement("div");
+                div.className = "orden-item";
 
-                    const div = document.createElement("div");
-                    div.className = "orden mb-2 p-2 border rounded";
-                    div.textContent = mensaje;
+                div.innerHTML = `
+                    <img src="${producto.image}" alt="${producto.nombre}" class="orden-img">
+                    <div class="orden-info">
+                        <h4>Orden ${compra.numeroOrden}</h4>
+                        <p>📅 ${compra.fecha.toDate().toLocaleString()}</p>
+                        <p>💳 Total: $${compra.total.toLocaleString()}</p>
+                        <span class="estado ${compra.estado.toLowerCase()}">${compra.estado}</span>
+                    </div>
+                    <a href="#" class="btn-detalle">Ver detalles</a>
+                `;
 
-                    ordenesLista.appendChild(div);
-                });
-            })
-            .catch(error => {
-                console.error("Error cargando órdenes:", error);
-                ordenesLista.innerHTML = "<p>Error cargando tus órdenes.</p>";
+                ordenesLista.appendChild(div);
             });
-    }
+        })
+        .catch(error => {
+            console.error("Error cargando órdenes:", error);
+            ordenesLista.innerHTML = "<p>Error cargando tus órdenes.</p>";
+        });
+}
 
     mostrarOrdenesHome();
 

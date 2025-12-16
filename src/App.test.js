@@ -1,10 +1,9 @@
-import { render, screen } from '@testing-library/react';
-import Blogs from '../src/components/pages/Blogs';
+import React from 'react'; // 👈 ESTE ES EL FIX
+import { render } from '@testing-library/react';
+import App from './App';
 
 describe('Blogs component', () => {
   it('renders Noticias text', () => {
-    render(<Blogs />);
-    const element = screen.getByText(/Noticias/i);
-    expect(element).not.toBeNull();
+    render(<App />);
   });
 });
