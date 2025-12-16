@@ -1,8 +1,9 @@
 openapi: 3.0.0
 info:
-  title: API Panel de Administración - Tienda Online
+  title: API Panel de Administración - Pasteleria Mil Sabores
   description: Documentación de servicios Firebase Firestore - Los ejemplos son estáticos
   version: 1.0.0
+
 servers:
   - url: https://firestore.googleapis.com/v1
 
@@ -31,6 +32,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Producto'
+        '500':
+          description: Error interno del servidor
     post:
       tags:
         - Productos
@@ -45,6 +48,11 @@ paths:
       responses:
         '201':
           description: Producto creado correctamente
+        '400':
+          description: Datos inválidos
+        '500':
+          description: Error interno del servidor
+
   /api/productos/{id}:
     get:
       tags:
@@ -64,6 +72,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Producto'
+        '404':
+          description: Producto no encontrado
+        '500':
+          description: Error interno del servidor
     put:
       tags:
         - Productos
@@ -84,6 +96,12 @@ paths:
       responses:
         '200':
           description: Producto actualizado correctamente
+        '400':
+          description: Datos inválidos
+        '404':
+          description: Producto no encontrado
+        '500':
+          description: Error interno del servidor
     delete:
       tags:
         - Productos
@@ -98,6 +116,10 @@ paths:
       responses:
         '200':
           description: Producto eliminado correctamente
+        '404':
+          description: Producto no encontrado
+        '500':
+          description: Error interno del servidor
 
   /api/ordenes:
     get:
@@ -114,6 +136,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Orden'
+        '500':
+          description: Error interno del servidor
     post:
       tags:
         - Órdenes
@@ -128,6 +152,11 @@ paths:
       responses:
         '201':
           description: Orden creada correctamente
+        '400':
+          description: Datos inválidos
+        '500':
+          description: Error interno del servidor
+
   /api/ordenes/{id}:
     get:
       tags:
@@ -147,6 +176,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Orden'
+        '404':
+          description: Orden no encontrada
+        '500':
+          description: Error interno del servidor
     put:
       tags:
         - Órdenes
@@ -167,6 +200,12 @@ paths:
       responses:
         '200':
           description: Estado de la orden actualizado correctamente
+        '400':
+          description: Datos inválidos
+        '404':
+          description: Orden no encontrada
+        '500':
+          description: Error interno del servidor
     delete:
       tags:
         - Órdenes
@@ -181,6 +220,10 @@ paths:
       responses:
         '200':
           description: Orden eliminada correctamente
+        '404':
+          description: Orden no encontrada
+        '500':
+          description: Error interno del servidor
 
   /api/usuarios:
     get:
@@ -197,11 +240,15 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Usuario'
+        '500':
+          description: Error interno del servidor
     post:
       tags:
         - Usuarios
       summary: Crear un nuevo usuario
-      description: Crea un nuevo usuario en la colección "usuario" de Firebase Firestore.
+      description: >
+        Crea un nuevo usuario en la colección "usuario".
+        El atributo "rol" es asignado automáticamente por el sistema con el valor "Cliente".
       requestBody:
         required: true
         content:
@@ -211,6 +258,11 @@ paths:
       responses:
         '201':
           description: Usuario creado correctamente
+        '400':
+          description: Datos inválidos
+        '500':
+          description: Error interno del servidor
+
   /api/usuarios/{id}:
     get:
       tags:
@@ -230,11 +282,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Usuario'
+        '404':
+          description: Usuario no encontrado
+        '500':
+          description: Error interno del servidor
     put:
       tags:
         - Usuarios
       summary: Actualizar información de usuario
-      description: Permite al usuario actualizar su nombre y número de contacto.
+      description: >
+        Permite actualizar la información del usuario.
+        El atributo "rol" puede ser modificado mediante este endpoint.
       parameters:
         - in: path
           name: id
@@ -250,6 +308,12 @@ paths:
       responses:
         '200':
           description: Usuario actualizado correctamente
+        '400':
+          description: Datos inválidos
+        '404':
+          description: Usuario no encontrado
+        '500':
+          description: Error interno del servidor
     delete:
       tags:
         - Usuarios
@@ -264,6 +328,10 @@ paths:
       responses:
         '200':
           description: Usuario eliminado correctamente
+        '404':
+          description: Usuario no encontrado
+        '500':
+          description: Error interno del servidor
 
   /api/region:
     get:
@@ -280,6 +348,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Region'
+        '500':
+          description: Error interno del servidor
 
   /api/contacto:
     get:
@@ -296,6 +366,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Contacto'
+        '500':
+          description: Error interno del servidor
     post:
       tags:
         - Contacto
@@ -310,6 +382,11 @@ paths:
       responses:
         '201':
           description: Mensaje de contacto enviado correctamente
+        '400':
+          description: Datos inválidos
+        '500':
+          description: Error interno del servidor
+
   /api/contacto/{id}:
     get:
       tags:
@@ -329,6 +406,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Contacto'
+        '404':
+          description: Formulario no encontrado
+        '500':
+          description: Error interno del servidor
     put:
       tags:
         - Contacto
@@ -349,6 +430,12 @@ paths:
       responses:
         '200':
           description: Formulario de contacto actualizado correctamente
+        '400':
+          description: Datos inválidos
+        '404':
+          description: Formulario no encontrado
+        '500':
+          description: Error interno del servidor
     delete:
       tags:
         - Contacto
@@ -363,6 +450,10 @@ paths:
       responses:
         '200':
           description: Formulario de contacto eliminado correctamente
+        '404':
+          description: Formulario no encontrado
+        '500':
+          description: Error interno del servidor
 
   /api/admin:
     put:
@@ -379,6 +470,10 @@ paths:
       responses:
         '200':
           description: Información del administrador actualizada correctamente
+        '400':
+          description: Datos inválidos
+        '500':
+          description: Error interno del servidor
 
 components:
   schemas:
@@ -408,6 +503,7 @@ components:
           type: string
           format: date-time
           nullable: true
+
     ProductoInput:
       type: object
       properties:
@@ -425,6 +521,7 @@ components:
           type: string
         image:
           type: string
+
     Orden:
       type: object
       properties:
@@ -480,6 +577,7 @@ components:
                 type: integer
         total:
           type: number
+
     OrdenInput:
       type: object
       properties:
@@ -514,6 +612,7 @@ components:
                 type: string
               cantidad:
                 type: integer
+
     Region:
       type: object
       properties:
@@ -523,6 +622,7 @@ components:
           type: array
           items:
             type: string
+
     Usuario:
       type: object
       properties:
@@ -554,9 +654,14 @@ components:
           type: number
         tieneCumpleHoy:
           type: boolean
+        rol:
+          type: string
+          example: Cliente
+          description: Rol del usuario dentro del sistema. Por defecto se asigna "Cliente".
         createdAt:
           type: string
           format: date-time
+
     Contacto:
       type: object
       properties:
@@ -572,6 +677,7 @@ components:
           type: string
         tipo:
           type: string
+
     AdminInput:
       type: object
       properties:
