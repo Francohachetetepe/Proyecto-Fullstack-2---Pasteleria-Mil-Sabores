@@ -10,66 +10,84 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [mensaje, setMensaje] = useState("");
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setMensaje("");
+const handleLogin = async (e) => {
+  e.preventDefault();
+  setMensaje("");
 
-    if (!correo || !password) {
-      setMensaje("❌ Debes completar correo y contraseña.");
+  if (!correo || !password) {
+    setMensaje("❌ Debes completar correo y contraseña.");
+    return;
+  }
+
+  setMensaje("⏳ Verificando credenciales...");
+
+  // Si es el admin, usar Firebase Auth
+  if (correo === "admin@admin.cl") {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, correo, password);
+
+      // Leer perfil persistente del admin (si existe)
+      const adminPerfilStr = localStorage.getItem("adminPerfil");
+      let nombreAdmin = "Administrador";
+
+      if (adminPerfilStr) {
+        const adminPerfil = JSON.parse(adminPerfilStr);
+        if (adminPerfil.nombre) {
+          nombreAdmin = adminPerfil.nombre;
+        }
+      }
+
+      // Crear sesión actual del admin
+      localStorage.setItem("usuario", JSON.stringify({
+        nombre: nombreAdmin,
+        correo,
+        rol: "Administrador"
+      }));
+
+      setMensaje("✅ Bienvenido Administrador, redirigiendo...");
+      setTimeout(() => window.location.href = "../page/home_admin.html", 1000);
+      return;
+
+    } catch (error) {
+      console.error("Error en login admin:", error);
+      setMensaje("❌ Correo o contraseña incorrectos para administrador.");
       return;
     }
+  }
 
-    setMensaje("⏳ Verificando credenciales...");
-
-    // Si es el admin, usar Firebase Auth
-    if (correo === "admin@admin.cl") {
-      try {
-        const userCredential = await signInWithEmailAndPassword(auth, correo, password);
-        localStorage.setItem("usuario", JSON.stringify({ nombre: "Administrador", correo, rol: "Administrador" }));
-        setMensaje("✅ Bienvenido Administrador, redirigiendo...");
-        setTimeout(() => window.location.href = "../page/home_admin.html", 1000);
-        return;
-      } catch (error) {
-        console.error("Error en login admin:", error);
-        setMensaje("❌ Correo o contraseña incorrectos para administrador.");
-        return;
-      }
-    }
-
-
-    // Buscar cliente en Firestore
-    try {
-      const q = query(
-        collection(db, "usuario"),
-        where("correo", "==", correo),
-        where("password", "==", password) // ⚠️ Solo si estás guardando la contraseña en texto plano
-      );
-      const result = await getDocs(q);
+  // Buscar cliente en Firestore
+  try {
+    const q = query(
+      collection(db, "usuario"),
+      where("correo", "==", correo),
+      where("password", "==", password)
+    );
+    const result = await getDocs(q);
+    
+    if (!result.empty) {
+      const userData = result.docs[0].data();
       
-      if (!result.empty) {
-        const userData = result.docs[0].data();
-        
-        // Guardar el usuario con su rol REAL
-        localStorage.setItem("usuario", JSON.stringify({
-          nombre: userData.nombre || correo,correo, rol: userData.rol   // ⬅️ AQUÍ ESTÁ LA MAGIA
-        }));
-        
-        // Redirección según rol
-        if (userData.rol === "Vendedor") {
-          setMensaje("✅ Bienvenido Vendedor, redirigiendo...");
-          setTimeout(() => window.location.href = "../page/vendedor.html", 1000);
-        } else {
-          setMensaje("✅ Bienvenido Cliente, redirigiendo...");
-          setTimeout(() => window.location.href = "../page/saludo.html", 1000);
-        }
+      localStorage.setItem("usuario", JSON.stringify({
+        nombre: userData.nombre || correo,
+        correo,
+        rol: userData.rol
+      }));
+      
+      if (userData.rol === "Vendedor") {
+        setMensaje("✅ Bienvenido Vendedor, redirigiendo...");
+        setTimeout(() => window.location.href = "../page/vendedor.html", 1000);
       } else {
-        setMensaje("❌ Correo o contraseña incorrectos.");
+        setMensaje("✅ Bienvenido Cliente, redirigiendo...");
+        setTimeout(() => window.location.href = "../page/saludo.html", 1000);
       }
-    } catch (error) {
-      console.error("Error en login cliente:", error);
-      setMensaje("❌ Error al verificar credenciales.");
+    } else {
+      setMensaje("❌ Correo o contraseña incorrectos.");
     }
-  };
+  } catch (error) {
+    console.error("Error en login cliente:", error);
+    setMensaje("❌ Error al verificar credenciales.");
+  }
+};
 
   return (
     <main className="registro-container" style={{ maxWidth: "400px", margin: "40px auto", padding: "20px" }}>

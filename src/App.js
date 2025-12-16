@@ -1,10 +1,11 @@
-import { render, screen } from '@testing-library/react';
-import Blogs from '../src/components/pages/Blogs';
+import RouterConfig from './routes/RouterConfig';
 
-describe('Blogs component', () => {
-  it('renders Noticias text', () => {
-    render(<Blogs />);
-    const element = screen.getByText(/Noticias/i);
-    expect(element).not.toBeNull();
-  });
-});
+function App() {
+  return (
+    <div className="App d-flex flex-column min-vh-100">
+      <RouterConfig />
+    </div>
+  );
+}
+
+export default App;

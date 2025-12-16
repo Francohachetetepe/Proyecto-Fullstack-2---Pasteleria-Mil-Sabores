@@ -1073,7 +1073,6 @@ class CRUDFunctions {
                 correo: perfilData.correo,
                 password: perfilData.password,
                 fecha: perfilData.fecha,
-                telefono: perfilData.telefono,
                 rol: perfilData.rol,
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             });
@@ -1083,7 +1082,6 @@ class CRUDFunctions {
             usuario.correo = perfilData.correo;
             usuario.password = perfilData.password;
             usuario.fecha = perfilData.fecha;
-            usuario.telefono = perfilData.telefono;
             localStorage.setItem("usuario", JSON.stringify(usuario));
 
             const bienvenidoPrincipal = document.getElementById('bienvenidoPrincipal');
@@ -1105,12 +1103,10 @@ class CRUDFunctions {
             const profileNombre = document.getElementById('profileNombre');
             const profileCorreo = document.getElementById('profileCorreo');
             const profileClave = document.getElementById('profileClave');
-            const profileTelefono = document.getElementById('profileTelefono');
             
             if (profileNombre) profileNombre.value = usuario.nombre || '';
             if (profileCorreo) profileCorreo.value = usuario.correo || '';
             if (profileClave) profileClave.value = usuario.password || '';
-            if (profileTelefono) profileTelefono.value = usuario.telefono || '';
         }
     }
 
@@ -1388,23 +1384,42 @@ function generarReporte() {
 }
 
 // Perfil
-function actualizarPerfil(event) {
+async function actualizarPerfil(event) {
     event.preventDefault();
-    
-    const perfilData = {
-        nombre: document.getElementById('profileNombre').value,
-        correo: document.getElementById('profileCorreo').value,
-        telefono: document.getElementById('profileTelefono').value
-    };
 
-    if (crudFunctions) {
-        const success = crudFunctions.actualizarPerfil(perfilData);
-        if (success) {
-            alert('Perfil actualizado correctamente');
-        } else {
-            alert('Error al actualizar el perfil');
-        }
+    // 1. Obtener los valores del formulario
+    const nombre = document.getElementById('profileNombre').value;
+    const correo = document.getElementById('profileCorreo').value;
+
+    // 2. Obtener el usuario actual desde localStorage
+    const usuarioStr = localStorage.getItem("usuario");
+    if (!usuarioStr) {
+        alert("No se encontró información del usuario");
+        return;
     }
+
+    const usuario = JSON.parse(usuarioStr);
+
+    // 3. Actualizar SOLO su propio nombre y correo
+    usuario.nombre = nombre;
+    usuario.correo = correo;
+
+    // 4. Guardar cambios en la sesión actual
+    localStorage.setItem("usuario", JSON.stringify(usuario));
+
+    // 5. Guardar cambios de forma persistente (para que no se pierdan al cerrar sesión)
+    localStorage.setItem("adminPerfil", JSON.stringify({
+        nombre,
+        correo
+    }));
+
+    // 6. Actualizar el topbar inmediatamente
+    const bienvenido = document.getElementById("bienvenidoPrincipal");
+    if (bienvenido) {
+        bienvenido.textContent = `Bienvenido, ${nombre}`;
+    }
+
+    alert("Perfil actualizado correctamente");
 }
 
 // Utilidades
