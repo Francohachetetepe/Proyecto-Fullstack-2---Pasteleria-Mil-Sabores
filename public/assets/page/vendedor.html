@@ -10,6 +10,7 @@
 		<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 		
 		<style>
+<<<<<<< HEAD
 		.btn-editar,
 		.btn-eliminar,
 		.btn-update,
@@ -20,6 +21,21 @@
 		td:last-child {
 			display: none !important;
 		}
+=======
+			/* Oculta cualquier botón de acción que el JS inyecte */
+			    .btn-editar,
+			    .btn-eliminar,
+			    .btn-update,
+			    .btn-delete {
+			      display: none !important;
+			    }
+			
+			    /* Si el JS agrega la última columna de acciones, la escondemos */
+			    th:last-child,
+			    td:last-child {
+			      display: none !important;
+			    }
+>>>>>>> 42427149a937833d63481f9945fad443b393eedc
 		</style>
 		
 	</head>
@@ -219,7 +235,6 @@
 						</div>
 					</div>
 				</section>
-
 				<!-- Perfil solo lectura -->
 				<section id="perfil" style="display: none;">
 					<div class="welcome-section">
@@ -241,16 +256,21 @@
 								</div>
 							</form>
 						</div>
+
+						<!-- Agregar botón para editar el perfil -->
+						<div style="margin-top:15px;">
+							<button id="btnEditarPerfil">Editar</button>
+							<button id="btnGuardarPerfil" style="display:none;">Guardar</button>
+						</div>
 					</div>
 				</section>
-
 			</main>
 		</div>
 
 		<!-- Scripts -->
-		<script src="../JS/saludo.js"></script>
-		<script src="../JS/home_admin.js"></script>
+		<script src="../JS/header.js"></script>
 		<script src="../JS/dashboard.js"></script>
 		<script src="../JS/crud-functions.js"></script>
+		<script src="../JS/perfil-vendedor.js"></script>
 	</body>
 </html>

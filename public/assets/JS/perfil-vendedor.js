@@ -1,123 +1,81 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // 🔹 Obtener usuario de localStorage
+
     const usuarioStr = localStorage.getItem("usuario");
-    if (!usuarioStr) return; // No hay usuario logueado
+    if (!usuarioStr) return;
+
     let usuario = JSON.parse(usuarioStr);
 
-    // 🔹 Configuración Firebase
     const firebaseConfig = {
         apiKey: "AIzaSyAzRg6nsE4TZgdvMeeU7Nvjo64k7m8HrrE",
         authDomain: "tiendapasteleriamilsabor-de980.firebaseapp.com",
-        projectId: "tiendapasteleriamilsabor-de980",
-        storageBucket: "tiendapasteleriamilsabor-de980.firebasestorage.app",
-        messagingSenderId: "925496431859",
-        appId: "1:925496431859:web:ff7f0ae09b002fe94e5386",
-        measurementId: "G-1X6TSB46XN"
+        projectId: "tiendapasteleriamilsabor-de980"
     };
 
     if (!firebase.apps.length) {
         firebase.initializeApp(firebaseConfig);
     }
+
     const db = firebase.firestore();
 
-    // 🔹 Campos perfil
-    const camposView = {
-        nombre: document.getElementById("view_nombre"),
-        correo: document.getElementById("view_correo"),
-    };
+    const inputNombre = document.getElementById("profileNombre");
+    const inputCorreo = document.getElementById("profileCorreo");
+    const btnEditar = document.getElementById("btnEditarPerfil");
+    const btnGuardar = document.getElementById("btnGuardarPerfil");
 
-    const camposEdit = {
-        nombre: document.getElementById("edit_nombre"),
-        correo: document.getElementById("edit_correo"),
-    };
-
-    function rellenarPerfil() {
-        camposView.nombre.textContent = usuario.nombre;
-        camposView.correo.textContent = usuario.correo;
-
-        camposEdit.nombre.value = usuario.nombre;
-        camposEdit.correo.value = usuario.correo;
-
-        // Saludos dinámicos
-        const sidebarName = document.getElementById("sidebarUserName");
-        if (sidebarName) sidebarName.textContent = usuario.nombre;
-
-        const bienvenido = document.getElementById("bienvenido");
-        if (bienvenido) bienvenido.textContent = `Bienvenido ${usuario.nombre}!`;
+    if (!inputNombre || !btnEditar || !btnGuardar) {
+        console.warn("Perfil vendedor: elementos no encontrados");
+        return;
     }
 
+    // 🔹 cargar datos
+    inputNombre.value = usuario.nombre;
+    inputCorreo.value = usuario.correo;
+
+    // 🔹 obtener ID real
     db.collection("usuario")
         .where("correo", "==", usuario.correo)
+        .limit(1)
         .get()
-        .then(querySnapshot => {
-            if (!querySnapshot.empty) {
-                const doc = querySnapshot.docs[0];
-                usuario.id = doc.id;  // Guardamos el ID del documento en el objeto usuario
-                console.log("ID del usuario:", usuario.id);
+        .then(snapshot => {
+            if (!snapshot.empty) {
+                usuario.id = snapshot.docs[0].id;
+                localStorage.setItem("usuario", JSON.stringify(usuario));
             }
-        })
-        .catch(error => {
-            console.error("Error obteniendo el ID del usuario:", error);
-        });
-    
-    
-        rellenarPerfil();
-        
-        const btnEditar = document.getElementById("btnEditarPerfil");
-        const btnGuardar = document.getElementById("btnGuardarNombre");
-        const vista = document.getElementById("perfil-view");
-        const edicion = document.getElementById("perfil-edit");
-
-        btnEditar.addEventListener("click", () => {
-            vista.style.display = "none";
-            edicion.style.display = "block";
-            btnEditar.remove();
         });
 
+    // 🔹 EDITAR
+    btnEditar.addEventListener("click", () => {
+        inputNombre.removeAttribute("readonly");
+        inputNombre.focus();
+
+        btnEditar.style.display = "none";
+        btnGuardar.style.display = "inline-block";
+    });
+
+    // 🔹 GUARDAR
     btnGuardar.addEventListener("click", () => {
-        const nuevoNombre = camposEdit.nombre.value.trim();
-        if (nuevoNombre.length < 1) {
-            alert("El nombre no puede estar vacío.");
+        const nuevoNombre = inputNombre.value.trim();
+        if (!nuevoNombre) {
+            alert("Nombre vacío");
             return;
         }
 
-        // 🔹 Actualizar en Firestore usando el ID
         db.collection("usuario")
-            .doc(usuario.id)  // Usamos el ID que obtuvimos previamente
-            .update({
-                nombre: nuevoNombre
-            })
+            .doc(usuario.id)
+            .update({ nombre: nuevoNombre })
             .then(() => {
-                // 🔹 Actualizar localStorage
                 usuario.nombre = nuevoNombre;
                 localStorage.setItem("usuario", JSON.stringify(usuario));
 
-                // 🔹 Refrescar vista
-                rellenarPerfil();
-                vista.style.display = "block";
-                edicion.style.display = "none";
-
-                // 🔹 Recrear botón editar
-                const nuevoBoton = document.createElement("button");
-                nuevoBoton.id = "btnEditarPerfil";
-                nuevoBoton.textContent = "Editar";
-                nuevoBoton.className = "btn-editar";
-
-                nuevoBoton.addEventListener("click", () => {
-                    vista.style.display = "none";
-                    edicion.style.display = "block";
-                    nuevoBoton.remove();
-                });
-
-                vista.appendChild(nuevoBoton);
-
-                console.log("Nombre actualizado en Firestore:", nuevoNombre);
+                inputNombre.setAttribute("readonly", true);
+                btnGuardar.style.display = "none";
+                btnEditar.style.display = "inline-block";
             })
-            .catch(error => {
-                console.error("Error actualizando nombre:", error);
-                alert("Error al actualizar el nombre");
+            .catch(err => {
+                console.error(err);
+                alert("Error al guardar");
             });
-    });
+        });
 
     // 🔹 Navegación sidebar
     const menuLinks = document.querySelectorAll('.menu-link');
