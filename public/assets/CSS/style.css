@@ -1266,7 +1266,7 @@ button:hover, .boton:hover {
     align-items: center;
     cursor: pointer;
     margin-bottom: 0;
-    font-size: 0.875rem;
+    font-size: 1rem;
 }
 
 .checkbox-label input[type="checkbox"] {
@@ -1296,6 +1296,10 @@ button:hover, .boton:hover {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.checkbox-label:hover .checkmark {
+    border-color: #8b4513; /* Cambia el borde a marrón al pasar el ratón */
 }
 
 .text-muted {
@@ -3487,4 +3491,9 @@ button:hover, .boton:hover {
     .promo-card {
         padding: 1.2rem;
     }
+}
+
+.password-mask {
+    letter-spacing: 2px;
+    font-weight: bold;
 }

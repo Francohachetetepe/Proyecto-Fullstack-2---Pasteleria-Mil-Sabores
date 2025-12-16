@@ -400,10 +400,11 @@
                                 <tr>
                                     <th>RUN</th>
                                     <th>Nombre</th>
+                                    <th>Apellidos</th>
                                     <th>Email</th>
-                                    <th>Clave</th>
-                                    <th>Fecha</th>
-                                    <th>Teléfono</th>
+                                    <th>Contraseña</th>
+                                    <th>Fecha Nacimiento</th>
+                                    <th>Código Promocional</th>
                                     <th>Dirección</th>
                                     <th>Rol</th>
                                     <th>Estado</th>
@@ -420,6 +421,7 @@
                     </div>
                 </div>
             </section>
+
             <!-- Sección de Reportes -->
             <section id="reportes" style="display: none;">
                 <div class="welcome-section">
@@ -582,7 +584,7 @@
                 </div>
                 <div class="form-group">
                     <label for="productoImagen">URL de Imagen</label>
-                    <input type="url" id="productoImagen" placeholder="https://ejemplo.com/imagen.jpg">
+                    <input type="url" id="productoImagen">
                 </div>
                 <div class="form-actions">
                     <button type="button" class="btn btn-secondary" onclick="cerrarModal('modalProducto')">Cancelar</button>
@@ -633,24 +635,29 @@
                 </div>
                 
                 <div class="form-group">
+                    <label for="usuarioApellidos">Apellidos *</label>
+                    <input type="text" id="usuarioApellidos" required>
+                </div>
+
+                <div class="form-group">
                     <label for="usuarioEmail">Email *</label>
                     <input type="email" id="usuarioEmail" required>
                 </div>
                 
                 <div class="form-group" id="passwordField">
-                    <label for="usuarioClave">Clave *</label>
+                    <label for="usuarioClave">Contraseña *</label>
                     <input type="password" id="usuarioClave" required>
-                    <small class="text-muted">La clave solo se puede establecer al crear un nuevo usuario</small>
+                    <small class="text-muted">La contraseña solo se puede establecer al crear un nuevo usuario</small>
                 </div>
                 
                 <div class="form-group">
-                    <label for="usuarioFecha">Fecha</label>
-                    <input type="date" id="usuarioFecha">
+                    <label for="usuarioFechaNacimiento">Fecha de Nacimiento</label>
+                    <input type="date" id="usuarioFechaNacimiento">
                 </div>
                 
                 <div class="form-group">
-                    <label for="usuarioTelefono">Teléfono</label>
-                    <input type="tel" id="usuarioTelefono">
+                    <label for="usuarioCodigoPromocional">Código Promocional</label>
+                    <input type="text" id="usuarioCodigoPromocional">
                 </div>
                 
                 <div class="form-group">
@@ -683,10 +690,13 @@
         </div>
     </div>
 
+
     <!-- Scripts -->
+    <script src="/src/utils/validaciones.js"></script> <!-- 👈 ESTE ES NUEVO -->
     <script src="../JS/saludo.js"></script>
     <script src="../JS/home_admin.js"></script>
     <script src="../JS/dashboard.js"></script>
     <script src="../JS/crud-functions.js"></script>
+
 </body>
 </html>
