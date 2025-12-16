@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 🔹 Obtener usuario de localStorage
     const usuarioStr = localStorage.getItem("usuario");
     if (!usuarioStr) return; // No hay usuario logueado
-    const usuario = JSON.parse(usuarioStr);
+    let usuario = JSON.parse(usuarioStr);
 
     // 🔹 Configuración Firebase
     const firebaseConfig = {
@@ -46,20 +46,33 @@ document.addEventListener("DOMContentLoaded", () => {
         if (bienvenido) bienvenido.textContent = `Bienvenido ${usuario.nombre}!`;
     }
 
-    rellenarPerfil();
+    db.collection("usuario")
+        .where("correo", "==", usuario.correo)
+        .get()
+        .then(querySnapshot => {
+            if (!querySnapshot.empty) {
+                const doc = querySnapshot.docs[0];
+                usuario.id = doc.id;  // Guardamos el ID del documento en el objeto usuario
+                console.log("ID del usuario:", usuario.id);
+            }
+        })
+        .catch(error => {
+            console.error("Error obteniendo el ID del usuario:", error);
+        });
+    
+    
+        rellenarPerfil();
+        
+        const btnEditar = document.getElementById("btnEditarPerfil");
+        const btnGuardar = document.getElementById("btnGuardarNombre");
+        const vista = document.getElementById("perfil-view");
+        const edicion = document.getElementById("perfil-edit");
 
-    // 🔹 Editar nombre
-    const btnEditar = document.getElementById("btnEditarPerfil");
-    const btnGuardar = document.getElementById("btnGuardarNombre");
-    const vista = document.getElementById("perfil-view");
-    const edicion = document.getElementById("perfil-edit");
-
-    btnEditar.addEventListener("click", () => {
-    vista.style.display = "none";
-    edicion.style.display = "block";
-    btnEditar.remove(); // ⬅️ elimina el botón del DOM
-
-});
+        btnEditar.addEventListener("click", () => {
+            vista.style.display = "none";
+            edicion.style.display = "block";
+            btnEditar.remove();
+        });
 
     btnGuardar.addEventListener("click", () => {
         const nuevoNombre = camposEdit.nombre.value.trim();
@@ -67,25 +80,43 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("El nombre no puede estar vacío.");
             return;
         }
-        usuario.nombre = nuevoNombre;
-        localStorage.setItem("usuario", JSON.stringify(usuario));
-        rellenarPerfil();
-        vista.style.display = "block";
-        edicion.style.display = "none";
-        // ⬇️ recrear el botón Editar
-const nuevoBoton = document.createElement("button");
-nuevoBoton.id = "btnEditarPerfil";
-nuevoBoton.textContent = "Editar";
-nuevoBoton.className = "btn-editar"; // opcional, si usas clases
 
-nuevoBoton.addEventListener("click", () => {
-  vista.style.display = "none";
-  edicion.style.display = "block";
-  nuevoBoton.remove(); // lo eliminamos otra vez
-});
+        // 🔹 Actualizar en Firestore usando el ID
+        db.collection("usuario")
+            .doc(usuario.id)  // Usamos el ID que obtuvimos previamente
+            .update({
+                nombre: nuevoNombre
+            })
+            .then(() => {
+                // 🔹 Actualizar localStorage
+                usuario.nombre = nuevoNombre;
+                localStorage.setItem("usuario", JSON.stringify(usuario));
 
-vista.appendChild(nuevoBoton); // lo agregamos al final del bloque de vista
-        console.log("Nombre actualizado a:", nuevoNombre);
+                // 🔹 Refrescar vista
+                rellenarPerfil();
+                vista.style.display = "block";
+                edicion.style.display = "none";
+
+                // 🔹 Recrear botón editar
+                const nuevoBoton = document.createElement("button");
+                nuevoBoton.id = "btnEditarPerfil";
+                nuevoBoton.textContent = "Editar";
+                nuevoBoton.className = "btn-editar";
+
+                nuevoBoton.addEventListener("click", () => {
+                    vista.style.display = "none";
+                    edicion.style.display = "block";
+                    nuevoBoton.remove();
+                });
+
+                vista.appendChild(nuevoBoton);
+
+                console.log("Nombre actualizado en Firestore:", nuevoNombre);
+            })
+            .catch(error => {
+                console.error("Error actualizando nombre:", error);
+                alert("Error al actualizar el nombre");
+            });
     });
 
     // 🔹 Navegación sidebar
