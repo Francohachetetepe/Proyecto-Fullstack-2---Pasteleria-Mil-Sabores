@@ -39,14 +39,14 @@ document.addEventListener("DOMContentLoaded", () => {
       btnMiPerfil.addEventListener("click", () => {
         const usuario = JSON.parse(localStorage.getItem("usuario"));
         if (!usuario) return;
-
-        if (usuario.rol === "admin") {
-    window.location.href = "/assets/page/home_admin.html"; 
-} else if (usuario.rol === "vendedor") {
-    window.location.href = "/assets/page/vendedor.html"; 
-} else {
-    window.location.href = "/assets/page/saludo.html"; 
-}
+        
+        if (usuario.rol === "Administrador") {
+          window.location.href = "/assets/page/home_admin.html";
+        } else if (usuario.rol === "Vendedor") {
+          window.location.href = "/assets/page/vendedor.html";
+        } else {
+          window.location.href = "/assets/page/saludo.html";
+        }
 
       });
 

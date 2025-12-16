@@ -45,20 +45,23 @@ const LoginForm = () => {
         where("password", "==", password) // ⚠️ Solo si estás guardando la contraseña en texto plano
       );
       const result = await getDocs(q);
-
+      
       if (!result.empty) {
         const userData = result.docs[0].data();
-        localStorage.setItem("usuario", JSON.stringify({ nombre: userData.nombre || correo, correo, rol: "Cliente" }));
-        setMensaje("✅ Bienvenido Cliente, redirigiendo...");
-        setTimeout(() => window.location.href = "../page/saludo.html", 1000);
+        
+        // Guardar el usuario con su rol REAL
+        localStorage.setItem("usuario", JSON.stringify({
+          nombre: userData.nombre || correo,correo, rol: userData.rol   // ⬅️ AQUÍ ESTÁ LA MAGIA
+        }));
+        
+        // Redirección según rol
         if (userData.rol === "Vendedor") {
           setMensaje("✅ Bienvenido Vendedor, redirigiendo...");
           setTimeout(() => window.location.href = "../page/vendedor.html", 1000);
-        }else{
+        } else {
           setMensaje("✅ Bienvenido Cliente, redirigiendo...");
           setTimeout(() => window.location.href = "../page/saludo.html", 1000);
         }
-
       } else {
         setMensaje("❌ Correo o contraseña incorrectos.");
       }
