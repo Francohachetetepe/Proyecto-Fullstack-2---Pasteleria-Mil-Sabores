@@ -361,7 +361,7 @@ class CRUDFunctions {
                     'productoPrecio': producto.precio || '',
                     'productoStock': producto.stock || '',
                     'productoCategoria': producto.categoria || producto.categoría || '',
-                    'productoImagen': producto.imagen || ''
+                    'productoImagen': producto.image || ''
                 };
 
                 for (const [id, value] of Object.entries(elementos)) {
@@ -732,37 +732,34 @@ class CRUDFunctions {
     mostrarUsuarios(usuarios) {
         const tbody = document.getElementById('usuarios-tbody');
         if (!tbody) {
-            console.error('No se encontro el tbody de usuarios');
+            console.error('No se encontró el tbody de usuarios');
             return;
         }
 
         console.log('Mostrando usuarios:', usuarios);
 
         if (usuarios.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="8" class="no-data">No hay usuarios registrados</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="11" class="no-data">No hay usuarios registrados</td></tr>';
             return;
         }
 
         tbody.innerHTML = usuarios.map(usuario => `
             <tr>
-                <td>${usuario.run || 'Sin run'}</td>
-                <td>${usuario.nombre || 'Sin nombre'}</td>
-                <td>${usuario.email || usuario.correo || 'Sin email'}</td>
-                <td>${usuario.clave ||'Sin clave'}</td>
-                <td>${usuario.fecha ||'Sin fecha'}</td>
-                <td>${usuario.telefono || 'No especificado'}</td>
-                <td>${usuario.direccion || 'No especificada'}</td>
-                <td>
-                    <span class="badge ${this.getRolClass(usuario.rol)}">
-                        ${usuario.rol || 'usuario'}
-                    </span>
-                </td>
+                <td>${usuario.run || 'Sin run'}</td> <!-- Mostrar el campo 'run' -->
+                <td>${usuario.nombre || 'Sin nombre'}</td> <!-- Mostrar el campo 'nombre' -->
+                <td>${usuario.apellidos || 'Sin apellidos'}</td> <!-- Mostrar el campo 'apellidos' -->
+                <td>${usuario.correo || 'Sin email'}</td> <!-- Mostrar el campo 'email' -->
+                <td class="password-mask">••••••</td> <!-- Mostrar el campo 'clave' -->
+                <td>${usuario.fechaNacimiento || 'Sin fecha'}</td> <!-- Mostrar el campo 'fecha_nacimiento' -->
+                <td>${usuario.codigoPromo || 'Sin código promocional'}</td> <!-- Mostrar el campo 'codigo_promocional' -->
+                <td>${usuario.direccion || 'No especificada'}</td> <!-- Mostrar el campo 'direccion' -->
+                <td>${usuario.rol || 'Sin rol'}</td> <!-- Mostrar el campo 'rol' -->
                 <td>
                     <span class="badge ${usuario.activo !== false ? 'activo' : 'inactivo'}">
                         ${usuario.activo !== false ? 'Activo' : 'Inactivo'}
                     </span>
                 </td>
-                <td>${this.formatFecha(usuario.createdAt)}</td>
+                <td>${this.formatFecha(usuario.createdAt)}</td> <!-- Mostrar la fecha de registro -->
                 <td class="acciones">
                     <button class="btn btn-sm btn-warning" onclick="editarUsuario('${usuario.id}')" title="Editar">
                         <i class="bi bi-pencil"></i>
@@ -779,6 +776,7 @@ class CRUDFunctions {
         `).join('');
     }
 
+
     async cargarDatosUsuario(usuarioId) {
         try {
             console.log('Cargando datos del usuario:', usuarioId);
@@ -787,15 +785,28 @@ class CRUDFunctions {
             if (doc.exists) {
                 const usuario = doc.data();
                 console.log('Datos del usuario:', usuario);
+
+                let fechaNacimiento = '';
+
+                if (usuario.fechaNacimiento) {
+                    if (typeof usuario.fechaNacimiento === 'string') {
+                        fechaNacimiento = usuario.fechaNacimiento;
+                    } else if (usuario.fechaNacimiento.toDate) {
+                        fechaNacimiento = usuario.fechaNacimiento
+                            .toDate()
+                            .toISOString()
+                            .split('T')[0];
+                    }
+                }
                 
                 const elementos = {
                     'usuarioId': usuarioId,
                     'usuarioRun': usuario.run || '',
                     'usuarioNombre': usuario.nombre || '',
+                    'usuarioApellidos': usuario.apellidos || '',
                     'usuarioEmail': usuario.email || usuario.correo || '',
-                    'usuarioClave': '',
-                    'usuarioFecha': usuario.fecha || '',
-                    'usuarioTelefono': usuario.telefono || '',
+                    'usuarioClave': usuario.password || '',
+                    'usuarioFechaNacimiento': fechaNacimiento || '',
                     'usuarioDireccion': usuario.direccion || '',
                     'usuarioRol': usuario.rol || 'Cliente',
                     'usuarioActivo': usuario.activo !== false
@@ -836,44 +847,66 @@ class CRUDFunctions {
     async guardarUsuario(usuarioData) {
         try {
             console.log('Guardando usuario:', usuarioData);
+
+            if (!validarRun(usuarioData.run)) {
+            alert('RUN inválido');
+            return;
+            }
+
+            if (!validarCorreo(usuarioData.correo)) {
+                alert('Correo no permitido');
+                return;
+            }
+
+            if (!usuarioData.id) { // solo cuando se crea
+                if (!validarPassword(usuarioData.password)) {
+                    alert('La contraseña debe tener al menos 6 caracteres');
+                    return;
+                }
+            }
+
+            const edad = validarEdad(usuarioData.fechaNacimiento);
+
+            if (!validarCodigoPromo(usuarioData.codigoPromo)) {
+                alert('Código promocional inválido');
+                return;
+            }
             
+            // Datos del usuario a guardar en Firestore
             const usuario = {
                 run: usuarioData.run,
                 nombre: usuarioData.nombre,
-                email: usuarioData.email,
-                telefono: usuarioData.telefono,
+                apellidos: usuarioData.apellidos,
+                correo: usuarioData.correo,
+                password: usuarioData.password,  // Solo se guarda cuando se crea un nuevo usuario
+                fechaNacimiento: usuarioData.fechaNacimiento,
+                codigoPromo: usuarioData.codigoPromo,
                 direccion: usuarioData.direccion,
                 rol: usuarioData.rol,
                 activo: usuarioData.activo,
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()  // Timestamp de última actualización
             };
 
-            if (usuarioData.fecha) {
-                usuario.fecha = usuarioData.fecha;
-            }
-
+            // Si el usuario tiene un ID (es una actualización)
             if (usuarioData.id) {
                 await this.db.collection("usuario").doc(usuarioData.id).update(usuario);
                 console.log('Usuario actualizado:', usuarioData.id);
             } else {
-                usuario.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-                
-                if (usuarioData.clave) {
-                    usuario.clave = usuarioData.clave;
-                }
-                
+                // Si no tiene ID, es un nuevo usuario (se crea)
                 const docRef = await this.db.collection("usuario").add(usuario);
                 console.log('Usuario creado con ID:', docRef.id);
             }
-            
+
             alert('Usuario guardado correctamente');
             this.cerrarModal('modalUsuario');
-            this.cargarUsuarios();
+            this.cargarUsuarios(); // Recargar los usuarios después de guardar
         } catch (error) {
             console.error('Error guardando usuario:', error);
             alert('Error al guardar el usuario: ' + error.message);
         }
     }
+
 
     async eliminarUsuario(usuarioId) {
         if (!confirm('Estas seguro de que deseas eliminar este usuario? Esta accion no se puede deshacer.')) return;
@@ -1038,7 +1071,7 @@ class CRUDFunctions {
                 run: perfilData.run,
                 nombre: perfilData.nombre,
                 correo: perfilData.correo,
-                clave: perfilData.clave,
+                password: perfilData.password,
                 fecha: perfilData.fecha,
                 telefono: perfilData.telefono,
                 rol: perfilData.rol,
@@ -1048,7 +1081,7 @@ class CRUDFunctions {
             usuario.run = perfilData.run;
             usuario.nombre = perfilData.nombre;
             usuario.correo = perfilData.correo;
-            usuario.clave = perfilData.clave;
+            usuario.password = perfilData.password;
             usuario.fecha = perfilData.fecha;
             usuario.telefono = perfilData.telefono;
             localStorage.setItem("usuario", JSON.stringify(usuario));
@@ -1076,7 +1109,7 @@ class CRUDFunctions {
             
             if (profileNombre) profileNombre.value = usuario.nombre || '';
             if (profileCorreo) profileCorreo.value = usuario.correo || '';
-            if (profileClave) profileClave.value = usuario.clave || '';
+            if (profileClave) profileClave.value = usuario.password || '';
             if (profileTelefono) profileTelefono.value = usuario.telefono || '';
         }
     }
@@ -1306,29 +1339,32 @@ function mostrarModalUsuario(usuarioId = null) {
 }
 
 function guardarUsuario(event) {
-    event.preventDefault();
+    event.preventDefault(); // Evitar el comportamiento por defecto del formulario
     
     const usuarioData = {
         id: document.getElementById('usuarioId').value,
         run: document.getElementById('usuarioRun').value,
         nombre: document.getElementById('usuarioNombre').value,
-        email: document.getElementById('usuarioEmail').value,
-        clave: document.getElementById('usuarioClave').value,
-        fecha: document.getElementById('usuarioFecha').value,
-        telefono: document.getElementById('usuarioTelefono').value,
+        apellidos: document.getElementById('usuarioApellidos').value,
+        correo: document.getElementById('usuarioEmail').value,
+        password: document.getElementById('usuarioClave').value,
+        fechaNacimiento: document.getElementById('usuarioFechaNacimiento').value,
+        codigoPromo: document.getElementById('usuarioCodigoPromocional').value,
         direccion: document.getElementById('usuarioDireccion').value,
         rol: document.getElementById('usuarioRol').value,
         activo: document.getElementById('usuarioActivo').checked
     };
 
     if (!usuarioData.id) {
-        usuarioData.clave = document.getElementById('usuarioClave').value;
+        usuarioData.password = document.getElementById('usuarioClave').value; // Clave solo se debe asignar cuando el usuario es nuevo
     }
 
+    // Llamar a la función que guarda el usuario
     if (crudFunctions) {
         crudFunctions.guardarUsuario(usuarioData);
     }
 }
+
 
 function eliminarUsuario(usuarioId) {
     if (crudFunctions) crudFunctions.eliminarUsuario(usuarioId);
@@ -1357,7 +1393,7 @@ function actualizarPerfil(event) {
     
     const perfilData = {
         nombre: document.getElementById('profileNombre').value,
-        email: document.getElementById('profileCorreo').value,
+        correo: document.getElementById('profileCorreo').value,
         telefono: document.getElementById('profileTelefono').value
     };
 
@@ -1384,6 +1420,67 @@ window.onclick = function(event) {
         }
     });
 }
+
+/************************************************
+ * VALIDACIONES (SOLO PARA ESTE CRUD)
+ ************************************************/
+
+function validarRun(run) {
+    run = run.replace(/\s+/g, "").replace(/-/g, "").toUpperCase();
+    if (!/^\d{7,8}[0-9K]$/.test(run)) return false;
+
+    const cuerpo = run.slice(0, -1);
+    const dv = run.slice(-1);
+
+    let suma = 0;
+    let multiplo = 2;
+
+    for (let i = cuerpo.length - 1; i >= 0; i--) {
+        suma += parseInt(cuerpo[i], 10) * multiplo;
+        multiplo = multiplo < 7 ? multiplo + 1 : 2;
+    }
+
+    const resto = suma % 11;
+    const dvEsperado =
+        resto === 0 ? "0" :
+        resto === 1 ? "K" :
+        String(11 - resto);
+
+    return dv === dvEsperado;
+}
+
+function validarCorreo(correo) {
+    const regex = /^[\w._%+-]+@(duoc\.cl|profesor\.duoc\.cl|gmail\.com)$/i;
+    return regex.test(correo);
+}
+
+function validarPassword(password) {
+    return password.length >= 6;
+}
+
+function validarPasswordsIguales(password, confirmPassword) {
+    return password === confirmPassword;
+}
+
+function validarEdad(fechaNacimiento) {
+    if (!fechaNacimiento) return 0;
+
+    const hoy = new Date();
+    const fechaNac = new Date(fechaNacimiento);
+    let edad = hoy.getFullYear() - fechaNac.getFullYear();
+    const mes = hoy.getMonth() - fechaNac.getMonth();
+
+    if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNac.getDate())) {
+        edad--;
+    }
+    return edad;
+}
+
+function validarCodigoPromo(codigo) {
+    if (!codigo) return true;
+    return codigo.toUpperCase() === "FELICES50";
+}
+
 
 // ==================== SISTEMA DE NAVEGACIÓN ====================
 
